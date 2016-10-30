@@ -35,3 +35,7 @@ jspm_packages
 
 # Optional REPL history
 .node_repl_history
+
+# TypeScript生成ファイル
+public/js/app/*.js
+public/js/app/*.js.map
