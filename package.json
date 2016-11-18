@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "concurrently \"node ./bin/www\" \"npm run tsc:server\" \"npm run tsc:client\"",
-    "postinstall": "typings install",
+    "postinstall": "typings install && cd public/js && npm install",
     "tsc:server": "tsc -w",
     "tsc:client": "tsc -w -p ./public/js/",
     "typings": "typings"
