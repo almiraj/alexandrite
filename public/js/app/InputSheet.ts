@@ -3,13 +3,28 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'InputSheet',
   template: `
-    <ul *ngFor="let timeRow of timeTable">
-      <li>
-        {{timeRow.date}}
-        　{{timeRow.begin}}～{{timeRow.end}}
-        　{{timeRow.rest}}
-      </li>
-    </ul>
+    <table>
+      <tr id="timeHead">
+        <th>日付</th>
+        <th>開始</th>
+        <th></th>
+        <th>終了</th>
+      </tr>
+      <tr *ngFor="let timeRow of timeTable; let i = index" id="{{'timeRow' + i}}">
+        <td id="{{'timeRow' + i + 'date'}}">
+          {{i + 1}}
+        </td>
+        <td>
+          <input id="{{'timeRow' + i + 'begin'}}" value="{{timeRow.begin}}">
+        </td>
+        <td>
+          ～
+        </td>
+        <td>
+          <input id="{{'timeRow' + i + 'end'}}" value="{{timeRow.end}}">
+        </td>
+      </tr>
+    </table>
   `
 })
 export class InputSheet {
