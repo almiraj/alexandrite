@@ -37,5 +37,5 @@ jspm_packages
 .node_repl_history
 
 # TypeScript生成ファイル
-public/js/app/*.js
-public/js/app/*.js.map
+public/js/app/**/*.js
+public/js/app/**/*.js.map
