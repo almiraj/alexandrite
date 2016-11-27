@@ -1,12 +1,12 @@
 export class TimeRow {
-  date:String
   begin:String
   end:String
   interval:String
-  constructor(date:String, begin:String, end:String, interval:String) {
-    this.date = date;
+  summary:String
+  constructor(begin:String, end:String, interval:String, summary:String) {
     this.begin = begin;
     this.end = end;
     this.interval = interval;
+    this.summary = summary;
   }
 }

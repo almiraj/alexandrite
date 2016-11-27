@@ -1,10 +1,10 @@
 "use strict";
 var TimeRow = (function () {
-    function TimeRow(date, begin, end, interval) {
-        this.date = date;
+    function TimeRow(begin, end, interval, summary) {
         this.begin = begin;
         this.end = end;
         this.interval = interval;
+        this.summary = summary;
     }
     return TimeRow;
 }());
