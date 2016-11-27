@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
+import { TimeTableService } from '../service/TimeTableService';
+import { TimeRow } from '../entity/TimeRow';
 
 @Component({
-  selector: 'TimeTable',
+  selector: 'TimeTableComponent',
   template: `
     <div class="table-responsive">
       <table class="table table-bordered table-striped table-responsive">
@@ -14,7 +16,7 @@ import { Component } from '@angular/core';
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let timeRow of timeTable; let i = index" id="{{'timeRow' + i}}">
+          <tr *ngFor="let timeRow of timeRows; let i = index" id="{{'timeRow' + i}}">
             <td id="{{'timeRow' + i + 'date'}}">{{i + 1}}</td>
             <td><input id="{{'timeRow' + i + 'begin'}}" class="form-control" [(ngModel)]="timeRow.begin"></td>
             <td><input id="{{'timeRow' + i + 'end'}}" class="form-control" [(ngModel)]="timeRow.end"></td>
@@ -25,12 +27,9 @@ import { Component } from '@angular/core';
     </div>
   `
 })
-export class TimeTable {
-  timeTable: Array<Object>
-  constructor() {
-    this.timeTable = [
-      { date: 1 ,begin: '1000', end: '1800', interval: '0100' },
-      { date: 2, begin: '1000', end: '1830', interval: '0100' },
-    ];
+export class TimeTableComponent {
+  timeRows:Array<TimeRow>
+  constructor(timeTableService:TimeTableService) {
+    this.timeRows = timeTableService.timeRows;
   }
 }
