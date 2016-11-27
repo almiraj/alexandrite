@@ -5,7 +5,7 @@ import { TimeTable } from './TimeTable';
   selector: 'TimeTableInput',
   template: `
     <TimeTable></TimeTable>
-    <button>保存</button>
+    <button class="btn btn-default pull-right">保存</button>
   `,
   directives: [TimeTable]
 })

@@ -4,8 +4,10 @@ import { TimeTableInput } from './TimeTableInput';
 @Component({
   selector: 'my-app',
   template: `
-    <h1>Alexandrite</h1>
-    <TimeTableInput></TimeTableInput>
+    <div class="container">
+      <h1>Alexandrite <small>- worksheet system -</small></h1>
+      <TimeTableInput></TimeTableInput>
+    </div>
     `,
     directives: [TimeTableInput]
 })
