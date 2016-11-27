@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'InputSheet',
+  selector: 'TimeTable',
   template: `
     <table>
       <tr id="timeHead">
@@ -11,23 +11,15 @@ import { Component } from '@angular/core';
         <th>終了</th>
       </tr>
       <tr *ngFor="let timeRow of timeTable; let i = index" id="{{'timeRow' + i}}">
-        <td id="{{'timeRow' + i + 'date'}}">
-          {{i + 1}}
-        </td>
-        <td>
-          <input id="{{'timeRow' + i + 'begin'}}" value="{{timeRow.begin}}">
-        </td>
-        <td>
-          ～
-        </td>
-        <td>
-          <input id="{{'timeRow' + i + 'end'}}" value="{{timeRow.end}}">
-        </td>
+        <td id="{{'timeRow' + i + 'date'}}">{{i + 1}}</td>
+        <td><input id="{{'timeRow' + i + 'begin'}}" [(ngModel)]="timeRow.begin"></td>
+        <td>～</td>
+        <td><input id="{{'timeRow' + i + 'end'}}" [(ngModel)]="timeRow.end"></td>
       </tr>
     </table>
   `
 })
-export class InputSheet {
+export class TimeTable {
   timeTable: Array<Object>
   constructor() {
     this.timeTable = [

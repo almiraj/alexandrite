@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { InputSheet } from './InputSheet';
+import { TimeTableInput } from './TimeTableInput';
 
 @Component({
   selector: 'my-app',
   template: `
     <h1>Alexandrite</h1>
-    <InputSheet></InputSheet>
+    <TimeTableInput></TimeTableInput>
     `,
-    directives: [InputSheet]
+    directives: [TimeTableInput]
 })
 export class AppComponent { }
