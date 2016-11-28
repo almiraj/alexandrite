@@ -4,8 +4,8 @@ export class TimeTableService {
   timeRows: Array<TimeRow>
   constructor() {
     this.timeRows = [
-      new TimeRow('1000', '1800', '0100', '700'),
-      new TimeRow('1000', '1830', '0100', '730')
+      new TimeRow('1000', '1800', '0100'),
+      new TimeRow('1000', '1830', '0100')
     ];
   }
   save() {
