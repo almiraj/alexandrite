@@ -14,7 +14,9 @@ import { TimeTableService } from '../service/TimeTableService';
 export class TimeTableInputComponent {
   timeTableService: TimeTableService
   save() {
-    this.timeTableService.save();
+    this.timeTableService.save().then((address2:String) => {
+      alert(address2);
+    });
   }
   constructor(timeTableService:TimeTableService) {
     this.timeTableService = timeTableService;
