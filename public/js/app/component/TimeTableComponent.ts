@@ -42,7 +42,6 @@ export class TimeTableComponent {
   calculate() {
     for (let i = 0; i < this.timeRows.length; i++) {
       let timeRow = this.timeRows[i];
-      timeRow.summary = this.commonService.expand4digit(Number(timeRow.end) - Number(timeRow.begin) - Number(timeRow.interval));
     }
   }
 }
