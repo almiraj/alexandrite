@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { TimeRowSummaryPipe } from '../pipe/TimeRowSummaryPipe';
-import { CommonService } from '../service/CommonService';
 import { TimeTableService } from '../service/TimeTableService';
 import { TimeRow } from '../entity/TimeRow';
 
@@ -22,9 +21,9 @@ import { TimeRow } from '../entity/TimeRow';
         <tbody>
           <tr *ngFor="let timeRow of timeRows; let i = index" id="{{'timeRow' + i}}">
             <td id="{{'timeRow' + i + 'date'}}">{{i + 1}}</td>
-            <td><input id="{{'timeRow' + i + 'begin'}}" class="form-control" [(ngModel)]="timeRow.begin" (keyup)="calculate()"></td>
-            <td><input id="{{'timeRow' + i + 'end'}}" class="form-control" [(ngModel)]="timeRow.end" (keyup)="calculate()"></td>
-            <td><input id="{{'timeRow' + i + 'interval'}}" class="form-control" [(ngModel)]="timeRow.interval" (keyup)="calculate()"></td>
+            <td><input id="{{'timeRow' + i + 'begin'}}" class="form-control" [(ngModel)]="timeRow.begin"></td>
+            <td><input id="{{'timeRow' + i + 'end'}}" class="form-control" [(ngModel)]="timeRow.end"></td>
+            <td><input id="{{'timeRow' + i + 'interval'}}" class="form-control" [(ngModel)]="timeRow.interval"></td>
             <td><span id="{{'timeRow' + i + 'summary'}}">{{timeRow | TimeRowSummaryPipe}}</span></td>
           </tr>
         </tbody>
@@ -33,15 +32,8 @@ import { TimeRow } from '../entity/TimeRow';
   `
 })
 export class TimeTableComponent {
-  commonService:CommonService
   timeRows:Array<TimeRow>
-  constructor(timeTableService:TimeTableService, commonService:CommonService) {
+  constructor(timeTableService:TimeTableService) {
     this.timeRows = timeTableService.timeRows;
-    this.commonService = commonService;
-  }
-  calculate() {
-    for (let i = 0; i < this.timeRows.length; i++) {
-      let timeRow = this.timeRows[i];
-    }
   }
 }

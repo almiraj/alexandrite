@@ -1,12 +1,22 @@
-import { Pipe } from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core';
 import { TimeRow } from '../entity/TimeRow';
-import { CommonService } from '../service/CommonService';
 
 @Pipe({
-  name: 'TimeRowSummaryPipe'
+  name: 'TimeRowSummaryPipe',
+  pure: false
 })
-export class TimeRowSummaryPipe {
-  transform(timeRow:TimeRow) {
-    return new CommonService().expand4digit(Number(timeRow.end) - Number(timeRow.begin) - Number(timeRow.interval));
+export class TimeRowSummaryPipe implements PipeTransform {
+  transform(timeRow:TimeRow):String {
+    const sum = Number(timeRow.end) - Number(timeRow.begin) - Number(timeRow.interval);
+    if (sum <= 0) {
+      return '';
+    }
+
+    const sumStr = String(sum);
+    if (sumStr.length >= 4) {
+        return sumStr;
+    }
+
+    return ('0000' + sumStr).slice(-4);
   }
 }
