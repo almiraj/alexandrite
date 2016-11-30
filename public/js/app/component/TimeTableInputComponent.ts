@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
-import { CommonService } from '../service/CommonService';
 import { TimeTableComponent } from '../component/TimeTableComponent';
 import { TimeTableService } from '../service/TimeTableService';
 
 @Component({
   selector: 'TimeTableInputComponent',
-  providers: [TimeTableService, CommonService],
+  providers: [TimeTableService],
   template: `
     <TimeTableComponent></TimeTableComponent>
     <button class="btn btn-default pull-right" (click)="save()">保存</button>
