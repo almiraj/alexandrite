@@ -1,9 +1,12 @@
 var express = require('express');
-var router = express.Router();
 
-router.get('/*', function(req, res, next) {
-  var apiFunction = require('./services/' + req.path.replace(/^\//, ''));
-  apiFunction(req, res);
-});
+module.exports = (function() {
+  var router = express.Router();
 
-module.exports = router;
+  router.get('/*', function(req, res, next) {
+    var apiFunction = require('./services/' + req.path.replace(/^\//, ''));
+    apiFunction(req, res);
+  });
+
+  return router;
+})();
