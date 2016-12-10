@@ -1,5 +1,5 @@
 import { bootstrap } from '@angular/platform-browser-dynamic';
-import { JSONP_PROVIDERS } from '@angular/http';
+import { HTTP_PROVIDERS } from '@angular/http';
 import { AppComponent } from './component/AppComponent';
 
-bootstrap(AppComponent, [ JSONP_PROVIDERS ]);
+bootstrap(AppComponent, [ HTTP_PROVIDERS ]);

@@ -1,16 +1,17 @@
 const TimeSheetUsersModel = require('../model/TimeSheetUsersModel');
 
 module.exports = function(req, res) {
-  TimeSheetUsersModel.update(
-    { id: 'rain' },
+  console.log('::req');
+  console.log(req.query);
+  TimeSheetUsersModel.findOne(
     {
-      timeSheet: [{
-        month: '201612',
-        timeTable: [ { date: '1', begin: '0930', end: '2100' }, { date: '2', begin: '1230', end: '2400' } ]
-      }]
+      'userId': req.query.userId,
+      'timeSheet.month': req.query.month
     },
     function(err, result) {
       if (err) throw err;
+      console.log('::res');
+      console.log(JSON.stringify(result));
       res.send(JSON.stringify(result));
     }
   );

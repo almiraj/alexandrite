@@ -5,8 +5,8 @@ module.exports = (function() {
 
   const Schema = mongoose.Schema;
   return mongoose.model('TimeSheetUsers', new Schema({
-    id: { type: String, index: { unique: true } },
-    name: { type: String },
+    userId: { type: String, index: { unique: true } },
+    userName: { type: String },
     timeSheet: [ new Schema({
       month: { type: String, index: { unique: true } },
       timeTable: [ new Schema({
