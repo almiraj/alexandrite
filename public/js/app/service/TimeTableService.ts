@@ -8,26 +8,20 @@ export class TimeTableService {
   timeRows: Array<TimeRow>
   constructor(http:Http) {
     this.http = http;
-    this.timeRows = [
-      new TimeRow('1000', '1800', '0100'),
-      new TimeRow('1000', '1830', '0100')
-    ];
-    this.get();
   }
-  get():Promise<String> {
-    return new Promise<String>((resolve, reject) => {
+  selectTimeSheet():Promise<Array<TimeRow>> {
+    return new Promise<Array<TimeRow>>((resolve, reject) => {
       let params = new URLSearchParams();
       params.set('userId', 'foo');
       params.set('month', '201612');
       this.http.get('/ws/selectTimeSheet', { search: params }).subscribe((res:Response) => {
         console.log('::res');
         console.log(JSON.stringify(res.json()));
-        this.timeRows = res.json().timeSheet[0].timeTable;
-        return resolve('');
+        return resolve(res.json().timeSheet[0].timeTable);
       });
     });
   }
-  save():Promise<String> {
+  updateTimeSheet():Promise<String> {
     return new Promise<String>((resolve, reject) => {
       console.log(this.timeRows);
       resolve('ok');
