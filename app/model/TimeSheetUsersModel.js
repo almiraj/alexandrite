@@ -9,7 +9,7 @@ module.exports = (function() {
     userName: { type: String },
     timeSheet: [ new Schema({
       month: { type: String, index: { unique: true } },
-      timeTable: [ new Schema({
+      timeRows: [ new Schema({
         date: { type: String, index: { unique: true } },
         begin: { type: String },
         end: { type: String },

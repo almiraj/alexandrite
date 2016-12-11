@@ -15,16 +15,30 @@ export class TimeTableService {
       params.set('userId', 'foo');
       params.set('month', '201612');
       this.http.get('/ws/selectTimeSheet', { search: params }).subscribe((res:Response) => {
-        console.log('::res');
-        console.log(JSON.stringify(res.json()));
-        return resolve(res.json().timeSheet[0].timeTable);
+        const resBody = res.json();
+        console.log(JSON.stringify(resBody));
+        if (resBody) {
+          this.timeRows = resBody.timeSheet[0].timeRows;
+          return resolve();
+        } else {
+          return reject('Not Found');
+        }
       });
     });
   }
   updateTimeSheet():Promise<String> {
     return new Promise<String>((resolve, reject) => {
       console.log(this.timeRows);
-      resolve('ok');
+      this.http.post('/ws/updateTimeSheet', {
+          userId: 'foo',
+          month: '201612',
+          timeRows: JSON.stringify(this.timeRows)
+        })
+        .subscribe((res:Response) => {
+          const resBody = res.json();
+          console.log(resBody);
+          return (resBody.n) ? resolve() : reject('Not Matched');
+        });
     });
   }
 }

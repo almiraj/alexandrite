@@ -19,9 +19,9 @@ import { TimeRow } from '../entity/TimeRow';
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let timeRow of timeRows; let i = index" id="{{'timeRow' + i}}">
-            <td id="{{'timeRow' + i + 'date'}}">{{i + 1}}</td>
-            <td><input id="{{'timeRow' + i + 'begin'}}" class="form-control" [(ngModel)]="timeRow.begin" ngOnChanges></td>
+          <tr *ngFor="let timeRow of timeTableService.timeRows; let i = index" id="{{'timeRow' + i}}">
+            <td id="{{'timeRow' + i + 'date'}}">{{timeRow.date}}</td>
+            <td><input id="{{'timeRow' + i + 'begin'}}" class="form-control" [(ngModel)]="timeRow.begin"></td>
             <td><input id="{{'timeRow' + i + 'end'}}" class="form-control" [(ngModel)]="timeRow.end"></td>
             <td><input id="{{'timeRow' + i + 'interval'}}" class="form-control" [(ngModel)]="timeRow.interval"></td>
             <td><span id="{{'timeRow' + i + 'summary'}}">{{timeRow | TimeRowSummaryPipe}}</span></td>
@@ -33,11 +33,9 @@ import { TimeRow } from '../entity/TimeRow';
 })
 export class TimeTableComponent /*implements ngOnChanges*/ {
   // @Input
-  timeRows:Array<TimeRow>
+  timeTableService:TimeTableService
   constructor(timeTableService:TimeTableService) {
-    timeTableService.selectTimeSheet()
-    .then(timeRows => {
-      this.timeRows = timeRows;
-    });
+    this.timeTableService = timeTableService;
+    this.timeTableService.selectTimeSheet().catch(e => { alert(e); });
   }
 }

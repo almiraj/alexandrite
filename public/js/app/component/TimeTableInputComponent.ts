@@ -17,8 +17,10 @@ export class TimeTableInputComponent {
     this.timeTableService = timeTableService;
   }
   save() {
-    this.timeTableService.updateTimeSheet().then((address2:String) => {
-      alert(address2);
+    this.timeTableService.updateTimeSheet().then(() => {
+      alert('saved');
+    }).catch(e => {
+      alert(e);
     });
   }
 }
