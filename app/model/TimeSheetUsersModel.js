@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 module.exports = (function() {
-  mongoose.connect('mongodb://localhost/timeSheet');
+  mongoose.connect(process.env.MONGODB_URI);
 
   const Schema = mongoose.Schema;
   return mongoose.model('TimeSheetUsers', new Schema({
