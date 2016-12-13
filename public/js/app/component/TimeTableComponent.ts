@@ -1,11 +1,9 @@
 import { Component } from '@angular/core';
-import { TimeRowSummaryPipe } from '../pipe/TimeRowSummaryPipe';
+
 import { TimeTableService } from '../service/TimeTableService';
-import { TimeRow } from '../entity/TimeRow';
 
 @Component({
   selector: 'TimeTableComponent',
-  pipes: [TimeRowSummaryPipe],
   template: `
     <div class="table-responsive">
       <table class="table table-bordered table-striped table-responsive">
