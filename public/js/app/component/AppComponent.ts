@@ -7,6 +7,6 @@ import { Component } from '@angular/core';
       <h1>Alexandrite <small>- worksheet system -</small></h1>
       <TimeTableInputComponent></TimeTableInputComponent>
     </div>
-    `
+  `
 })
 export class AppComponent { }

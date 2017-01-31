@@ -20,13 +20,13 @@ export class TimeTableInputComponent {
   save() {
     this.timeTableService.updateTimeSheet().then(() => {
       this.modal.alert()
-          .size('sm')
-          .body('<h4>保存しました</h4>')
-          .keyboard(27)
-          .headerClass('hidden')
-          .bodyClass('text-center')
-          .footerClass('hidden')
-          .open();
+        .size('sm')
+        .body('<span class="glyphicon glyphicon-cloud-upload"></span> <strong>保存しました</strong>')
+        .keyboard(32)
+        .headerClass('hidden')
+        .bodyClass('modal-body text-center text-info h4')
+        .footerClass('hidden')
+        .open();
     }).catch(e => {
       alert(e);
     });
