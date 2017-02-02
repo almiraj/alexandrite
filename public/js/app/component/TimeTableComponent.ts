@@ -29,8 +29,7 @@ import { TimeTableService } from '../service/TimeTableService';
     </div>
   `
 })
-export class TimeTableComponent /*implements ngOnChanges*/ {
-  // @Input
+export class TimeTableComponent {
   timeTableService:TimeTableService
   constructor(timeTableService:TimeTableService) {
     this.timeTableService = timeTableService;

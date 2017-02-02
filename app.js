@@ -23,6 +23,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/ws/', routes);
 
+// angular/routerでURL直打ちされたときに対応するため、index.htmlへのマッピングを明示しておく
+app.use('/', (req, res) => {
+  res.sendFile(__dirname + '/public/index.html');
+});
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');

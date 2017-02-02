@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
   template: `
     <div class="container">
       <h1>Alexandrite <small>- worksheet system -</small></h1>
-      <TimeTableInputComponent></TimeTableInputComponent>
+      <router-outlet></router-outlet>
     </div>
   `
 })
