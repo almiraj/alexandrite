@@ -10,10 +10,10 @@ export class TimeTableService {
   constructor(http:Http) {
     this.http = http;
   }
-  selectTimeSheet():Promise<Array<TimeRow>> {
+  selectTimeSheet(userId):Promise<Array<TimeRow>> {
     return new Promise<Array<TimeRow>>((resolve, reject) => {
       let params = new URLSearchParams();
-      params.set('userId', 'foo');
+      params.set('userId', userId);
       params.set('month', '201612');
       this.http.get('/ws/selectTimeSheet', { search: params }).subscribe((res:Response) => {
         const resBody = res.json();
@@ -31,15 +31,15 @@ export class TimeTableService {
     return new Promise<String>((resolve, reject) => {
       console.log(this.timeRows);
       this.http.post('/ws/updateTimeSheet', {
-          userId: 'foo',
-          month: '201612',
-          timeRows: JSON.stringify(this.timeRows)
-        })
-        .subscribe((res:Response) => {
-          const resBody = res.json();
-          console.log(resBody);
-          return (resBody.n) ? resolve() : reject('Not Matched');
-        });
+        userId: 'foo',
+        month: '201612',
+        timeRows: JSON.stringify(this.timeRows)
+      })
+      .subscribe((res:Response) => {
+        const resBody = res.json();
+        console.log(resBody);
+        return (resBody.n) ? resolve() : reject('Not Matched');
+      });
     });
   }
 }

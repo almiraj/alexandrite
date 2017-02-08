@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 import { TimeTableService } from '../service/TimeTableService';
 
@@ -31,8 +32,16 @@ import { TimeTableService } from '../service/TimeTableService';
 })
 export class TimeTableComponent {
   timeTableService:TimeTableService
-  constructor(timeTableService:TimeTableService) {
+  route:ActivatedRoute
+  userId:String
+  constructor(timeTableService:TimeTableService, route: ActivatedRoute) {
     this.timeTableService = timeTableService;
-    this.timeTableService.selectTimeSheet().catch(e => { alert(e); });
+    this.route = route;
+  }
+  ngOnInit() {
+    this.route.params.subscribe(params => {
+      this.userId = String(params['userId']);
+      this.timeTableService.selectTimeSheet(this.userId).catch(e => { alert(e); });
+    });
   }
 }

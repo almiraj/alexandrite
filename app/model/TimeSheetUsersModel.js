@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
 
 module.exports = (function() {
-  mongoose.connect(process.env.MONGODB_URI);
-
   const Schema = mongoose.Schema;
   return mongoose.model('TimeSheetUsers', new Schema({
     userId: { type: String, index: { unique: true } },

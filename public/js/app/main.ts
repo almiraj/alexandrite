@@ -8,16 +8,18 @@ import { ModalModule } from 'angular2-modal';
 import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
 
 import { AppComponent } from './component/AppComponent';
+import { LoginComponent } from './component/LoginComponent';
 import { TimeTableInputComponent } from './component/TimeTableInputComponent';
 import { TimeTableComponent } from './component/TimeTableComponent';
 import { TimeRowSummaryPipe } from './pipe/TimeRowSummaryPipe';
 import { PageNotFoundComponent } from './component/PageNotFoundComponent';
 
 const appRoutes:Routes = [
-  { path: 'timetableinput', component: TimeTableInputComponent },
+  { path: 'Login', component: LoginComponent },
+  { path: 'TimeTableInput/:userId', component: TimeTableInputComponent },
   {
     path: '',
-    redirectTo: '/timetableinput',
+    redirectTo: '/Login',
     pathMatch: 'full'
   },
   { path: '**', component: PageNotFoundComponent }
@@ -26,6 +28,7 @@ const appRoutes:Routes = [
 @NgModule({
     declarations: [
       AppComponent,
+      LoginComponent,
       TimeTableInputComponent,
       TimeTableComponent,
       TimeRowSummaryPipe,

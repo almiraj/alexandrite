@@ -1,15 +1,18 @@
-var express = require('express');
+const express = require('express');
+const mongoose = require('mongoose');
+
+mongoose.connect(process.env.MONGODB_URI);
 
 module.exports = (function() {
-  var router = express.Router();
+  const router = express.Router();
 
   router.get('/*', function(req, res, next) {
-    var apiFunction = require('./ws/' + req.path.replace(/^\//, ''));
+    const apiFunction = require('./ws/' + req.path.replace(/^\//, ''));
     apiFunction(req, res);
   });
 
   router.post('/*', function(req, res, next) {
-    var apiFunction = require('./ws/' + req.path.replace(/^\//, ''));
+    const apiFunction = require('./ws/' + req.path.replace(/^\//, ''));
     apiFunction(req, res);
   });
 
