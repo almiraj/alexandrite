@@ -1,25 +1,22 @@
 const crypto = require('crypto');
 const LoginModel = require('../model/LoginModel');
 
-module.exports = function(req, res) {
-  console.log('::req');
-  console.log(req.body);
-  LoginModel.findOne(
-    {
+module.exports = function(req) {
+  return new Promise((resolve, reject) => {
+    LoginModel.findOne({
       'userId': req.body.userId,
       'userHash': toHash(toHash(req.body.password || ''))
-    },
-    function(err, result) {
-      if (err) throw err;
-      console.log('::res');
-      console.log(JSON.stringify(result));
-      result = result || {};  // TODO BusinessErrorの扱いを整理する
-      res.send({
+    }).then(result => {
+      if (!result) {
+        return reject('Not Found');
+      }
+
+      return resolve({
         userId: result.userId,
         userHash: result.userHash
       });
-    }
-  );
+    });
+  });
 };
 
 function toHash(text) {
