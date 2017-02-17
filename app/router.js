@@ -24,7 +24,7 @@ function callWebService(req, res, next) {
   apiFunction(req)
   .then(result => {
     console.log('response:' + JSON.stringify(result));
-    res.send(result);
+    res.send(result || {});
   })
   .catch(e => {
     console.error(e);

@@ -1,7 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-
-import { TimeTableService } from '../service/TimeTableService';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'TimeTableComponent',
@@ -18,7 +15,7 @@ import { TimeTableService } from '../service/TimeTableService';
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let timeRow of timeTableService.timeRows; let i = index" id="{{'timeRow' + i}}">
+          <tr *ngFor="let timeRow of timeRows; let i = index" id="{{'timeRow' + i}}">
             <td id="{{'timeRow' + i + 'date'}}">{{timeRow.date}}</td>
             <td><input id="{{'timeRow' + i + 'begin'}}" class="form-control" [(ngModel)]="timeRow.begin"></td>
             <td><input id="{{'timeRow' + i + 'end'}}" class="form-control" [(ngModel)]="timeRow.end"></td>
@@ -31,17 +28,5 @@ import { TimeTableService } from '../service/TimeTableService';
   `
 })
 export class TimeTableComponent {
-  timeTableService:TimeTableService
-  route:ActivatedRoute
-  userId:String
-  constructor(timeTableService:TimeTableService, route: ActivatedRoute) {
-    this.timeTableService = timeTableService;
-    this.route = route;
-  }
-  ngOnInit() {
-    this.route.params.subscribe(params => {
-      this.userId = String(params['userId']);
-      this.timeTableService.selectTimeSheet(this.userId).catch(e => { alert(e); });
-    });
-  }
+  @Input() timeRows:Array<TimeRow>
 }

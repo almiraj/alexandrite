@@ -6,11 +6,11 @@ module.exports = function(req) {
     LoginModel.findOne({
       'userId': req.body.userId,
       'userHash': toHash(toHash(req.body.password || ''))
-    }).then(result => {
+    })
+    .then(result => {
       if (!result) {
         return reject('Not Found');
       }
-
       return resolve({
         userId: result.userId,
         userHash: result.userHash

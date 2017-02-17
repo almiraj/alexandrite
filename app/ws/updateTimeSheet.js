@@ -16,8 +16,9 @@ module.exports = function(req) {
         ]
       },
       { upsert: true }
-    ).then(result => {
-      return resolve(result);
+    )
+    .then(result => {
+      return (result.n > 0) ? resolve() : reject('Not Matched');
     });
   });
 };

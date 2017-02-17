@@ -5,7 +5,8 @@ module.exports = function(req) {
     TimeSheetUsersModel.findOne({
       'userId': req.query.userId,
       'timeSheet.month': req.query.month
-    }).then(result => {
+    })
+    .then(result => {
       return resolve(result);
     });
   });

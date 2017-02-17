@@ -5,27 +5,29 @@ import { LoginInfo } from '../entity/LoginInfo';
 
 @Injectable()
 export class LoginService {
-  http:Http
-  loginInfo: LoginInfo = new LoginInfo()
-  constructor(http:Http) {
-    this.http = http;
-  }
-  login():LoginInfo {
+  loginInfo: LoginInfo
+
+  constructor(
+    public http:Http
+  ) {}
+
+  login(userId:String, password:String):Promise<String> {
     return new Promise<String>((resolve, reject) => {
-      this.http.post('/ws/login', {
-        userId: this.loginInfo.userId,
-        password: this.loginInfo.password
-      })
-      .subscribe((res:Response) => {
-        const resBody = res.json();
-        console.log(JSON.stringify(resBody));
-        if (resBody && resBody.userId) { // TODO BusinessErrorの扱いを整理する
+      this.http
+        .post('/ws/login', {
+          userId: userId,
+          password: password
+        })
+        .subscribe((res:Response) => {
+          const resBody = res.json();
+          console.log('resBody');
+          console.log(resBody);
+          if (resBody.error) {
+            return reject(resBody.error);
+          }
           this.loginInfo = resBody;
           return resolve(this.loginInfo.userId);
-        } else {
-          return reject('Not Found');
-        }
-      });
+        });
     });
   }
 }

@@ -10,7 +10,8 @@ module.exports = function(req) {
         userHash: 'b65e5ef9b569432539dba222ddc32ee173ef1812d0638ce7fc7f75561a9ae179' // bar
       },
       { upsert: true }
-    ).then(() => {
+    )
+    .then(() => {
       TimeSheetUsersModel.update(
         {},
         {

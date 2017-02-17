@@ -14,9 +14,12 @@ import { TimeTableComponent } from './component/TimeTableComponent';
 import { TimeRowSummaryPipe } from './pipe/TimeRowSummaryPipe';
 import { PageNotFoundComponent } from './component/PageNotFoundComponent';
 
+import { LoginService } from './service/LoginService';
+import { TimeTableService } from './service/TimeTableService';
+
 const appRoutes:Routes = [
   { path: 'Login', component: LoginComponent },
-  { path: 'TimeTableInput/:userId', component: TimeTableInputComponent },
+  { path: 'TimeTableInput/:userId/:month', component: TimeTableInputComponent },
   {
     path: '',
     redirectTo: '/Login',
@@ -33,6 +36,10 @@ const appRoutes:Routes = [
       TimeTableComponent,
       TimeRowSummaryPipe,
       PageNotFoundComponent
+    ],
+    providers: [
+      LoginService,
+      TimeTableService
     ],
     imports: [
       BrowserModule,
