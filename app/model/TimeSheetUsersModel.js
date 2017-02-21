@@ -6,9 +6,9 @@ module.exports = (function() {
     userId: { type: String, index: { unique: true } },
     userName: { type: String },
     timeSheet: [ new Schema({
-      month: { type: String, index: { unique: true } },
+      month: { type: String, index: true },
       timeRows: [ new Schema({
-        date: { type: String, index: { unique: true } },
+        date: { type: String, index: true },
         begin: { type: String },
         end: { type: String },
         interval: { type: String },
