@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Modal } from 'angular2-modal/plugins/bootstrap';
 
+import { TimeRow } from '../entity/TimeRow';
 import { TimeTableService } from '../service/TimeTableService';
 
 @Component({
@@ -13,13 +14,13 @@ import { TimeTableService } from '../service/TimeTableService';
   `
 })
 export class TimeTableInputComponent implements OnInit {
-  userId: String
+  userId:String
   month:String
   timeRows:Array<TimeRow>
 
   constructor(
-    public route: ActivatedRoute,
-    public modal: Modal,
+    public route:ActivatedRoute,
+    public modal:Modal,
     public timeTableService:TimeTableService
   ) {}
 

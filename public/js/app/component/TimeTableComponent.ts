@@ -1,5 +1,7 @@
 import { Component, Input } from '@angular/core';
 
+import { TimeRow } from '../entity/TimeRow';
+
 @Component({
   selector: 'TimeTableComponent',
   template: `
