@@ -2,21 +2,34 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Modal } from 'angular2-modal/plugins/bootstrap';
 
-import { TimeRow } from '../entity/TimeRow';
+import { TimeSheet } from '../entity/TimeSheet';
 import { TimeTableService } from '../service/TimeTableService';
 
 @Component({
   selector: 'TimeTableInputComponent',
   template: `
     <span defaultOverlayTarget></span>
-    <TimeTableComponent [timeRows]=timeRows></TimeTableComponent>
-    <button class="btn btn-default pull-right" (click)="save()">保存</button>
+    <div class="row">
+      <div class="col-md-2">
+        <ul class="list-unstyled">
+          <li *ngFor="let timeSheet of timeSheets | ReversePipe">
+            <button class="btn btn-default" (click)="selectMonth(timeSheet.month)">{{timeSheet.month}}</button>
+          </li>
+        </ul>
+      </div>
+      <div class="col-md-10">
+        <TimeTableComponent [timeSheet]=selectedTimeSheet></TimeTableComponent>
+      </div>
+    </div>
+    <div class="row">
+      <button class="btn btn-default pull-right" (click)="save()">保存</button>
+    </div>
   `
 })
 export class TimeTableInputComponent implements OnInit {
   userId:String
-  month:String
-  timeRows:Array<TimeRow>
+  timeSheets:Array<TimeSheet>
+  selectedTimeSheet:TimeSheet
 
   constructor(
     public route:ActivatedRoute,
@@ -27,18 +40,23 @@ export class TimeTableInputComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.userId = String(params['userId']);
-      this.month = String(params['month']);
-      this.timeTableService.selectTimeSheet(this.userId, this.month)
-        .then((timeRows:Array<TimeRow>) => {
-          this.timeRows = timeRows;
+      this.timeTableService.selectAllTimeSheet(this.userId)
+        .then((timeSheets:Array<TimeSheet>) => {
+          this.timeSheets = timeSheets;
+          this.selectedTimeSheet = timeSheets[timeSheets.length - 1];
         })
         .catch((e) => {
           alert(String(e));
         });
     });
   }
+  selectMonth(selectedMonth:String) {
+    this.selectedTimeSheet = this.timeSheets.find((timeSheet:TimeSheet) => {
+      return timeSheet.month == selectedMonth;
+    });
+  }
   save() {
-    this.timeTableService.updateTimeSheet(this.userId, this.month, this.timeRows)
+    this.timeTableService.updateTimeSheet(this.userId, this.selectedTimeSheet)
       .then(() => {
         this.modal.alert()
           .size('sm')

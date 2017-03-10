@@ -24,14 +24,14 @@ export class LoginComponent {
   password:String
 
   constructor(
-    public router: Router,
-    public loginService: LoginService
+    public router:Router,
+    public loginService:LoginService
   ) {}
 
   login() {
     this.loginService.login(this.userId, this.password)
       .then((userId:String) => {
-        this.router.navigate(['/TimeTableInput', userId, '201612']);
+        this.router.navigate(['/TimeTableInput', userId]);
       })
       .catch((e) => {
         alert(String(e));

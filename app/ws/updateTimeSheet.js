@@ -8,12 +8,7 @@ module.exports = function(req) {
       {},
       {
         userId: reqBody.userId,
-        timeSheet: [
-          {
-            month: reqBody.month,
-            timeRows: JSON.parse(reqBody.timeRows)
-          }
-        ]
+        timeSheet: JSON.parse(reqBody.timeSheet)
       },
       { upsert: true }
     )

@@ -5,7 +5,7 @@ import { LoginInfo } from '../entity/LoginInfo';
 
 @Injectable()
 export class LoginService {
-  loginInfo: LoginInfo
+  loginInfo:LoginInfo
 
   constructor(
     public http:Http

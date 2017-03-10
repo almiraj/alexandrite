@@ -7,6 +7,9 @@ module.exports = function(req) {
       'timeSheet.month': req.query.month
     })
     .then(result => {
+      if (!result) {
+        return reject('Not Found');
+      }
       return resolve(result);
     });
   });

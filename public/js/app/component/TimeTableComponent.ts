@@ -1,5 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 
+import { TimeSheet } from '../entity/TimeSheet';
 import { TimeRow } from '../entity/TimeRow';
 
 @Component({
@@ -29,6 +30,12 @@ import { TimeRow } from '../entity/TimeRow';
     </div>
   `
 })
-export class TimeTableComponent {
-  @Input() timeRows:Array<TimeRow>
+export class TimeTableComponent implements OnChanges {
+  @Input() timeSheet:TimeSheet
+  timeRows:Array<TimeRow>
+  ngOnChanges() {
+    if (this.timeSheet) {
+      this.timeRows = this.timeSheet.timeRows;
+    }
+  }
 }
