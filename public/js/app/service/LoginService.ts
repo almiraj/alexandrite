@@ -9,7 +9,8 @@ export class LoginService {
 
   constructor(
     public http:Http
-  ) {}
+  ) {
+  }
 
   login(userId:String, password:String):Promise<String> {
     return new Promise<String>((resolve, reject) => {

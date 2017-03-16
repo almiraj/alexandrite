@@ -6,12 +6,15 @@ module.exports = function(req) {
 
     TimeSheetUsersModel.findOne({
       'userId': reqBody.userId
-    }, 'timeSheet')
+    })
     .then(result => {
       if (!result) {
         return reject('Not Found');
       }
-      return resolve(result.timeSheet);
+      return resolve(result.timeSheets);
+    })
+    .catch(e => {
+      return reject(e);
     });
   });
 };

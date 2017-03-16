@@ -40,7 +40,7 @@ export class TimeTableInputComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.userId = String(params['userId']);
-      this.timeTableService.selectAllTimeSheet(this.userId)
+      this.timeTableService.selectAllTimeSheets(this.userId)
         .then((timeSheets:Array<TimeSheet>) => {
           this.timeSheets = timeSheets;
           this.selectedTimeSheet = timeSheets[timeSheets.length - 1];

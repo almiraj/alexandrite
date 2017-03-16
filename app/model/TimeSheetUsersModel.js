@@ -5,7 +5,7 @@ module.exports = (function() {
   return mongoose.model('TimeSheetUsers', new Schema({
     userId: { type: String, index: { unique: true } },
     userName: { type: String },
-    timeSheet: [ new Schema({
+    timeSheets: [ new Schema({
       month: { type: String, index: true },
       timeRows: [ new Schema({
         date: { type: String, index: true },

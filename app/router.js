@@ -6,14 +6,8 @@ mongoose.connect(process.env.MONGODB_URI);
 
 module.exports = (function() {
   const router = express.Router();
-
-  router.get('/*', function(req, res, next) {
-    callWebService(req, res, next);
-  });
-  router.post('/*', function(req, res, next) {
-    callWebService(req, res, next);
-  });
-
+  router.get('/*', (req, res, next) => callWebService(req, res, next));
+  router.post('/*', (req, res, next) => callWebService(req, res, next));
   return router;
 })();
 
@@ -27,7 +21,9 @@ function callWebService(req, res, next) {
     res.send(result || {});
   })
   .catch(e => {
-    console.error(e);
-    res.send({error: e});
+    console.error('error:' + JSON.stringify(e));
+    const resBody = {error: String(e)};
+    console.log('response:' + resBody);
+    res.send(resBody);
   });
 }

@@ -15,6 +15,9 @@ module.exports = function(req) {
         userId: result.userId,
         userHash: result.userHash
       });
+    })
+    .catch(e => {
+      return reject(e);
     });
   });
 };

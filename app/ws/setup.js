@@ -33,7 +33,7 @@ module.exports = function(req) {
           userId: 'foo'
         },
         {
-          timeSheet: [
+          timeSheets: [
             {
               month: '201611',
               timeRows: [ { date: '1', begin: '0900', end: '1800', interval: '0100' }, { date: '2', begin: '0900', end: '1800', interval: '0100' } ]
@@ -54,7 +54,7 @@ module.exports = function(req) {
           userId: 'foo2'
         },
         {
-          timeSheet: [
+          timeSheets: [
             {
               month: '201611',
               timeRows: [ { date: '1', begin: '0900', end: '1800', interval: '0100' }, { date: '2', begin: '0900', end: '1800', interval: '0100' } ]

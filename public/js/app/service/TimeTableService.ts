@@ -8,7 +8,8 @@ import { TimeRow } from '../entity/TimeRow';
 export class TimeTableService {
   constructor(
     public http:Http
-  ) {}
+  ) {
+  }
 
   selectTimeSheet(userId:String, month:String):Promise<Array<TimeRow>> {
     return new Promise<Array<TimeRow>>((resolve, reject) => {
@@ -28,10 +29,10 @@ export class TimeTableService {
         });
     });
   }
-  selectAllTimeSheet(userId:String):Promise<Array<TimeSheet>> {
+  selectAllTimeSheets(userId:String):Promise<Array<TimeSheet>> {
     return new Promise<Array<TimeSheet>>((resolve, reject) => {
       this.http
-        .post('/ws/selectAllTimeSheet', {
+        .post('/ws/selectAllTimeSheets', {
           userId: userId
         })
         .subscribe((res:Response) => {
