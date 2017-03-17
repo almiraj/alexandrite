@@ -8,8 +8,7 @@ import { TimeRow } from '../entity/TimeRow';
 export class TimeTableService {
   constructor(
     public http:Http
-  ) {
-  }
+  ) {}
 
   selectTimeSheet(userId:String, month:String):Promise<Array<TimeRow>> {
     return new Promise<Array<TimeRow>>((resolve, reject) => {

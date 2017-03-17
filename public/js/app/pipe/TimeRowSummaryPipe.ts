@@ -1,23 +1,17 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 import { TimeRow } from '../entity/TimeRow';
+import { TimeSheetUtils } from '../util/TimeSheetUtils';
 
 @Pipe({
   name: 'TimeRowSummaryPipe',
   pure: false
 })
 export class TimeRowSummaryPipe implements PipeTransform {
-  re:RegExp = /(\d{1,2})(\d{2})/
-  toMinutes(src:String):number {
-    if (src && this.re.test(src.toString())) {
-      return Number(RegExp.$1) * 60 + Number(RegExp.$2);
-    }
-    return 0;
-  }
   transform(timeRow:TimeRow):String {
-    const end = this.toMinutes(timeRow.end);
-    const begin = this.toMinutes(timeRow.begin);
-    const interval = this.toMinutes(timeRow.interval);
+    const end = TimeSheetUtils.calcMinutes(timeRow.end);
+    const begin = TimeSheetUtils.calcMinutes(timeRow.begin);
+    const interval = TimeSheetUtils.calcMinutes(timeRow.interval);
     if (!end || !begin || !interval) {
       return '';
     }

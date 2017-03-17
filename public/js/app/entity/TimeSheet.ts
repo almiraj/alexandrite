@@ -1,6 +1,8 @@
 import { TimeRow } from '../entity/TimeRow';
 
 export class TimeSheet {
-  month:String
-  timeRows:Array<TimeRow>
+  constructor(
+    public month:String,
+    public timeRows:Array<TimeRow>
+  ) {}
 }

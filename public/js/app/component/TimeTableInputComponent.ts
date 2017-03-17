@@ -3,7 +3,9 @@ import { ActivatedRoute } from '@angular/router';
 import { Modal } from 'angular2-modal/plugins/bootstrap';
 
 import { TimeSheet } from '../entity/TimeSheet';
+import { TimeRow } from '../entity/TimeRow';
 import { TimeTableService } from '../service/TimeTableService';
+import { TimeSheetUtils } from '../util/TimeSheetUtils';
 
 @Component({
   selector: 'TimeTableInputComponent',
@@ -42,6 +44,9 @@ export class TimeTableInputComponent implements OnInit {
       this.userId = String(params['userId']);
       this.timeTableService.selectAllTimeSheets(this.userId)
         .then((timeSheets:Array<TimeSheet>) => {
+          if (!TimeSheetUtils.findThisMonthSheet(timeSheets)) {
+            timeSheets.push(TimeSheetUtils.createThisMonthSheet());
+          }
           this.timeSheets = timeSheets;
           this.selectedTimeSheet = timeSheets[timeSheets.length - 1];
         })
