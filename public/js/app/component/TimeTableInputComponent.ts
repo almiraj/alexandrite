@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Modal } from 'angular2-modal/plugins/bootstrap';
 
 import { TimeSheet } from '../entity/TimeSheet';
-import { TimeRow } from '../entity/TimeRow';
+import { DateRow } from '../entity/DateRow';
 import { TimeTableService } from '../service/TimeTableService';
 import { TimeSheetUtils } from '../util/TimeSheetUtils';
 

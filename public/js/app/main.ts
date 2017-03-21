@@ -14,7 +14,7 @@ import { TimeTableComponent } from './component/TimeTableComponent';
 import { PageNotFoundComponent } from './component/PageNotFoundComponent';
 
 import { ReversePipe } from './pipe/ReversePipe';
-import { TimeRowSummaryPipe } from './pipe/TimeRowSummaryPipe';
+import { DateRowSummaryPipe } from './pipe/DateRowSummaryPipe';
 
 import { LoginService } from './service/LoginService';
 import { TimeTableService } from './service/TimeTableService';
@@ -37,7 +37,7 @@ const appRoutes:Routes = [
       TimeTableInputComponent,
       TimeTableComponent,
       PageNotFoundComponent,
-      TimeRowSummaryPipe,
+      DateRowSummaryPipe,
       ReversePipe
     ],
     providers: [

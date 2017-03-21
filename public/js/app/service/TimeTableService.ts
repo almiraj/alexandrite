@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http, URLSearchParams, Response } from '@angular/http';
 
 import { TimeSheet } from '../entity/TimeSheet';
-import { TimeRow } from '../entity/TimeRow';
+import { DateRow } from '../entity/DateRow';
 
 @Injectable()
 export class TimeTableService {
@@ -10,8 +10,8 @@ export class TimeTableService {
     public http:Http
   ) {}
 
-  selectTimeSheet(userId:String, month:String):Promise<Array<TimeRow>> {
-    return new Promise<Array<TimeRow>>((resolve, reject) => {
+  selectTimeSheet(userId:String, month:String):Promise<Array<DateRow>> {
+    return new Promise<Array<DateRow>>((resolve, reject) => {
       this.http
         .post('/ws/selectTimeSheet', {
           userId: userId,

@@ -1,8 +1,8 @@
-import { TimeRow } from '../entity/TimeRow';
+import { DateRow } from '../entity/DateRow';
 
 export class TimeSheet {
   constructor(
     public month:String,
-    public timeRows:Array<TimeRow>
+    public dateRows:Array<DateRow>
   ) {}
 }

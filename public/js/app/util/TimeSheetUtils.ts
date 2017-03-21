@@ -1,5 +1,5 @@
 import { TimeSheet } from '../entity/TimeSheet';
-import { TimeRow } from '../entity/TimeRow';
+import { DateRow } from '../entity/DateRow';
 
 export class TimeSheetUtils {
   static toYYYY(date:Date):string {
@@ -41,15 +41,15 @@ export class TimeSheetUtils {
     const today = new Date();
     const lastDayOfThisMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
 
-    const newTimeRows = new Array<TimeRow>();
+    const newDateRows = new Array<DateRow>();
     for (var i = 1; i <= lastDayOfThisMonth; i++) {
       const date = new Date(today.getFullYear(), today.getMonth(), i);
       if (this.isWeekend(date) || this.isPublicHoliday(date)) {
-        newTimeRows.push(new TimeRow(String(i), '', '', '', ''));
+        newDateRows.push(new DateRow(String(i), '', '', '', ''));
       } else {
-        newTimeRows.push(new TimeRow(String(i), '0900', '1800', '0100', '0800'));
+        newDateRows.push(new DateRow(String(i), '0900', '1800', '0100', '0800'));
       }
     }
-    return new TimeSheet(TimeSheetUtils.toYYYYMM(today), newTimeRows);
+    return new TimeSheet(TimeSheetUtils.toYYYYMM(today), newDateRows);
   }
 }
