@@ -31,7 +31,7 @@ export class LoginComponent {
   login() {
     this.loginService.login(this.userId, this.password)
       .then((userId:String) => {
-        this.router.navigate(['/TimeTableInput', userId]);
+        this.router.navigate(['/TimeSheetInput', userId]);
       })
       .catch((e) => {
         alert(String(e));

@@ -9,19 +9,19 @@ import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
 
 import { AppComponent } from './component/AppComponent';
 import { LoginComponent } from './component/LoginComponent';
-import { TimeTableInputComponent } from './component/TimeTableInputComponent';
-import { TimeTableComponent } from './component/TimeTableComponent';
+import { TimeSheetInputComponent } from './component/TimeSheetInputComponent';
+import { TimeSheetComponent } from './component/TimeSheetComponent';
 import { PageNotFoundComponent } from './component/PageNotFoundComponent';
 
 import { ReversePipe } from './pipe/ReversePipe';
 import { DateRowSummaryPipe } from './pipe/DateRowSummaryPipe';
 
 import { LoginService } from './service/LoginService';
-import { TimeTableService } from './service/TimeTableService';
+import { TimeSheetService } from './service/TimeSheetService';
 
 const appRoutes:Routes = [
   { path: 'Login', component: LoginComponent },
-  { path: 'TimeTableInput/:userId', component: TimeTableInputComponent },
+  { path: 'TimeSheetInput/:userId', component: TimeSheetInputComponent },
   {
     path: '',
     redirectTo: '/Login',
@@ -34,15 +34,15 @@ const appRoutes:Routes = [
     declarations: [
       AppComponent,
       LoginComponent,
-      TimeTableInputComponent,
-      TimeTableComponent,
+      TimeSheetInputComponent,
+      TimeSheetComponent,
       PageNotFoundComponent,
       DateRowSummaryPipe,
       ReversePipe
     ],
     providers: [
       LoginService,
-      TimeTableService
+      TimeSheetService
     ],
     imports: [
       BrowserModule,
