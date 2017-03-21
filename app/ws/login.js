@@ -1,9 +1,9 @@
 const crypto = require('crypto');
-const LoginModel = require('../model/LoginModel');
+const AccountModel = require('../model/AccountModel');
 
 module.exports = function(req) {
   return new Promise((resolve, reject) => {
-    LoginModel.findOne({
+    AccountModel.findOne({
       'userId': req.body.userId,
       'userHash': toHash(toHash(req.body.password || ''))
     })

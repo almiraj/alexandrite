@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Http, URLSearchParams, Response } from '@angular/http';
 
-import { LoginInfo } from '../entity/LoginInfo';
+import { AccountInfo } from '../entity/AccountInfo';
 
 @Injectable()
-export class LoginService {
-  loginInfo:LoginInfo
+export class AccountService {
+  accountInfo:AccountInfo
 
   constructor(
     public http:Http
@@ -25,8 +25,8 @@ export class LoginService {
           if (resBody.error) {
             return reject(resBody.error);
           }
-          this.loginInfo = resBody;
-          return resolve(this.loginInfo.userId);
+          this.accountInfo = resBody;
+          return resolve(this.accountInfo.userId);
         });
     });
   }

@@ -16,7 +16,7 @@ import { PageNotFoundComponent } from './component/PageNotFoundComponent';
 import { ReversePipe } from './pipe/ReversePipe';
 import { DateRowSummaryPipe } from './pipe/DateRowSummaryPipe';
 
-import { LoginService } from './service/LoginService';
+import { AccountService } from './service/AccountService';
 import { TimeSheetService } from './service/TimeSheetService';
 
 const appRoutes:Routes = [
@@ -41,7 +41,7 @@ const appRoutes:Routes = [
       ReversePipe
     ],
     providers: [
-      LoginService,
+      AccountService,
       TimeSheetService
     ],
     imports: [

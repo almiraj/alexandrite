@@ -1,10 +1,10 @@
-const LoginModel = require('../model/LoginModel');
+const AccountModel = require('../model/AccountModel');
 const TimeSheetUsersModel = require('../model/TimeSheetUsersModel');
 
 module.exports = function(req) {
   return Promise.all([
     new Promise((resolve, reject) => {
-      LoginModel.update(
+      AccountModel.update(
         {
           userId: 'foo'
         },
@@ -16,7 +16,7 @@ module.exports = function(req) {
       )
     }),
     new Promise((resolve, reject) => {
-      LoginModel.update(
+      AccountModel.update(
         {
           userId: 'foo2'
         },
