@@ -9,6 +9,7 @@ import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
 
 import { AppComponent } from './component/AppComponent';
 import { LoginComponent } from './component/LoginComponent';
+import { AccountComponent } from './component/AccountComponent';
 import { TimeSheetInputComponent } from './component/TimeSheetInputComponent';
 import { TimeSheetComponent } from './component/TimeSheetComponent';
 import { PageNotFoundComponent } from './component/PageNotFoundComponent';
@@ -22,6 +23,7 @@ import { TimeSheetService } from './service/TimeSheetService';
 
 const appRoutes:Routes = [
   { path: 'Login', component: LoginComponent },
+  { path: 'Account', component: AccountComponent },
   { path: 'TimeSheetInput/:userId', component: TimeSheetInputComponent },
   {
     path: '',
@@ -35,6 +37,7 @@ const appRoutes:Routes = [
     declarations: [
       AppComponent,
       LoginComponent,
+      AccountComponent,
       TimeSheetInputComponent,
       TimeSheetComponent,
       PageNotFoundComponent,
