@@ -17,6 +17,7 @@ import { ReversePipe } from './pipe/ReversePipe';
 import { DateRowSummaryPipe } from './pipe/DateRowSummaryPipe';
 
 import { AccountService } from './service/AccountService';
+import { ModalService } from './service/ModalService';
 import { TimeSheetService } from './service/TimeSheetService';
 
 const appRoutes:Routes = [
@@ -42,6 +43,7 @@ const appRoutes:Routes = [
     ],
     providers: [
       AccountService,
+      ModalService,
       TimeSheetService
     ],
     imports: [

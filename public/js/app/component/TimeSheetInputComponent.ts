@@ -1,16 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Modal } from 'angular2-modal/plugins/bootstrap';
 
 import { TimeSheet } from '../entity/TimeSheet';
 import { DateRow } from '../entity/DateRow';
+import { ModalService } from '../service/ModalService';
 import { TimeSheetService } from '../service/TimeSheetService';
 import { TimeSheetUtils } from '../util/TimeSheetUtils';
 
 @Component({
   selector: 'TimeSheetInputComponent',
   template: `
-    <span defaultOverlayTarget></span>
     <div class="row">
       <div class="col-md-2">
         <ul class="list-unstyled">
@@ -23,7 +22,7 @@ import { TimeSheetUtils } from '../util/TimeSheetUtils';
         <TimeSheetComponent [timeSheet]=selectedTimeSheet></TimeSheetComponent>
       </div>
     </div>
-    <div class="row">
+    <div>
       <button class="btn btn-default pull-right" (click)="save()">保存</button>
     </div>
   `
@@ -35,7 +34,7 @@ export class TimeSheetInputComponent implements OnInit {
 
   constructor(
     public route:ActivatedRoute,
-    public modal:Modal,
+    public modalService:ModalService,
     public timeSheetService:TimeSheetService
   ) {}
 
@@ -50,9 +49,7 @@ export class TimeSheetInputComponent implements OnInit {
           this.timeSheets = timeSheets;
           this.selectedTimeSheet = timeSheets[timeSheets.length - 1];
         })
-        .catch((e) => {
-          alert(String(e));
-        });
+        .catch(e => this.modalService.alertError(e));
     });
   }
   selectMonth(selectedMonth:String) {
@@ -62,18 +59,7 @@ export class TimeSheetInputComponent implements OnInit {
   }
   save() {
     this.timeSheetService.updateTimeSheet(this.userId, this.selectedTimeSheet)
-      .then(() => {
-        this.modal.alert()
-          .size('sm')
-          .body('<span class="glyphicon glyphicon-cloud-upload"></span> <strong>保存しました</strong>')
-          .keyboard(32)
-          .headerClass('hidden')
-          .bodyClass('modal-body text-center text-info h4')
-          .footerClass('hidden')
-          .open();
-      })
-      .catch(e => {
-        alert(String(e));
-      });
+      .then(() => this.modalService.alertSaved())
+      .catch(e => this.modalService.alertError(e));
   }
 }

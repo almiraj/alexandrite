@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Modal } from 'angular2-modal/plugins/bootstrap';
 
 import { AccountService } from '../service/AccountService';
+import { ModalService } from '../service/ModalService';
 
 @Component({
   selector: 'LoginComponent',
@@ -32,7 +33,8 @@ export class LoginComponent {
 
   constructor(
     public router:Router,
-    public accountService:AccountService
+    public accountService:AccountService,
+    public modalService:ModalService
   ) {}
 
   login() {
@@ -40,8 +42,6 @@ export class LoginComponent {
       .then((userId:String) => {
         this.router.navigate(['/TimeSheetInput', userId]);
       })
-      .catch((e) => {
-        alert(String(e));
-      });
+      .catch(e => this.modalService.alertError(e));
   }
 }
