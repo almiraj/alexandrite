@@ -58,7 +58,7 @@ export class AccountComponent implements OnInit {
       .then((accountInfo:AccountInfo) => {
         this.accountInfos.push(accountInfo);
         this.newUserId = '';
-        this.modalService.alertSaved();
+        this.modalService.alertAdded();
       })
       .catch(e => this.modalService.alertError(e));
   }

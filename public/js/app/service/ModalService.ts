@@ -17,15 +17,15 @@ export class ModalService {
       .footerClass('hidden')
       .open();
   }
-
   alertSaved():void {
     this.alert('<span class="glyphicon glyphicon-cloud-upload"></span> <strong>保存しました</strong>');
   }
-
+  alertAdded():void {
+    this.alert('<span class="glyphicon glyphicon-cloud-upload"></span> <strong>追加しました</strong>');
+  }
   alertDeleted():void {
     this.alert('<span class="glyphicon glyphicon-trash"></span> <strong>削除しました</strong>');
   }
-
   alertError(e:Error):void {
     const message = (e instanceof Error) ? e.message : String(e);
     this.modal.alert()
