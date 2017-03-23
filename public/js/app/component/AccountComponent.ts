@@ -53,16 +53,21 @@ export class AccountComponent implements OnInit {
     alert('未実装');
   }
 
-  deleteAccount() {
-    alert('未実装');
-  }
-
   addAccount() {
     this.accountService.addAccount(this.newUserId)
       .then((accountInfo:AccountInfo) => {
         this.accountInfos.push(accountInfo);
         this.newUserId = '';
         this.modalService.alertSaved();
+      })
+      .catch(e => this.modalService.alertError(e));
+  }
+
+  deleteAccount(accountInfo:AccountInfo) {
+    this.accountService.deleteAccount(accountInfo.userId)
+      .then(() => {
+        this.accountInfos = this.accountInfos.filter(o => o.userId != accountInfo.userId);
+        this.modalService.alertDeleted();
       })
       .catch(e => this.modalService.alertError(e));
   }

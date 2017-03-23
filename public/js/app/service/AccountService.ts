@@ -65,4 +65,23 @@ export class AccountService {
         });
     });
   }
+
+  deleteAccount(userId:String):Promise<AccountInfo> {
+    return new Promise<AccountInfo>((resolve, reject) => {
+      this.http
+        .post('/ws/deleteAccount', {
+          userId: userId
+        })
+        .subscribe((res:Response) => {
+          const resBody = res.json();
+          console.log('resBody');
+          console.log(resBody);
+          if (resBody.error) {
+            return reject(resBody.error);
+          }
+          return resolve(resBody);
+        });
+    });
+  }
+
 }
