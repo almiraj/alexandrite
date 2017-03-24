@@ -3,6 +3,7 @@ import { Http, URLSearchParams, Response } from '@angular/http';
 
 import { TimeSheet } from '../entity/TimeSheet';
 import { DateRow } from '../entity/DateRow';
+import { HttpUtils } from '../util/HttpUtils';
 
 @Injectable()
 export class TimeSheetService {
@@ -18,13 +19,7 @@ export class TimeSheetService {
           month: month
         })
         .subscribe((res:Response) => {
-          const resBody = res.json();
-          console.log('resBody');
-          console.log(JSON.stringify(resBody));
-          if (resBody.error) {
-            return reject(resBody.error);
-          }
-          return resolve(resBody);
+          HttpUtils.handleResponse(res).then(resBody => resolve(resBody)).catch(e => reject(e));
         });
     });
   }
@@ -35,31 +30,19 @@ export class TimeSheetService {
           userId: userId
         })
         .subscribe((res:Response) => {
-          const resBody = res.json();
-          console.log('resBody');
-          console.log(JSON.stringify(resBody));
-          if (resBody.error) {
-            return reject(resBody.error);
-          }
-          return resolve(resBody);
+          HttpUtils.handleResponse(res).then(resBody => resolve(resBody)).catch(e => reject(e));
         });
     });
   }
-  updateTimeSheet(userId:String, timeSheet:TimeSheet):Promise<any> {
-    return new Promise<any>((resolve, reject) => {
+  updateTimeSheet(userId:String, timeSheet:TimeSheet):Promise<void> {
+    return new Promise<void>((resolve, reject) => {
       this.http
         .post('/ws/updateTimeSheet', {
           userId: userId,
           timeSheet: JSON.stringify(timeSheet)
         })
         .subscribe((res:Response) => {
-          const resBody = res.json();
-          console.log('resBody');
-          console.log(JSON.stringify(resBody));
-          if (resBody.error) {
-            return reject(resBody.error);
-          }
-          return resolve();
+          HttpUtils.handleResponse(res).then(() => resolve()).catch(e => reject(e));
         });
     });
   }

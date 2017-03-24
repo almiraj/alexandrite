@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http, URLSearchParams, Response } from '@angular/http';
 
 import { AccountInfo } from '../entity/AccountInfo';
+import { HttpUtils } from '../util/HttpUtils';
 
 @Injectable()
 export class AccountService {
@@ -19,14 +20,12 @@ export class AccountService {
           password: password
         })
         .subscribe((res:Response) => {
-          const resBody = res.json();
-          console.log('resBody');
-          console.log(resBody);
-          if (resBody.error) {
-            return reject(resBody.error);
-          }
-          this.accountInfo = resBody;
-          return resolve(this.accountInfo.userId);
+          HttpUtils.handleResponse(res)
+            .then(resBody => {
+              this.accountInfo = resBody;
+              return resolve(this.accountInfo.userId);
+            })
+            .catch(e => reject(e));
         });
     });
   }
@@ -37,13 +36,7 @@ export class AccountService {
         .post('/ws/getAllAccounts', {
         })
         .subscribe((res:Response) => {
-          const resBody = res.json();
-          console.log('resBody');
-          console.log(resBody);
-          if (resBody.error) {
-            return reject(resBody.error);
-          }
-          return resolve(resBody);
+          HttpUtils.handleResponse(res).then(resBody => resolve(resBody)).catch(e => reject(e));
         });
     });
   }
@@ -55,13 +48,7 @@ export class AccountService {
           userId: userId
         })
         .subscribe((res:Response) => {
-          const resBody = res.json();
-          console.log('resBody');
-          console.log(resBody);
-          if (resBody.error) {
-            return reject(resBody.error);
-          }
-          return resolve(resBody);
+          HttpUtils.handleResponse(res).then(resBody => resolve(resBody)).catch(e => reject(e));
         });
     });
   }
@@ -73,13 +60,7 @@ export class AccountService {
           userId: userId
         })
         .subscribe((res:Response) => {
-          const resBody = res.json();
-          console.log('resBody');
-          console.log(resBody);
-          if (resBody.error) {
-            return reject(resBody.error);
-          }
-          return resolve(resBody);
+          HttpUtils.handleResponse(res).then(resBody => resolve(resBody)).catch(e => reject(e));
         });
     });
   }

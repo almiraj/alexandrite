@@ -22,7 +22,7 @@ function callWebService(req, res, next) {
   })
   .catch(e => {
     console.error('error:' + JSON.stringify(e));
-    const resBody = {error: String(e)};
+    const resBody = {errorMessage: (e instanceof Error) ? e.message : String(e)};
     console.log('response:' + resBody);
     res.send(resBody);
   });
