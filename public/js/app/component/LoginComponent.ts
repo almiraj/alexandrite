@@ -4,6 +4,7 @@ import { Modal } from 'angular2-modal/plugins/bootstrap';
 
 import { AccountService } from '../service/AccountService';
 import { ModalService } from '../service/ModalService';
+import { AccountInfo } from '../entity/AccountInfo';
 
 @Component({
   selector: 'LoginComponent',
@@ -18,12 +19,8 @@ import { ModalService } from '../service/ModalService';
       </div>
       <button class="btn btn-default" (click)="login()">ログイン</button>
     </div>
-    <div class="form-inline col-md-2" style="margin-top:3em;padding:0;">
-      <table class="table table-bordered">
-        <tr><th>ユーザID</th><th>パスワード</th></tr>
-        <tr><td>admin</td><td>admin</td></tr>
-        <tr><td>foo</td><td>bar</td></tr>
-      </table>
+    <div style="margin-top:3em;padding:0;">
+      <span>admin/adminでログインすると、アカウントの一覧が見れます。アカウントとパスワードは今のところ全て同じです。</span>
     </div>
   `
 })
@@ -39,8 +36,12 @@ export class LoginComponent {
 
   login() {
     this.accountService.login(this.userId, this.password)
-      .then((userId:String) => {
-        this.router.navigate(['/TimeSheetInput', userId]);
+      .then((accountInfo:AccountInfo) => {
+        if (accountInfo.isAdmin) {
+          this.router.navigate(['/Account']);
+        } else {
+          this.router.navigate(['/TimeSheetInput', accountInfo.userId]);
+        }
       })
       .catch(e => this.modalService.alertError(e));
   }

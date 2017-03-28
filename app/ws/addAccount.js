@@ -5,7 +5,8 @@ module.exports = function(req) {
   return new Promise((resolve, reject) => {
     new AccountModel({
       'userId': req.body.userId,
-      'userHash': toHash(toHash(req.body.userId || ''))
+      'userHash': toHash(toHash(req.body.userId || '')),
+      'isAdmin': false,
     })
     .save()
     .then(result => {

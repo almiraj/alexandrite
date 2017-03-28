@@ -12,8 +12,8 @@ export class AccountService {
     public http:Http
   ) {}
 
-  login(userId:String, password:String):Promise<String> {
-    return new Promise<String>((resolve, reject) => {
+  login(userId:String, password:String):Promise<AccountInfo> {
+    return new Promise<AccountInfo>((resolve, reject) => {
       this.http
         .post('/ws/login', {
           userId: userId,
@@ -23,7 +23,7 @@ export class AccountService {
           HttpUtils.handleResponse(res)
             .then(resBody => {
               this.accountInfo = resBody;
-              return resolve(this.accountInfo.userId);
+              return resolve(this.accountInfo);
             })
             .catch(e => reject(e));
         });

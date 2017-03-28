@@ -10,7 +10,7 @@ export class ModalService {
   alert(message:String):void {
     this.modal.alert()
       .size('sm')
-      .body(String(message))
+      .body('<strong>' + String(message) + '</strong>')
       .keyboard(32)
       .headerClass('hidden')
       .bodyClass('modal-body text-center text-info h4')
@@ -18,19 +18,19 @@ export class ModalService {
       .open();
   }
   alertSaved():void {
-    this.alert('<span class="glyphicon glyphicon-cloud-upload"></span> <strong>保存しました</strong>');
+    this.alert('<span class="glyphicon glyphicon-cloud-upload"></span> 保存しました');
   }
   alertAdded():void {
-    this.alert('<span class="glyphicon glyphicon-cloud-upload"></span> <strong>追加しました</strong>');
+    this.alert('<span class="glyphicon glyphicon-cloud-upload"></span> 追加しました');
   }
   alertDeleted():void {
-    this.alert('<span class="glyphicon glyphicon-trash"></span> <strong>削除しました</strong>');
+    this.alert('<span class="glyphicon glyphicon-trash"></span> 削除しました');
   }
   alertError(e:Error):void {
     const message = (e instanceof Error) ? e.message : String(e);
     this.modal.alert()
       .size('sm')
-      .body('<span class="glyphicon glyphicon-exclamation-sign"></span> <strong>' + message + '</strong>')
+      .body('<span class="glyphicon glyphicon-exclamation-sign"></span> ' + message)
       .keyboard(32)
       .headerClass('hidden')
       .bodyClass('modal-body text-center text-info h4 alert-danger')

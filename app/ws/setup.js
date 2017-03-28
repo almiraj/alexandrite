@@ -19,13 +19,15 @@ module.exports = function(req) {
           new AccountModel(
             {
               userId: 'foo',
-              userHash: 'b65e5ef9b569432539dba222ddc32ee173ef1812d0638ce7fc7f75561a9ae179' // bar
+              userHash: '4f0a3df0e66d312db01148aed62f91df395c66343d65bc25f9b6ed119ec54c72', // foo
+              isAdmin: false
             }
           ),
           new AccountModel(
             {
               userId: 'admin',
-              userHash: 'fbbd5f9ac5423983deb5a7b00a27b0ddc193828e0c6a4dfe957ad1300d963a51' // admin
+              userHash: 'fbbd5f9ac5423983deb5a7b00a27b0ddc193828e0c6a4dfe957ad1300d963a51', // admin
+              isAdmin: true
             }
           )
         ], (err) => !err ? resolve() : reject(err));

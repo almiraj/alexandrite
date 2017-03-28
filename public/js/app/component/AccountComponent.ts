@@ -15,12 +15,11 @@ import { ModalService } from '../service/ModalService';
         <table class="table table-bordered">
           <tr *ngFor="let accountInfo of accountInfos">
             <td>{{accountInfo.userId}}</td>
-            <td><button class="btn btn-default" (click)="resetPassword(accountInfo)">パスワード初期化</button></td>
-            <td><button class="btn btn-default" (click)="deleteAccount(accountInfo)"><span class="glyphicon glyphicon-trash"></span></button></td>
+            <td class="text-center"><button *ngIf="!accountInfo.isAdmin" class="btn btn-default" (click)="deleteAccount(accountInfo)"><span class="glyphicon glyphicon-trash"></span></button></td>
           </tr>
           <tr>
             <td><input type="text" placeholder="ユーザID" [(ngModel)]="newUserId"></td>
-            <td colspan="2"><button class="btn btn-default" (click)="addAccount()">ユーザー追加</button>
+            <td><button class="btn btn-default" (click)="addAccount()">ユーザー追加</button>
             </td>
           </tr>
         </table>
@@ -49,15 +48,12 @@ export class AccountComponent implements OnInit {
       .catch(e => this.modalService.alertError(e));
   }
 
-  resetPassword() {
-    alert('未実装');
-  }
-
   addAccount() {
     this.accountService.addAccount(this.newUserId)
       .then((accountInfo:AccountInfo) => {
         this.accountInfos.push(accountInfo);
         this.newUserId = '';
+        this.modalService.alert('パスワードは<br>アカウント名と同じです');
         this.modalService.alertAdded();
       })
       .catch(e => this.modalService.alertError(e));

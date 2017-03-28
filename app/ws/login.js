@@ -13,7 +13,8 @@ module.exports = function(req) {
       }
       return resolve({
         userId: result.userId,
-        userHash: result.userHash
+        userHash: result.userHash,
+        isAdmin: result.isAdmin
       });
     })
     .catch(e => {
