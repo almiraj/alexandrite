@@ -4,6 +4,7 @@ import { Modal } from 'angular2-modal/plugins/bootstrap';
 
 import { AccountService } from '../service/AccountService';
 import { ModalService } from '../service/ModalService';
+import { SetupService } from '../service/SetupService';
 import { AccountInfo } from '../entity/AccountInfo';
 
 @Component({
@@ -17,10 +18,13 @@ import { AccountInfo } from '../entity/AccountInfo';
       <div class="form-group">
         <input type="password" id="password" class="form-control" placeholder="パスワード" [(ngModel)]="password">
       </div>
-      <button class="btn btn-default" (click)="login()">ログイン</button>
+      <div class="form-group">
+        <button class="btn btn-default" (click)="login()">ログイン</button>
+      </div>
     </div>
-    <div style="margin-top:3em;padding:0;">
-      <span>admin/adminでログインすると、アカウントの一覧が見れます。アカウントとパスワードは今のところ全て同じです。</span>
+    <div style="margin-top:5em;padding:0;">
+      <p>admin/adminでログインすると、アカウントの一覧が見れます。アカウントとパスワードは今のところ全て同じです。</p>
+      <p><button class="btn btn-default" (click)="setup()">初期データ投入</button></p>
     </div>
   `
 })
@@ -31,6 +35,7 @@ export class LoginComponent {
   constructor(
     public router:Router,
     public accountService:AccountService,
+    public setupService:SetupService,
     public modalService:ModalService
   ) {}
 
@@ -43,6 +48,11 @@ export class LoginComponent {
           this.router.navigate(['/TimeSheetInput', accountInfo.userId]);
         }
       })
+      .catch(e => this.modalService.alertError(e));
+  }
+  setup() {
+    this.setupService.setup()
+      .then(() => this.modalService.alert('初期化しました'))
       .catch(e => this.modalService.alertError(e));
   }
 }

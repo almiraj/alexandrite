@@ -7,10 +7,7 @@ module.exports = function(req) {
     AccountModel.find({
     })
     .then(result => {
-      if (!result) {
-        return reject('Not Found');
-      }
-      return resolve(result);
+      return resolve(result || []);
     })
     .catch(e => {
       return reject(e);

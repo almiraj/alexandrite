@@ -8,10 +8,7 @@ module.exports = function(req) {
       'userId': reqBody.userId
     })
     .then(result => {
-      if (!result) {
-        return reject('Not Found');
-      }
-      return resolve(result.timeSheets);
+      return resolve(result ? result.timeSheets : []);
     })
     .catch(e => {
       return reject(e);
