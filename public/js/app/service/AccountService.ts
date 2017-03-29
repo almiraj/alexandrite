@@ -1,68 +1,31 @@
 import { Injectable } from '@angular/core';
-import { Http, URLSearchParams, Response } from '@angular/http';
 
 import { AccountInfo } from '../entity/AccountInfo';
-import { HttpUtils } from '../util/HttpUtils';
+import { HttpService } from '../service/HttpService';
 
 @Injectable()
 export class AccountService {
   accountInfo:AccountInfo
 
   constructor(
-    public http:Http
+    public httpService:HttpService
   ) {}
 
   login(userId:String, password:String):Promise<AccountInfo> {
-    return new Promise<AccountInfo>((resolve, reject) => {
-      this.http
-        .post('/ws/login', {
-          userId: userId,
-          password: password
-        })
-        .subscribe((res:Response) => {
-          HttpUtils.handleResponse(res)
-            .then(resBody => {
-              this.accountInfo = resBody;
-              return resolve(this.accountInfo);
-            })
-            .catch(e => reject(e));
-        });
-    });
+    return this.httpService
+      .post<AccountInfo>('/ws/login', { userId, password })
+      .then(resBody => {
+        this.accountInfo = resBody;
+        return this.accountInfo;
+      });
   }
-
   getAllAccounts():Promise<Array<AccountInfo>> {
-    return new Promise<Array<AccountInfo>>((resolve, reject) => {
-      this.http
-        .post('/ws/getAllAccounts', {
-        })
-        .subscribe((res:Response) => {
-          HttpUtils.handleResponse(res).then(resBody => resolve(resBody)).catch(e => reject(e));
-        });
-    });
+    return this.httpService.post<Array<AccountInfo>>('/ws/getAllAccounts', {});
   }
-
   addAccount(userId:String):Promise<AccountInfo> {
-    return new Promise<AccountInfo>((resolve, reject) => {
-      this.http
-        .post('/ws/addAccount', {
-          userId: userId
-        })
-        .subscribe((res:Response) => {
-          HttpUtils.handleResponse(res).then(resBody => resolve(resBody)).catch(e => reject(e));
-        });
-    });
+    return this.httpService.post<AccountInfo>('/ws/addAccount', { userId });
   }
-
-  deleteAccount(userId:String):Promise<AccountInfo> {
-    return new Promise<AccountInfo>((resolve, reject) => {
-      this.http
-        .post('/ws/deleteAccount', {
-          userId: userId
-        })
-        .subscribe((res:Response) => {
-          HttpUtils.handleResponse(res).then(resBody => resolve(resBody)).catch(e => reject(e));
-        });
-    });
+  deleteAccount(userId:String):Promise<void> {
+    return this.httpService.post<void>('/ws/deleteAccount', { userId });
   }
-
 }

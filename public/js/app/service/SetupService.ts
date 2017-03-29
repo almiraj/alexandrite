@@ -1,23 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Http, URLSearchParams, Response } from '@angular/http';
 
-import { AccountInfo } from '../entity/AccountInfo';
-import { HttpUtils } from '../util/HttpUtils';
+import { HttpService } from '../service/HttpService';
 
 @Injectable()
 export class SetupService {
   constructor(
-    public http:Http
+    public httpService:HttpService
   ) {}
 
   setup():Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-      this.http
-        .post('/ws/setup', {
-        })
-        .subscribe((res:Response) => {
-          HttpUtils.handleResponse(res).then(() => resolve()).catch(e => reject(e));
-        });
-    });
+    return this.httpService.post<void>('/ws/setup', {});
   }
 }

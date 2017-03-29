@@ -18,6 +18,7 @@ import { ReversePipe } from './pipe/ReversePipe';
 import { DateRowSummaryPipe } from './pipe/DateRowSummaryPipe';
 
 import { AccountService } from './service/AccountService';
+import { HttpService } from './service/HttpService';
 import { ModalService } from './service/ModalService';
 import { SetupService } from './service/SetupService';
 import { TimeSheetService } from './service/TimeSheetService';
@@ -47,6 +48,7 @@ const appRoutes:Routes = [
     ],
     providers: [
       AccountService,
+      HttpService,
       ModalService,
       SetupService,
       TimeSheetService

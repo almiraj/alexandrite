@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Modal } from 'angular2-modal/plugins/bootstrap';
+import { Modal, OneButtonPreset } from 'angular2-modal/plugins/bootstrap';
+import { DialogRef } from 'angular2-modal/esm/models/dialog-ref';
 
 @Injectable()
 export class ModalService {
@@ -7,34 +8,33 @@ export class ModalService {
     public modal:Modal
   ) {}
 
-  alert(message:String):void {
-    this.modal.alert()
-      .size('sm')
-      .body('<strong>' + String(message) + '</strong>')
-      .keyboard(32)
-      .headerClass('hidden')
-      .bodyClass('modal-body text-center text-info h4')
-      .footerClass('hidden')
-      .open();
+  alert(message:String, addingClass:String = ''):Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      const isLongMessage = message.replace(/<[^>]+>/g, '').replace(/([^a-zA-Z0-9])/g, '$1$1').length >= 25;
+      this.modal.alert()
+        .size(isLongMessage ? 'lg' : 'sm')
+        .body('<strong>' + String(message) + '</strong>')
+        .keyboard(32)
+        .headerClass('hidden')
+        .bodyClass('modal-body text-center text-info h4 ' + addingClass)
+        .footerClass('hidden')
+        .open()
+        .then((ref:DialogRef<OneButtonPreset>) => {
+          ref.onDestroy.subscribe(() => resolve());
+        });
+      });
   }
-  alertSaved():void {
-    this.alert('<span class="glyphicon glyphicon-cloud-upload"></span> 保存しました');
+  alertSaved():Promise<void> {
+    return this.alert('<span class="glyphicon glyphicon-cloud-upload"></span> 保存しました');
   }
-  alertAdded():void {
-    this.alert('<span class="glyphicon glyphicon-cloud-upload"></span> 追加しました');
+  alertAdded():Promise<void> {
+    return this.alert('<span class="glyphicon glyphicon-cloud-upload"></span> 追加しました');
   }
-  alertDeleted():void {
-    this.alert('<span class="glyphicon glyphicon-trash"></span> 削除しました');
+  alertDeleted():Promise<void> {
+    return this.alert('<span class="glyphicon glyphicon-trash"></span> 削除しました');
   }
-  alertError(e:Error):void {
+  alertError(e:Error | String):Promise<void> {
     const message = (e instanceof Error) ? e.message : String(e);
-    this.modal.alert()
-      .size('sm')
-      .body('<span class="glyphicon glyphicon-exclamation-sign"></span> ' + message)
-      .keyboard(32)
-      .headerClass('hidden')
-      .bodyClass('modal-body text-center text-info h4 alert-danger')
-      .footerClass('hidden')
-      .open();
+    return this.alert('<span class="glyphicon glyphicon-exclamation-sign"></span> ' + message, 'alert-danger');
   }
 }

@@ -53,8 +53,10 @@ export class AccountComponent implements OnInit {
       .then((accountInfo:AccountInfo) => {
         this.accountInfos.push(accountInfo);
         this.newUserId = '';
-        this.modalService.alert('パスワードは<br>アカウント名と同じです');
-        this.modalService.alertAdded();
+        this.modalService.alertAdded()
+          .then(() => {
+            this.modalService.alert('パスワードはアカウント名と同じです');
+          });
       })
       .catch(e => this.modalService.alertError(e));
   }

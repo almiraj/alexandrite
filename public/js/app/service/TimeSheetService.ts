@@ -1,49 +1,25 @@
 import { Injectable } from '@angular/core';
-import { Http, URLSearchParams, Response } from '@angular/http';
 
 import { TimeSheet } from '../entity/TimeSheet';
 import { DateRow } from '../entity/DateRow';
-import { HttpUtils } from '../util/HttpUtils';
+import { HttpService } from '../service/HttpService';
 
 @Injectable()
 export class TimeSheetService {
   constructor(
-    public http:Http
+    public httpService:HttpService
   ) {}
 
   selectTimeSheet(userId:String, month:String):Promise<Array<DateRow>> {
-    return new Promise<Array<DateRow>>((resolve, reject) => {
-      this.http
-        .post('/ws/selectTimeSheet', {
-          userId: userId,
-          month: month
-        })
-        .subscribe((res:Response) => {
-          HttpUtils.handleResponse(res).then(resBody => resolve(resBody)).catch(e => reject(e));
-        });
-    });
+    return this.httpService.post<Array<DateRow>>('/ws/selectTimeSheet', { userId, month });
   }
   selectAllTimeSheets(userId:String):Promise<Array<TimeSheet>> {
-    return new Promise<Array<TimeSheet>>((resolve, reject) => {
-      this.http
-        .post('/ws/selectAllTimeSheets', {
-          userId: userId
-        })
-        .subscribe((res:Response) => {
-          HttpUtils.handleResponse(res).then(resBody => resolve(resBody)).catch(e => reject(e));
-        });
-    });
+    return this.httpService.post<Array<TimeSheet>>('/ws/selectAllTimeSheets', { userId });
   }
   updateTimeSheet(userId:String, timeSheet:TimeSheet):Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-      this.http
-        .post('/ws/updateTimeSheet', {
-          userId: userId,
-          timeSheet: JSON.stringify(timeSheet)
-        })
-        .subscribe((res:Response) => {
-          HttpUtils.handleResponse(res).then(() => resolve()).catch(e => reject(e));
-        });
+    return this.httpService.post<void>('/ws/updateTimeSheet', {
+      userId,
+      timeSheet: JSON.stringify(timeSheet)
     });
   }
 }
