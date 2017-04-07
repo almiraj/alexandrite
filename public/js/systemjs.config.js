@@ -22,8 +22,8 @@
 
   var plugin = 'bootstrap'; // js-native / vex
   // UMD bundles
-  map[`angular2-modal/plugins/${plugin}`] = map['angular2-modal'] + '/bundles';
-  packages[`angular2-modal/plugins/${plugin}`] =  { defaultExtension: 'js', main: `angular2-modal.${plugin}.umd` };
+  map['angular2-modal/plugins/' + plugin] = map['angular2-modal'] + '/bundles';
+  packages['angular2-modal/plugins/' + plugin] =  { defaultExtension: 'js', main: 'angular2-modal.' + plugin + '.umd' };
 
   var ngPackageNames = [
     'common',
