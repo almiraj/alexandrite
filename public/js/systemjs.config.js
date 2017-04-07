@@ -8,22 +8,15 @@
     'app':                        './js/app', // 'dist',
     '@angular':                   './js/node_modules/@angular',
     'angular2-in-memory-web-api': './js/node_modules/angular2-in-memory-web-api',
-    'rxjs':                       './js/node_modules/rxjs',
-    'angular2-modal':             './js/node_modules/angular2-modal'
+    'rxjs':                       './js/node_modules/rxjs'
 
   };
   // packages tells the System loader how to load when no filename and/or no extension
   var packages = {
     'app':                        { main: 'main.js',  defaultExtension: 'js' },
     'rxjs':                       { defaultExtension: 'js' },
-    'angular2-in-memory-web-api': { main: 'index.js', defaultExtension: 'js' },
-    'angular2-modal':              { defaultExtension: 'js', main: 'bundles/angular2-modal.umd' }
+    'angular2-in-memory-web-api': { main: 'index.js', defaultExtension: 'js' }
   };
-
-  var plugin = 'bootstrap'; // js-native / vex
-  // UMD bundles
-  map['angular2-modal/plugins/' + plugin] = map['angular2-modal'] + '/bundles';
-  packages['angular2-modal/plugins/' + plugin] =  { defaultExtension: 'js', main: 'angular2-modal.' + plugin + '.umd' };
 
   var ngPackageNames = [
     'common',

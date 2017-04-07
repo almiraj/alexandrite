@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { Modal } from 'angular2-modal/plugins/bootstrap';
 
 import { AccountService } from '../service/AccountService';
 import { ModalService } from '../service/ModalService';
