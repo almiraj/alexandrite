@@ -4,8 +4,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule }   from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { ModalModule } from 'angular2-modal';
-import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
 
 import { AppComponent } from './component/AppComponent';
 import { LoginComponent } from './component/LoginComponent';
@@ -57,9 +55,7 @@ const appRoutes:Routes = [
       BrowserModule,
       FormsModule,
       HttpModule,
-      RouterModule.forRoot(appRoutes),
-      ModalModule.forRoot(),
-      BootstrapModalModule
+      RouterModule.forRoot(appRoutes)
     ],
     bootstrap: [AppComponent]
 })
