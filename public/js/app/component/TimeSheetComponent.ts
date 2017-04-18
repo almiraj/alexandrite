@@ -10,7 +10,7 @@ import { DateRow } from '../entity/DateRow';
       <table class="table table-bordered table-striped table-responsive">
         <thead class="thead-default">
           <tr id="timeHead">
-            <th>日付</th>
+            <th>日</th>
             <th>開始</th>
             <th>終了</th>
             <th>休憩</th>

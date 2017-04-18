@@ -21,11 +21,14 @@ import { AccountInfo } from '../entity/AccountInfo';
         <button class="btn btn-default" (click)="login()">ログイン</button>
       </div>
     </div>
-    <div style="margin-top:5em;padding:0;">
-      <p>admin/adminでログインすると、アカウントの一覧が見れます。アカウントとパスワードは今のところ全て同じです。</p>
+    <div id="test-message">
+      <p>admin/adminでログインするとアカウントの一覧が見れます。アカウントとパスワードは今のところ全て同じです。</p>
       <p><button class="btn btn-default" (click)="setup()">初期データ投入</button></p>
     </div>
-  `
+  `,
+  styles: [
+    '#test-message {margin-top:2em;padding:0;color:red;}'
+  ]
 })
 export class LoginComponent {
   userId:String
