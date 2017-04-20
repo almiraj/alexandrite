@@ -42,11 +42,74 @@ module.exports = function(req) {
               timeSheets: [
                 {
                   month: '201611',
-                  dateRows: [ { date: '1', begin: '0900', end: '1800', interval: '0100' }, { date: '2', begin: '0900', end: '1800', interval: '0100' } ]
+                  dateRows: [
+                    { date: '1', begin: '1000', end: '1800', interval: '0100' },
+                    { date: '2', begin: '1000', end: '2100', interval: '0100' },
+                    { date: '3', begin: '', end: '', interval: '' },
+                    { date: '4', begin: '', end: '', interval: '' },
+                    { date: '5', begin: '', end: '', interval: '' },
+                    { date: '6', begin: '', end: '', interval: '' },
+                    { date: '7', begin: '1000', end: '1800', interval: '0100' },
+                    { date: '8', begin: '1000', end: '1800', interval: '0100' },
+                    { date: '9', begin: '1000', end: '1800', interval: '0100' },
+                    { date: '10', begin: '1000', end: '1800', interval: '0100' },
+                    { date: '11', begin: '1000', end: '1800', interval: '0100' },
+                    { date: '12', begin: '', end: '', interval: '' },
+                    { date: '13', begin: '', end: '', interval: '' },
+                    { date: '14', begin: '1000', end: '1800', interval: '0100' },
+                    { date: '15', begin: '1000', end: '1800', interval: '0100' },
+                    { date: '16', begin: '1000', end: '1800', interval: '0100' },
+                    { date: '17', begin: '1000', end: '1800', interval: '0100' },
+                    { date: '18', begin: '1000', end: '1800', interval: '0100' },
+                    { date: '19', begin: '', end: '', interval: '' },
+                    { date: '20', begin: '', end: '', interval: '' },
+                    { date: '21', begin: '1000', end: '1800', interval: '0100' },
+                    { date: '22', begin: '1000', end: '1800', interval: '0100' },
+                    { date: '23', begin: '', end: '', interval: '' },
+                    { date: '24', begin: '1000', end: '1800', interval: '0100' },
+                    { date: '25', begin: '1000', end: '1800', interval: '0100' },
+                    { date: '26', begin: '', end: '', interval: '' },
+                    { date: '27', begin: '', end: '', interval: '' },
+                    { date: '28', begin: '1000', end: '1800', interval: '0100' },
+                    { date: '29', begin: '1000', end: '1800', interval: '0100' },
+                    { date: '30', begin: '1000', end: '1800', interval: '0100' }
+                  ]
                 },
                 {
                   month: '201612',
-                  dateRows: [ { date: '1', begin: '0930', end: '2100', interval: '0100' }, { date: '2', begin: '1230', end: '2400', interval: '0100' } ]
+                  dateRows: [
+                    { date: '1', begin: '1000', end: '2100', interval: '0100' },
+                    { date: '2', begin: '1000', end: '2400', interval: '0100' },
+                    { date: '3', begin: '', end: '', interval: '' },
+                    { date: '4', begin: '', end: '', interval: '' },
+                    { date: '5', begin: '1000', end: '1800', interval: '0100' },
+                    { date: '6', begin: '1000', end: '1800', interval: '0100' },
+                    { date: '7', begin: '1000', end: '1800', interval: '0100' },
+                    { date: '8', begin: '1000', end: '1800', interval: '0100' },
+                    { date: '9', begin: '1000', end: '1800', interval: '0100' },
+                    { date: '10', begin: '', end: '', interval: '' },
+                    { date: '11', begin: '', end: '', interval: '' },
+                    { date: '12', begin: '1000', end: '1800', interval: '0100' },
+                    { date: '13', begin: '1000', end: '1800', interval: '0100' },
+                    { date: '14', begin: '1000', end: '1800', interval: '0100' },
+                    { date: '15', begin: '1000', end: '1800', interval: '0100' },
+                    { date: '16', begin: '1000', end: '1800', interval: '0100' },
+                    { date: '17', begin: '', end: '', interval: '' },
+                    { date: '18', begin: '', end: '', interval: '' },
+                    { date: '19', begin: '1000', end: '1800', interval: '0100' },
+                    { date: '20', begin: '1000', end: '1800', interval: '0100' },
+                    { date: '21', begin: '1000', end: '1800', interval: '0100' },
+                    { date: '22', begin: '1000', end: '1800', interval: '0100' },
+                    { date: '23', begin: '', end: '', interval: '' },
+                    { date: '24', begin: '', end: '', interval: '' },
+                    { date: '25', begin: '', end: '', interval: '' },
+                    { date: '26', begin: '1000', end: '1800', interval: '0100' },
+                    { date: '27', begin: '1000', end: '1800', interval: '0100' },
+                    { date: '28', begin: '1000', end: '1800', interval: '0100' },
+                    { date: '29', begin: '1000', end: '1800', interval: '0100' },
+                    { date: '30', begin: '', end: '', interval: '' },
+                    { date: '31', begin: '', end: '', interval: '' }
+                  ]
                 }
               ]
             }
