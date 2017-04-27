@@ -23,6 +23,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/ws/', routes);
 
+// クライアントからnode_modulesにアクセスできるようにする
+app.use('/node_modules', express.static(path.join(__dirname, 'node_modules')));
 // angular/routerでURL直打ちされたときに対応するため、index.htmlへのマッピングを明示しておく
 app.use('/', (req, res) => {
   res.sendFile(__dirname + '/public/index.html');
