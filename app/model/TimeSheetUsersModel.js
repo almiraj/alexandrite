@@ -12,7 +12,7 @@ module.exports = (function() {
         begin: { type: String },
         end: { type: String },
         interval: { type: String },
-        workTime: { type: Number }
+        workTime: { type: String }
       }) ],
     }) ]
   }));
