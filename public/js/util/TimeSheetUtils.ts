@@ -17,13 +17,18 @@ export class TimeSheetUtils {
   static toMMDD(date:Date):String {
     return this.toMM(date) + this.toDD(date);
   }
-  static calcMinutes(hhmm:String):number {
+  static toMinutesFromHHMM(hhmm:String):number {
     if (hhmm && /(\d{1,2})(\d{2})/.test(String(hhmm))) {
       const hour = Number(RegExp.$1);
       const minute = Number(RegExp.$2);
       return (hour * 60) + minute;
     }
-    return null;
+    return NaN;
+  }
+  static toHHMMFromMinutes(minutes:number) {
+    const h = Math.floor(minutes / 60);
+    const m = minutes % 60;
+    return ('0000' + h).slice(-2) + ('0000' + m).slice(-2);
   }
   static isWeekend(date:Date):Boolean {
     return date.getDay() == 0 || date.getDay() == 6;
@@ -41,15 +46,23 @@ export class TimeSheetUtils {
     const today = new Date();
     const lastDayOfThisMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
 
-    const newDateRows = new Array<DateRow>();
+    const dateRows = new Array<DateRow>();
     for (var i = 1; i <= lastDayOfThisMonth; i++) {
+      const dataRow = new DateRow();
+      dataRow.date = String(i);
+
       const date = new Date(today.getFullYear(), today.getMonth(), i);
-      if (this.isWeekend(date) || this.isPublicHoliday(date)) {
-        newDateRows.push(new DateRow(String(i), '', '', '', ''));
-      } else {
-        newDateRows.push(new DateRow(String(i), '0900', '1800', '0100', '0800'));
+      if (!this.isWeekend(date) && !this.isPublicHoliday(date)) {
+        dataRow.begin = '0900';
+        dataRow.end = '1800';
       }
+
+      dateRows.push(dataRow);
     }
-    return new TimeSheet(TimeSheetUtils.toYYYYMM(today), newDateRows);
+
+    const timeSheet = new TimeSheet();
+    timeSheet.month = TimeSheetUtils.toYYYYMM(today);
+    timeSheet.dateRows = dateRows;
+    return timeSheet;
   }
 }

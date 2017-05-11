@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { TimeSheet } from '../entity/TimeSheet';
-import { DateRow } from '../entity/DateRow';
 import { ModalService } from '../service/ModalService';
 import { TimeSheetService } from '../service/TimeSheetService';
 import { TimeSheetUtils } from '../util/TimeSheetUtils';

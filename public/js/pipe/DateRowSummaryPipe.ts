@@ -8,21 +8,52 @@ import { TimeSheetUtils } from '../util/TimeSheetUtils';
   pure: false
 })
 export class DateRowSummaryPipe implements PipeTransform {
-  transform(dateRow:DateRow):String {
-    const end = TimeSheetUtils.calcMinutes(dateRow.end);
-    const begin = TimeSheetUtils.calcMinutes(dateRow.begin);
-    const interval = TimeSheetUtils.calcMinutes(dateRow.interval);
-    if (!end || !begin || !interval) {
+  static NIGHT_OVER_TIME:number = TimeSheetUtils.toMinutesFromHHMM('2200');
+
+  transform(dateRow:DateRow, exponent:String):String {
+    const minutes = new DateRowAsMinutes(dateRow);
+    if (!minutes.actualWork) {
       return '';
     }
-
-    const sum = end - begin - interval;
-    if (sum <= 0) {
-      return '';
+    if (exponent == 'nightOverTime') {
+      const nightOverTime = minutes.end - DateRowSummaryPipe.NIGHT_OVER_TIME;
+      return (nightOverTime > 0) ? TimeSheetUtils.toHHMMFromMinutes(nightOverTime) : '';
     }
+    if (exponent == 'actualWorkTime') {
+      const actualWorkTime = minutes.actualWork - minutes.unpaidVac1 - minutes.unpaidVac2;
+      return (actualWorkTime > 0) ? TimeSheetUtils.toHHMMFromMinutes(actualWorkTime) : '';
+    }
+    if (exponent == 'paidVacTime') {
+      const paidVacTime = minutes.paidVac;
+      return (paidVacTime > 0) ? TimeSheetUtils.toHHMMFromMinutes(paidVacTime) : '';
+    }
+    if (exponent == 'paidWorkTime') {
+      const paidWorkTime = minutes.actualWork + minutes.paidVac - minutes.unpaidVac1 - minutes.unpaidVac2;
+      return (paidWorkTime > 0) ? TimeSheetUtils.toHHMMFromMinutes(paidWorkTime) : '';
+    }
+    throw new Error('unknown exponent');
+  }
+}
+class DateRowAsMinutes {
+  end:number
+  begin:number
+  actualWork:number
+  paidVacEnd:number
+  paidVacBegin:number
+  paidVac:number
+  unpaidVac1:number
+  unpaidVac2:number
 
-    const sumHours = Math.floor(sum / 60);
-    const sumMinutes = Math.floor(sum % 60);
-    return ('0000' + sumHours).slice(-2) + ('0000' + sumMinutes).slice(-2);
+  constructor(dateRow:DateRow) {
+    this.end = TimeSheetUtils.toMinutesFromHHMM(dateRow.end);
+    this.begin = TimeSheetUtils.toMinutesFromHHMM(dateRow.begin);
+    this.actualWork = this.end - this.begin || 0;
+
+    this.paidVacEnd = TimeSheetUtils.toMinutesFromHHMM(dateRow.paidVacEnd);
+    this.paidVacBegin = TimeSheetUtils.toMinutesFromHHMM(dateRow.paidVacBegin);
+    this.paidVac = (this.paidVacEnd - this.paidVacBegin) || 0;
+
+    this.unpaidVac1 = TimeSheetUtils.toMinutesFromHHMM(dateRow.unpaidVacTime1) || 0;
+    this.unpaidVac2 = TimeSheetUtils.toMinutesFromHHMM(dateRow.unpaidVacTime2) || 0;
   }
 }
