@@ -1,16 +1,14 @@
 const mongoose = require('mongoose');
 
 module.exports = (function() {
-  mongoose.connect(process.env.MONGODB_URI);
-
   const Schema = mongoose.Schema;
   return mongoose.model('TimeSheetUsers', new Schema({
     userId: { type: String, index: { unique: true } },
     userName: { type: String },
-    timeSheet: [ new Schema({
-      month: { type: String, index: { unique: true } },
-      timeRows: [ new Schema({
-        date: { type: String, index: { unique: true } },
+    timeSheets: [ new Schema({
+      month: { type: String, index: true },
+      dateRows: [ new Schema({
+        date: { type: String, index: true },
         begin: { type: String },
         end: { type: String },
         interval: { type: String },

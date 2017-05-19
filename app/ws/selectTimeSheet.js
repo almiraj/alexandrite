@@ -1,18 +1,19 @@
 const TimeSheetUsersModel = require('../model/TimeSheetUsersModel');
 
-module.exports = function(req, res) {
-  console.log('::req');
-  console.log(req.query);
-  TimeSheetUsersModel.findOne(
-    {
+module.exports = function(req) {
+  return new Promise((resolve, reject) => {
+    TimeSheetUsersModel.findOne({
       'userId': req.query.userId,
-      'timeSheet.month': req.query.month
-    },
-    function(err, result) {
-      if (err) throw err;
-      console.log('::res');
-      console.log(JSON.stringify(result));
-      res.send(JSON.stringify(result));
-    }
-  );
+      'timeSheets.month': req.query.month
+    })
+    .then(result => {
+      if (!result) {
+        return reject('Not Found');
+      }
+      return resolve(result);
+    })
+    .catch(e => {
+      return reject(e);
+    });
+  });
 };
