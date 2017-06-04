@@ -23,6 +23,7 @@ import { TimeSheetUtils } from '../util/TimeSheetUtils';
     </div>
     <div>
       <button class="btn btn-default pull-right" (click)="save()">保存</button>
+      <a class="btn btn-default pull-right" id="download" href="#" download="time_sheet.csv" (click)="saveCSV()">CSV保存</a>
     </div>
   `
 })
@@ -60,5 +61,31 @@ export class TimeSheetInputComponent implements OnInit {
     this.timeSheetService.updateTimeSheet(this.userId, this.selectedTimeSheet)
       .then(() => this.modalService.alertSaved())
       .catch(e => this.modalService.alertError(e));
+  }
+  saveCSV() {
+    const fileName = this.selectedTimeSheet.month + ".csv";
+    // CSVの先頭行にデータ名
+    let data = "date,type1,type2,begin,end,paidVacBegin,paidVacEnd,nightOverTime,actualWorkTime,paidVacTime,paidWorkTime,appendixDescription,appendixPhase,appendixRemarks\n";
+    // 各データを格納
+    for (let row of this.selectedTimeSheet.dateRows) {
+      data += row.date + "," + row.type1 + "," + row.type2 + "," +
+              row.begin + "," + row.end + "," + row.paidVacBegin + "," + row.paidVacEnd + "," +
+              row.nightOverTime + "," + row.actualWorkTime + "," + row.paidVacTime + "," +
+              row.paidWorkTime + "," + row.appendixDescription + "," + row.appendixPhase + "," +
+              row.appendixRemarks + "\n";
+    }
+    // データ未入力のセルが undefined なので消す
+    data = data.replace(/undefined/g,"");
+    
+    let blob = new Blob([data], { "type": "text/plain" });
+
+    if (window.navigator.msSaveBlob) {
+      window.navigator.msSaveBlob(blob, fileName);
+      window.navigator.msSaveOrOpenBlob(blob, fileName); // msSaveOrOpenBlobの場合はファイルを保存せずに開ける
+    } else {
+      let elm = <HTMLAnchorElement>document.getElementById("download");
+      elm.download = fileName;
+      elm.href = window.URL.createObjectURL(blob);
+    }
   }
 }
