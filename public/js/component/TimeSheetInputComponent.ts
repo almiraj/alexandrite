@@ -18,12 +18,12 @@ import { TimeSheetUtils } from '../util/TimeSheetUtils';
         </ul>
       </div>
       <div class="col-md-10">
+        <div>
+          <button class="btn btn-default" (click)="save()">サーバへ保存</button>
+          <a class="btn btn-default pull-right" id="download" href="#" download="time_sheet.csv" (click)="saveCSV()">CSV保存</a>
+        </div>
         <TimeSheetComponent [timeSheet]=selectedTimeSheet></TimeSheetComponent>
       </div>
-    </div>
-    <div>
-      <button class="btn btn-default pull-right" (click)="save()">保存</button>
-      <a class="btn btn-default pull-right" id="download" href="#" download="time_sheet.csv" (click)="saveCSV()">CSV保存</a>
     </div>
   `
 })
