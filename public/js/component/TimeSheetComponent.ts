@@ -34,8 +34,8 @@ import { DateRow } from '../entity/DateRow';
             <td><input class="form-control" [(ngModel)]="dateRow.end"></td>
             <td><input class="form-control" [(ngModel)]="dateRow.paidVacBegin"></td>
             <td><input class="form-control" [(ngModel)]="dateRow.paidVacEnd"></td>
-            <td><input class="form-control" [(ngModel)]="dateRow.unpaidVacBegin"></td>
-            <td><input class="form-control" [(ngModel)]="dateRow.unpaidVacEnd"></td>
+            <td><input class="form-control" [(ngModel)]="dateRow.unpaidVacTime1"></td>
+            <td><input class="form-control" [(ngModel)]="dateRow.unpaidVacTime2"></td>
             <td><span>{{dateRow | DateRowSummaryPipe:'nightOverTime'}}</span></td>
             <td><span>{{dateRow | DateRowSummaryPipe:'actualWorkTime'}}</span></td>
             <td><span>{{dateRow | DateRowSummaryPipe:'paidVacTime'}}</span></td>
