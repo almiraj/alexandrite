@@ -49,7 +49,7 @@ import { DateRow } from '../entity/DateRow';
       </table>
     </div>
   `,
-  styles: ['th { text-align:center; } input { height:23px; border-radius:0px; text-align:center; } }']
+  styles: ['th { text-align:center; } input { min-width:60px; height:23px; border-radius:0px; text-align:center; } }']
 })
 export class TimeSheetComponent implements OnChanges {
   @Input() timeSheet:TimeSheet
