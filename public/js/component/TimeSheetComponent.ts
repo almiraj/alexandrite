@@ -6,6 +6,7 @@ import { DateRow } from '../entity/DateRow';
 @Component({
   selector: 'TimeSheetComponent',
   template: `
+    <h4 id="yyyymm"></h4>
     <div class="table-responsive">
       <table class="table table-bordered table-striped table-responsive">
         <thead class="thead-default">
@@ -56,6 +57,7 @@ export class TimeSheetComponent implements OnChanges {
   ngOnChanges() {
     if (this.timeSheet) {
       this.dateRows = this.timeSheet.dateRows;
+      document.getElementById("yyyymm").textContent = this.timeSheet.month.substring(0,4) + "/" + this.timeSheet.month.substring(4);
     }
   }
 }
