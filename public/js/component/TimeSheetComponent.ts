@@ -28,28 +28,28 @@ import { DateRow } from '../entity/DateRow';
         </thead>
         <tbody>
           <tr *ngFor="let dateRow of dateRows; let i = index">
-            <td style="text-align:right;">{{dateRow.date}}</td>
-            <td><input class="form-control" [(ngModel)]="dateRow.type1"></td>
-            <td><input class="form-control" [(ngModel)]="dateRow.type2"></td>
-            <td><input class="form-control" [(ngModel)]="dateRow.begin"></td>
-            <td><input class="form-control" [(ngModel)]="dateRow.end"></td>
-            <td><input class="form-control" [(ngModel)]="dateRow.paidVacBegin"></td>
-            <td><input class="form-control" [(ngModel)]="dateRow.paidVacEnd"></td>
-            <td><input class="form-control" [(ngModel)]="dateRow.unpaidVacTime1"></td>
-            <td><input class="form-control" [(ngModel)]="dateRow.unpaidVacTime2"></td>
-            <td><span>{{dateRow | DateRowSummaryPipe:'nightOverTime'}}</span></td>
-            <td><span>{{dateRow | DateRowSummaryPipe:'actualWorkTime'}}</span></td>
-            <td><span>{{dateRow | DateRowSummaryPipe:'paidVacTime'}}</span></td>
-            <td><span>{{dateRow | DateRowSummaryPipe:'paidWorkTime'}}</span></td>
-            <td><input class="form-control" [(ngModel)]="dateRow.appendixDescription"></td>
-            <td><input class="form-control" [(ngModel)]="dateRow.appendixPhase"></td>
-            <td><input class="form-control" [(ngModel)]="dateRow.appendixRemarks"></td>
+            <td style="padding:0;text-align:right;">{{dateRow.date}}</td>
+            <td style="padding:0;"><input class="form-control" [(ngModel)]="dateRow.type1"></td>
+            <td style="padding:0;"><input class="form-control" [(ngModel)]="dateRow.type2"></td>
+            <td style="padding:0;"><input class="form-control" [(ngModel)]="dateRow.begin"></td>
+            <td style="padding:0;"><input class="form-control" [(ngModel)]="dateRow.end"></td>
+            <td style="padding:0;"><input class="form-control" [(ngModel)]="dateRow.paidVacBegin"></td>
+            <td style="padding:0;"><input class="form-control" [(ngModel)]="dateRow.paidVacEnd"></td>
+            <td style="padding:0;"><input class="form-control" [(ngModel)]="dateRow.unpaidVacTime1"></td>
+            <td style="padding:0;"><input class="form-control" [(ngModel)]="dateRow.unpaidVacTime2"></td>
+            <td style="padding:0px 4px;"><span>{{dateRow | DateRowSummaryPipe:'nightOverTime'}}</span></td>
+            <td style="padding:0px 4px;"><span>{{dateRow | DateRowSummaryPipe:'actualWorkTime'}}</span></td>
+            <td style="padding:0px 4px;"><span>{{dateRow | DateRowSummaryPipe:'paidVacTime'}}</span></td>
+            <td style="padding:0px 4px;"><span>{{dateRow | DateRowSummaryPipe:'paidWorkTime'}}</span></td>
+            <td style="padding:0;"><input class="form-control" [(ngModel)]="dateRow.appendixDescription"></td>
+            <td style="padding:0;"><input class="form-control" [(ngModel)]="dateRow.appendixPhase"></td>
+            <td style="padding:0;"><input class="form-control" [(ngModel)]="dateRow.appendixRemarks"></td>
           </tr>
         </tbody>
       </table>
     </div>
   `,
-  styles: ['th { text-align:center; }']
+  styles: ['th { text-align:center; } input { height:23px; border-radius:0px; text-align:center; } }']
 })
 export class TimeSheetComponent implements OnChanges {
   @Input() timeSheet:TimeSheet
