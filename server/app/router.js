@@ -2,8 +2,17 @@
 const express = require('express');
 const mongoose = require('mongoose');
 
+// 環境変数が足りなければ落とす
+if (!process.env.MONGODB_URI) {
+  console.error('MONGODB_URI is not found from ENV');
+  process.exit(1);
+}
+
 mongoose.Promise = Promise;
-mongoose.connect(process.env.MONGODB_URI);
+mongoose.connect(process.env.MONGODB_URI).catch(e => {
+  console.error(String(e));
+  process.exit(1);
+});
 
 module.exports = (function() {
   const router = express.Router();

@@ -3,12 +3,16 @@ const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const LoginModel = require('../model/LoginModel');
 
-const CONFIRM_MAIL_ADDRESS = process.env.CONFIRM_MAIL_ADDRESS;
+// 環境変数が足りなければ落とす
+if (!process.env.CONFIRM_MAIL_ADDRESS) {
+  console.error('CONFIRM_MAIL_ADDRESS is not found from ENV');
+  process.exit(1);
+}
 
 // SMTP認証を行い、認証が通らなければrejectし、通ればトークンを発行する
 module.exports = function(req) {
   return sendMail(req).then(() => LoginModel.create({ loginId: req.body.loginId, loginToken: generateToken(), lastAccessedTime: new Date() }));
-}
+};
 
 function sendMail(req) {
   return new Promise((resolve, reject) => {
@@ -22,7 +26,7 @@ function sendMail(req) {
     });
     smtp.sendMail({
       from: req.body.loginId,
-      to: CONFIRM_MAIL_ADDRESS,
+      to: process.env.CONFIRM_MAIL_ADDRESS,
       subject: 'ログイン通知',
       text: 'ログインできたよ',
       html: '<b>ログインできたよ</b>'
