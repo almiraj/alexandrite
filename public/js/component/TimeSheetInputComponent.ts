@@ -10,14 +10,16 @@ import { TimeSheetUtils } from '../util/TimeSheetUtils';
 @Component({
   selector: 'TimeSheetInputComponent',
   template: `
-    <nav class="navbar navbar-expand-xs navbar-light bg-light fixed-top">
-      <a class="" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <nav class="navbar navbar-expand-xs fixed-top bg-primary text-white font-weight-bold">
+      <span id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         ▼
-      </a>
+      </span>
       <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
         <a class="dropdown-item" href="#">Action</a>
         <a class="dropdown-item" href="#">Another action</a>
         <a class="dropdown-item" href="#">Something else here</a>
+        <input type="text" value="a">
+        <input type="text" value="b">
       </div>
       <div>
         <select [(ngModel)]="selectedMonth" (change)="selectMonth()">
@@ -33,6 +35,7 @@ import { TimeSheetUtils } from '../util/TimeSheetUtils';
     </div>
   `,
   styles: [
+    'nav { background-color: #17a2b8; }',
     '#timesheet { margin-top: 3rem; }'
   ]
 })
