@@ -41,40 +41,20 @@ import { DateRow } from '../entity/DateRow';
               </span>
               <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                 <table class="dropdown-form table table-striped table-responsive">
-                  <thead>
-                    <tr>
-                      <th>休</th>
-                      <th>休憩</th>
-                      <th>時間休</th>
-                    </tr>
-                  </thead>
                   <tbody>
                     <tr>
-                      <td>
-                        <select [(ngModel)]="dateRow.intervalHour"><option value=""></option><option value="午前休">午前休</option><option value="午後休">午後休</option></select>
-                      </td>
-                      <td>
-                        <select [(ngModel)]="dateRow.intervalHour"><option *ngFor="let h of allHours" [value]="h">{{h}}</option></select
-                        ><select [(ngModel)]="dateRow.intervalMinute"><option *ngFor="let m of allMinutes" [value]="m">{{m}}</option></select>
-                      </td>
+                      <td>有給</td>
+                      <td><select [(ngModel)]="dateRow.intervalHour"><option value=""></option><option value="午前休">午前休</option><option value="午後休">午後休</option></select></td>
+                    </tr><tr>
+                      <td>休憩</td>
                       <td>
                         <select [(ngModel)]="dateRow.intervalHour"><option *ngFor="let h of allHours" [value]="h">{{h}}</option></select
                         ><select [(ngModel)]="dateRow.intervalMinute"><option *ngFor="let m of allMinutes" [value]="m">{{m}}</option></select>
-                        ～
-                        <select [(ngModel)]="dateRow.intervalHour"><option *ngFor="let h of allHours" [value]="h">{{h}}</option></select
-                        ><select [(ngModel)]="dateRow.intervalMinute"><option *ngFor="let m of allMinutes" [value]="m">{{m}}</option></select>
                       </td>
-                    </tr>
-                  </tbody>
-                  <thead>
-                    <tr>
-                      <th>備考</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
+                    </tr><tr>
+                      <td>備考</td>
                       <td>
-                        <select [(ngModel)]="dateRow.intervalHour"><option value=""></option><option value="午前休">午前休</option><option value="午後休">午後休</option></select>
+                        <input type="text" style="width:20rem;">
                       </td>
                     </tr>
                   </tbody>
