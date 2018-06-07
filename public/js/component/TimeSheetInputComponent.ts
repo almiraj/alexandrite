@@ -10,27 +10,37 @@ import { TimeSheetUtils } from '../util/TimeSheetUtils';
 @Component({
   selector: 'TimeSheetInputComponent',
   template: `
-    <div class="row">
-      <div class="col-md-2">
-        <ul class="list-unstyled">
-          <li *ngFor="let timeSheet of timeSheets | ReversePipe">
-            <button class="btn btn-default" (click)="selectMonth(timeSheet.month)">{{timeSheet.month}}</button>
-          </li>
-        </ul>
+    <nav class="navbar navbar-expand-xs navbar-light bg-light fixed-top">
+      <a class="" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        ▼
+      </a>
+      <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+        <a class="dropdown-item" href="#">Action</a>
+        <a class="dropdown-item" href="#">Another action</a>
+        <a class="dropdown-item" href="#">Something else here</a>
       </div>
-      <div class="col-md-10">
-        <TimeSheetComponent [timeSheet]=selectedTimeSheet></TimeSheetComponent>
+      <div>
+        <select [(ngModel)]="selectedMonth" (change)="selectMonth()">
+          <option *ngFor="let timeSheet of timeSheets | ReversePipe" [value]="timeSheet.month" [selected]="timeSheets[0] == timeSheet">
+            {{timeSheet.month | YearMonthPipe}}
+          </option>
+        </select>
       </div>
+      保存
+    </nav>
+    <div id="timesheet">
+      <TimeSheetComponent [timeSheet]=selectedTimeSheet></TimeSheetComponent>
     </div>
-    <div>
-      <button class="btn btn-default pull-right" (click)="save()">保存</button>
-    </div>
-  `
+  `,
+  styles: [
+    '#timesheet { margin-top: 3rem; }'
+  ]
 })
 export class TimeSheetInputComponent implements OnInit {
   userId:String
   timeSheets:Array<TimeSheet>
   selectedTimeSheet:TimeSheet
+  selectedMonth:String
 
   constructor(
     public route:ActivatedRoute,
@@ -48,13 +58,14 @@ export class TimeSheetInputComponent implements OnInit {
           }
           this.timeSheets = timeSheets;
           this.selectedTimeSheet = timeSheets[timeSheets.length - 1];
+          this.selectedMonth = this.selectedTimeSheet.month;
         })
         .catch(e => this.modalService.alertError(e));
     });
   }
-  selectMonth(selectedMonth:String) {
+  selectMonth() {
     this.selectedTimeSheet = this.timeSheets.find((timeSheet:TimeSheet) => {
-      return timeSheet.month == selectedMonth;
+      return timeSheet.month == this.selectedMonth;
     });
   }
   save() {

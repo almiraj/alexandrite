@@ -12,8 +12,9 @@ import { TimeSheetInputComponent } from './component/TimeSheetInputComponent';
 import { TimeSheetComponent } from './component/TimeSheetComponent';
 import { PageNotFoundComponent } from './component/PageNotFoundComponent';
 
-import { ReversePipe } from './pipe/ReversePipe';
 import { DateRowSummaryPipe } from './pipe/DateRowSummaryPipe';
+import { ReversePipe } from './pipe/ReversePipe';
+import { YearMonthPipe } from './pipe/YearMonthPipe';
 
 import { AccountService } from './service/AccountService';
 import { HttpService } from './service/HttpService';
@@ -42,7 +43,8 @@ const appRoutes:Routes = [
       TimeSheetComponent,
       PageNotFoundComponent,
       DateRowSummaryPipe,
-      ReversePipe
+      ReversePipe,
+      YearMonthPipe
     ],
     providers: [
       AccountService,

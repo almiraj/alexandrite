@@ -10,29 +10,59 @@ import { DateRow } from '../entity/DateRow';
       <table class="table table-bordered table-striped table-responsive">
         <thead class="thead-default">
           <tr id="timeHead">
-            <th>日</th>
+            <th></th>
             <th>開始</th>
             <th>終了</th>
             <th>休憩</th>
-            <th>合計</th>
+            <th>計</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let dateRow of dateRows; let i = index" id="{{'dateRow' + i}}">
             <td id="{{'dateRow' + i + 'date'}}">{{dateRow.date}}</td>
-            <td><input id="{{'dateRow' + i + 'begin'}}" class="form-control" [(ngModel)]="dateRow.begin"></td>
-            <td><input id="{{'dateRow' + i + 'end'}}" class="form-control" [(ngModel)]="dateRow.end"></td>
-            <td><input id="{{'dateRow' + i + 'interval'}}" class="form-control" [(ngModel)]="dateRow.interval"></td>
-            <td><span id="{{'dateRow' + i + 'summary'}}">{{dateRow | DateRowSummaryPipe}}</span></td>
+            <td>
+              <select [(ngModel)]="dateRow.beginHour"><option *ngFor="let h of allHours" [value]="h">{{h}}</option></select><select [(ngModel)]="dateRow.beginMinute"><option *ngFor="let m of allMinutes" [value]="m">{{m}}</option></select>
+            </td>
+            <td>
+              <select [(ngModel)]="dateRow.endHour"><option *ngFor="let h of allHours" [value]="h">{{h}}</option></select><select [(ngModel)]="dateRow.endMinute"><option *ngFor="let m of allMinutes" [value]="m">{{m}}</option></select>
+            </td>
+            <td>
+              <select [(ngModel)]="dateRow.intervalHour"><option *ngFor="let h of allHours" [value]="h">{{h}}</option></select><select [(ngModel)]="dateRow.intervalMinute"><option *ngFor="let m of allMinutes" [value]="m">{{m}}</option></select>
+            </td>
+            <td><span>{{dateRow | DateRowSummaryPipe}}</span></td>
           </tr>
         </tbody>
       </table>
     </div>
-  `
+  `,
+  styles: [
+    'th, td { padding: 2px; }'
+  ]
 })
 export class TimeSheetComponent implements OnChanges {
   @Input() timeSheet:TimeSheet
+  allHours:Array<String> = []
+  allMinutes:Array<String> = []
+  hourMinutes:Array<String> = []
   dateRows:Array<DateRow>
+  constructor() {
+    const minutesInterval = 15;
+    for (var hour = 0; hour < 24; hour++) {
+      for (var minute = 0; minute < 59; minute++) {
+        if (minute % minutesInterval == 0) {
+          this.hourMinutes.push(String(hour).replace(/^(\d)$/, '0$1') + ':' + String(minute).replace(/^(\d)$/, '0$1'));
+        }
+      }
+    }
+    for (var hour = 0; hour < 24; hour++) {
+      this.allHours.push(String(hour).replace(/^(\d)$/, '0$1'));
+    }
+    for (var minute = 0; minute < 59; minute++) {
+      if (minute % minutesInterval == 0) {
+        this.allMinutes.push(String(minute).replace(/^(\d)$/, '0$1'));
+      }
+    }
+  }
   ngOnChanges() {
     if (this.timeSheet) {
       this.dateRows = this.timeSheet.dateRows;
