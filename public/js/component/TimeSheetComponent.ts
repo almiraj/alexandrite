@@ -7,14 +7,16 @@ import { DateRow } from '../entity/DateRow';
   selector: 'TimeSheetComponent',
   template: `
     <div class="table-responsive">
-      <table class="table table-striped table-responsive">
+      <table class="table table-striped table-responsive"><!-- table-responsiveがないとdropdown内の疑似フォームが実現できない -->
         <thead>
           <tr>
             <th></th>
             <th>開始</th>
             <th>終了</th>
-            <th>休憩</th>
+            <th class="d-none d-lg-table-cell">有給</th>
+            <th class="d-none d-lg-table-cell">休憩</th>
             <th>計</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -30,17 +32,20 @@ import { DateRow } from '../entity/DateRow';
               <select [(ngModel)]="dateRow.endHour"><option *ngFor="let h of allHours" [value]="h">{{h}}</option></select
               ><select [(ngModel)]="dateRow.endMinute"><option *ngFor="let m of allMinutes" [value]="m">{{m}}</option></select>
             </td>
-            <td class="text-nowrap">
+            <td class="d-none d-lg-table-cell text-nowrap">
+              <select [(ngModel)]="dateRow.intervalHour"><option value=""></option><option value="午前休">午前休</option><option value="午後休">午後休</option></select>
+            </td>
+            <td class="d-none d-lg-table-cell text-nowrap">
               <select [(ngModel)]="dateRow.intervalHour"><option *ngFor="let h of allHours" [value]="h">{{h}}</option></select
               ><select [(ngModel)]="dateRow.intervalMinute"><option *ngFor="let m of allMinutes" [value]="m">{{m}}</option></select>
             </td>
             <td><span>{{dateRow | DateRowSummaryPipe}}</span></td>
             <td class="text-nowrap">
-              <span id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <a href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 ▼
-              </span>
+              </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <table class="dropdown-form table table-striped table-responsive">
+                <table class="table table-striped table-responsive">
                   <tbody>
                     <tr>
                       <td>有給</td>
@@ -54,7 +59,7 @@ import { DateRow } from '../entity/DateRow';
                     </tr><tr>
                       <td>備考</td>
                       <td>
-                        <input type="text" style="width:20rem;">
+                        <input type="text" style="width:12rem;">
                       </td>
                     </tr>
                   </tbody>
@@ -67,7 +72,7 @@ import { DateRow } from '../entity/DateRow';
     </div>
   `,
   styles: [
-    'th { font-weight: normal; text-align: center; }',
+    'th { font-weight: normal; text-align: left; }',
     'th, td { padding: 2px 4px; }',
     'select { border:1px solid #eee; border-radius: 0.3rem; }'
   ]
@@ -79,8 +84,9 @@ export class TimeSheetComponent implements OnChanges {
   hourMinutes:Array<String> = []
   dateRows:Array<DateRow>
   constructor() {
-    // dropdownコンポーネントは<form>操作時にdropdownを消さない仕様になっているが、<form>とAngularは競合するため、<form>操作時の動作を独自のセレクタへ適用することで代用する
+    // dropdownコンポーネントは<form>操作時にdropdownを消さない仕様になっているが、<form>とAngularは競合するため、疑似フォームを用意する
     $(() => $('.dropdown-form').on('click' + '.' + 'bs.dropdown' + '.data-api', e => e.stopPropagation()));
+    $(() => $('.dropdown-form').on('click', e => e.stopPropagation()));
 
     const minutesInterval = 15;
     for (var hour = 0; hour < 24; hour++) {
