@@ -7,16 +7,17 @@ import { DateRow } from '../entity/DateRow';
   selector: 'TimeSheetComponent',
   template: `
     <div class="table-responsive">
-      <table class="table table-striped table-responsive"><!-- table-responsiveがないとdropdown内の疑似フォームが実現できない -->
+      <table class="table table-striped table-responsive">
         <thead>
           <tr>
             <th></th>
             <th>開始</th>
             <th>終了</th>
-            <th class="d-none d-lg-table-cell">有給</th>
-            <th class="d-none d-lg-table-cell">休憩</th>
-            <th>計</th>
-            <th></th>
+            <th class="d-none d-sm-table-cell">有給</th>
+            <th class="d-none d-sm-table-cell">休憩</th>
+            <th class="d-none d-sm-table-cell">備考</th>
+            <th class="d-none d-sm-table-cell">計</th>
+            <th class="d-sm-none"></th>
           </tr>
         </thead>
         <tbody>
@@ -32,38 +33,62 @@ import { DateRow } from '../entity/DateRow';
               <select [(ngModel)]="dateRow.endHour"><option *ngFor="let h of allHours" [value]="h">{{h}}</option></select
               ><select [(ngModel)]="dateRow.endMinute"><option *ngFor="let m of allMinutes" [value]="m">{{m}}</option></select>
             </td>
-            <td class="d-none d-lg-table-cell text-nowrap">
+            <td class="d-none d-sm-table-cell text-nowrap">
               <select [(ngModel)]="dateRow.intervalHour"><option value=""></option><option value="午前休">午前休</option><option value="午後休">午後休</option></select>
             </td>
-            <td class="d-none d-lg-table-cell text-nowrap">
+            <td class="d-none d-sm-table-cell text-nowrap">
               <select [(ngModel)]="dateRow.intervalHour"><option *ngFor="let h of allHours" [value]="h">{{h}}</option></select
               ><select [(ngModel)]="dateRow.intervalMinute"><option *ngFor="let m of allMinutes" [value]="m">{{m}}</option></select>
             </td>
-            <td><span>{{dateRow | DateRowSummaryPipe}}</span></td>
-            <td class="text-nowrap">
-              <a href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                ▼
+            <td class="d-none d-sm-table-cell text-nowrap">
+              <input type="text" style="width:12rem;">
+            </td>
+            <td class="d-none d-sm-table-cell text-nowrap">
+              {{dateRow | DateRowSummaryPipe | HourMinutePipe}}
+            </td>
+            <td class="d-sm-none text-nowrap">
+              <!-- Button trigger modal -->
+              <a (click)="openModal('#exampleModalCenter' + i)">
+                <i class="fa fa-window-restore" aria-hidden="true"></i>
               </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <table class="table table-striped table-responsive">
-                  <tbody>
-                    <tr>
-                      <td>有給</td>
-                      <td><select [(ngModel)]="dateRow.intervalHour"><option value=""></option><option value="午前休">午前休</option><option value="午後休">午後休</option></select></td>
-                    </tr><tr>
-                      <td>休憩</td>
-                      <td>
-                        <select [(ngModel)]="dateRow.intervalHour"><option *ngFor="let h of allHours" [value]="h">{{h}}</option></select
-                        ><select [(ngModel)]="dateRow.intervalMinute"><option *ngFor="let m of allMinutes" [value]="m">{{m}}</option></select>
-                      </td>
-                    </tr><tr>
-                      <td>備考</td>
-                      <td>
-                        <input type="text" style="width:12rem;">
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+              <!-- Modal -->
+              <div class="modal" id="exampleModalCenter{{i}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLongTitle">{{timeSheet.month | YmdPipe:dateRow.date}}</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <table class="table table-striped table-responsive">
+                        <tbody>
+                          <tr>
+                            <td>有給</td>
+                            <td><select [(ngModel)]="dateRow.intervalHour"><option value=""></option><option value="午前休">午前休</option><option value="午後休">午後休</option></select></td>
+                          </tr><tr>
+                            <td>休憩</td>
+                            <td>
+                              <select [(ngModel)]="dateRow.intervalHour"><option *ngFor="let h of allHours" [value]="h">{{h}}</option></select
+                              ><select [(ngModel)]="dateRow.intervalMinute"><option *ngFor="let m of allMinutes" [value]="m">{{m}}</option></select>
+                            </td>
+                          </tr><tr>
+                            <td>備考</td>
+                            <td><input type="text" style="width:12rem;"></td>
+                          </tr><tr>
+                            <td>計</td>
+                            <td>{{dateRow | DateRowSummaryPipe | HourMinutePipe}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                  </div>
+                </div>
               </div>
             </td>
           </tr>
@@ -72,7 +97,7 @@ import { DateRow } from '../entity/DateRow';
     </div>
   `,
   styles: [
-    'th { font-weight: normal; text-align: left; }',
+    'th { font-weight: normal; }',
     'th, td { padding: 2px 4px; }',
     'select { border:1px solid #eee; border-radius: 0.3rem; }'
   ]
@@ -81,21 +106,9 @@ export class TimeSheetComponent implements OnChanges {
   @Input() timeSheet:TimeSheet
   allHours:Array<String> = []
   allMinutes:Array<String> = []
-  hourMinutes:Array<String> = []
   dateRows:Array<DateRow>
   constructor() {
-    // dropdownコンポーネントは<form>操作時にdropdownを消さない仕様になっているが、<form>とAngularは競合するため、疑似フォームを用意する
-    $(() => $('.dropdown-form').on('click' + '.' + 'bs.dropdown' + '.data-api', e => e.stopPropagation()));
-    $(() => $('.dropdown-form').on('click', e => e.stopPropagation()));
-
     const minutesInterval = 15;
-    for (var hour = 0; hour < 24; hour++) {
-      for (var minute = 0; minute < 59; minute++) {
-        if (minute % minutesInterval == 0) {
-          this.hourMinutes.push(String(hour).replace(/^(\d)$/, '0$1') + ':' + String(minute).replace(/^(\d)$/, '0$1'));
-        }
-      }
-    }
     for (var hour = 0; hour < 24; hour++) {
       this.allHours.push(String(hour).replace(/^(\d)$/, '0$1'));
     }
@@ -109,5 +122,10 @@ export class TimeSheetComponent implements OnChanges {
     if (this.timeSheet) {
       this.dateRows = this.timeSheet.dateRows;
     }
+  }
+  openModal(modalId:String) {
+    // ngForの中では宣言的にモーダルを作れないので、click時に明示的にモーダルを開く
+    const element:any = $(modalId);
+    element.modal();
   }
 }

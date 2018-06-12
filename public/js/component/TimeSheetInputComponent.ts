@@ -11,8 +11,8 @@ import { TimeSheetUtils } from '../util/TimeSheetUtils';
   selector: 'TimeSheetInputComponent',
   template: `
     <nav class="navbar navbar-expand-xs fixed-top bg-primary text-white font-weight-bold">
-      <a class="" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        ▼
+      <a href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fa fa-diamond" aria-hidden="true"> </i>
       </a>
       <div class="collapse navbar-collapse dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
         <a class="dropdown-item" href="#">Action</a>
@@ -36,7 +36,8 @@ import { TimeSheetUtils } from '../util/TimeSheetUtils';
   `,
   styles: [
     'nav { background-color: #17a2b8; }',
-    '#timesheet { margin-top: 3rem; }'
+    '#timesheet { margin-top: 3rem; }',
+    '.fa-diamond { color: #ffffff; font-weight: bold; }'
   ]
 })
 export class TimeSheetInputComponent implements OnInit {
