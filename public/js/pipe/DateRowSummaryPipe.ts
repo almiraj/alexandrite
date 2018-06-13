@@ -8,7 +8,7 @@ import { TimeSheetUtils } from '../util/TimeSheetUtils';
   pure: false
 })
 export class DateRowSummaryPipe implements PipeTransform {
-  transform(dateRow:DateRow):String {
+  transform(dateRow:DateRow):string {
     const end = dateRow.endHour * 60 + Number(dateRow.endMinute);
     const begin = dateRow.beginHour * 60 + Number(dateRow.beginMinute);
     const interval = dateRow.intervalHour * 60 + Number(dateRow.intervalMinute);

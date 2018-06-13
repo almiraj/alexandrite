@@ -26,19 +26,19 @@ import { DateRow } from '../entity/DateRow';
               {{dateRow.date}}
             </td>
             <td>
-              <select [(ngModel)]="dateRow.beginHour"><option *ngFor="let h of allHours" [value]="h">{{h | FillZeroPipe:2}}</option></select
-              ><select [(ngModel)]="dateRow.beginMinute"><option *ngFor="let m of allMinutes" [value]="m">{{m | FillZeroPipe:2}}</option></select>
+              <select [(ngModel)]="dateRow.beginHour" (change)="setDefault(dateRow)"><option *ngFor="let h of allHours" [value]="h">{{h | FillZeroPipe:2}}</option></select
+              ><select [(ngModel)]="dateRow.beginMinute" (change)="setDefault(dateRow)"><option *ngFor="let m of allMinutes" [value]="m">{{m | FillZeroPipe:2}}</option></select>
             </td>
             <td>
-              <select [(ngModel)]="dateRow.endHour"><option *ngFor="let h of allHours" [value]="h">{{h | FillZeroPipe:2}}</option></select
-              ><select [(ngModel)]="dateRow.endMinute"><option *ngFor="let m of allMinutes" [value]="m">{{m | FillZeroPipe:2}}</option></select>
+              <select [(ngModel)]="dateRow.endHour" (change)="setDefault(dateRow)"><option *ngFor="let h of allHours" [value]="h">{{h | FillZeroPipe:2}}</option></select
+              ><select [(ngModel)]="dateRow.endMinute" (change)="setDefault(dateRow)"><option *ngFor="let m of allMinutes" [value]="m">{{m | FillZeroPipe:2}}</option></select>
             </td>
             <td class="d-none d-sm-table-cell">
-              <select [(ngModel)]="dateRow.intervalHour"><option value=""></option><option value="午前休">午前休</option><option value="午後休">午後休</option></select>
+              <select (change)="setDefault(dateRow)"><option value=""></option><option value="午前休">午前休</option><option value="午後休">午後休</option></select>
             </td>
-            <td class="d-none d-sm-table-cell">
-              <select [(ngModel)]="dateRow.intervalHour"><option *ngFor="let h of allHours" [value]="h">{{h | FillZeroPipe:2}}</option></select
-              ><select [(ngModel)]="dateRow.intervalMinute"><option *ngFor="let m of allMinutes" [value]="m">{{m | FillZeroPipe:2}}</option></select>
+            <td class="d-none d-sm-table-cell" [ngClass]="{'not-default': dateRow.isNotDefaultInterval}">
+              <select [(ngModel)]="dateRow.intervalHour" (change)="setDefault(dateRow)"><option *ngFor="let h of allHours" [value]="h">{{h | FillZeroPipe:2}}</option></select
+              ><select [(ngModel)]="dateRow.intervalMinute" (change)="setDefault(dateRow)"><option *ngFor="let m of allMinutes" [value]="m">{{m | FillZeroPipe:2}}</option></select>
             </td>
             <td class="d-none d-sm-table-cell">
               <input type="text" class="input-remarks">
@@ -49,7 +49,7 @@ import { DateRow } from '../entity/DateRow';
             <td class="d-sm-none">
               <!-- Button trigger modal -->
               <a (click)="openModal('#exampleModalCenter' + i)">
-                <i class="fa fa-window-restore" aria-hidden="true"></i>
+                <i class="fa fa-window-restore" [ngClass]="{'not-default': dateRow.isNotDefaultInterval}" aria-hidden="true"></i>
               </a>
               <!-- Modal -->
               <div class="modal" id="exampleModalCenter{{i}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -69,20 +69,20 @@ import { DateRow } from '../entity/DateRow';
                           <tr>
                             <td>勤務時間</td>
                             <td>
-                              <select [(ngModel)]="dateRow.beginHour"><option *ngFor="let h of allHours" [value]="h">{{h | FillZeroPipe:2}}</option></select
-                              ><select [(ngModel)]="dateRow.beginMinute"><option *ngFor="let m of allMinutes" [value]="m">{{m | FillZeroPipe:2}}</option></select>
+                              <select [(ngModel)]="dateRow.beginHour" (change)="setDefault(dateRow)"><option *ngFor="let h of allHours" [value]="h">{{h | FillZeroPipe:2}}</option></select
+                              ><select [(ngModel)]="dateRow.beginMinute" (change)="setDefault(dateRow)"><option *ngFor="let m of allMinutes" [value]="m">{{m | FillZeroPipe:2}}</option></select>
                               ～
-                              <select [(ngModel)]="dateRow.endHour"><option *ngFor="let h of allHours" [value]="h">{{h | FillZeroPipe:2}}</option></select
-                              ><select [(ngModel)]="dateRow.endMinute"><option *ngFor="let m of allMinutes" [value]="m">{{m | FillZeroPipe:2}}</option></select>
+                              <select [(ngModel)]="dateRow.endHour" (change)="setDefault(dateRow)"><option *ngFor="let h of allHours" [value]="h">{{h | FillZeroPipe:2}}</option></select
+                              ><select [(ngModel)]="dateRow.endMinute" (change)="setDefault(dateRow)"><option *ngFor="let m of allMinutes" [value]="m">{{m | FillZeroPipe:2}}</option></select>
                             </td>
                           </tr><tr>
                             <td>有給</td>
-                            <td><select><option value=""></option><option value="午前休">午前休</option><option value="午後休">午後休</option></select></td>
+                            <td><select (change)="setDefault(dateRow)"><option value=""></option><option value="午前休">午前休</option><option value="午後休">午後休</option></select></td>
                           </tr><tr>
                             <td>休憩</td>
-                            <td>
-                              <select [(ngModel)]="dateRow.intervalHour"><option *ngFor="let h of allHours" [value]="h">{{h | FillZeroPipe:2}}</option></select
-                              ><select [(ngModel)]="dateRow.intervalMinute"><option *ngFor="let m of allMinutes" [value]="m">{{m | FillZeroPipe:2}}</option></select>
+                            <td [ngClass]="{'not-default': dateRow.isNotDefaultInterval}">
+                              <select [(ngModel)]="dateRow.intervalHour" (change)="setDefault(dateRow)"><option *ngFor="let h of allHours" [value]="h">{{h | FillZeroPipe:2}}</option></select
+                              ><select [(ngModel)]="dateRow.intervalMinute" (change)="setDefault(dateRow)"><option *ngFor="let m of allMinutes" [value]="m">{{m | FillZeroPipe:2}}</option></select>
                             </td>
                           </tr><tr>
                             <td>備考</td>
@@ -115,6 +115,8 @@ import { DateRow } from '../entity/DateRow';
     '.modal-body th, .modal-body td { text-align: left; }',
     'select { border:1px solid #eee; border-radius: 0.3rem; }',
     '.fa-window-restore { font-size: 0.8em; }',
+    '.not-default { color: red; }',
+    '.not-default select { background-color: red; }'
   ]
 })
 export class TimeSheetComponent implements OnChanges {
@@ -142,5 +144,25 @@ export class TimeSheetComponent implements OnChanges {
     // ngForの中では宣言的にモーダルを作れないので、click時に明示的にモーダルを開く
     const element:any = $(modalId);
     element.modal();
+  }
+  setDefault(dateRow:DateRow) {
+    if (dateRow.beginHour <= 12) {
+      if (dateRow.intervalHour === undefined) {
+        dateRow.intervalHour = 1;
+      }
+      if (dateRow.intervalMinute === undefined) {
+        dateRow.intervalMinute = 0;
+      }
+    } else {
+      if (dateRow.intervalHour === undefined) {
+        dateRow.intervalHour = 0;
+      }
+      if (dateRow.intervalMinute === undefined) {
+        dateRow.intervalMinute = 0;
+      }
+    }
+    dateRow.isNotDefaultInterval = (dateRow.beginHour <= 12 && (dateRow.intervalHour != 1 || dateRow.intervalMinute != 0))
+      || (dateRow.beginHour > 12 && (dateRow.intervalHour != 0 || dateRow.intervalMinute != 0))
+      || !!(!dateRow.beginHour && (dateRow.intervalHour || dateRow.intervalMinute));
   }
 }

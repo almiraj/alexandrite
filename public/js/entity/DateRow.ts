@@ -8,4 +8,5 @@ export class DateRow {
     public intervalHour:number,
     public intervalMinute:number
   ) {}
+  isNotDefaultInterval:boolean
 }

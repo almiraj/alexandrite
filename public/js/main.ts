@@ -14,9 +14,7 @@ import { PageNotFoundComponent } from './component/PageNotFoundComponent';
 
 import { DateRowSummaryPipe } from './pipe/DateRowSummaryPipe';
 import { FillZeroPipe } from './pipe/FillZeroPipe';
-import { HourMinutePipe } from './pipe/HourMinutePipe';
 import { ReversePipe } from './pipe/ReversePipe';
-import { YmdPipe } from './pipe/YmdPipe';
 
 import { AccountService } from './service/AccountService';
 import { HttpService } from './service/HttpService';
@@ -46,9 +44,7 @@ const appRoutes:Routes = [
       PageNotFoundComponent,
       DateRowSummaryPipe,
       FillZeroPipe,
-      HourMinutePipe,
-      ReversePipe,
-      YmdPipe
+      ReversePipe
     ],
     providers: [
       AccountService,

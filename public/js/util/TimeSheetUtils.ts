@@ -37,7 +37,7 @@ export class TimeSheetUtils {
     for (var i = 1; i <= lastDayOfThisMonth; i++) {
       const date = new Date(today.getFullYear(), today.getMonth(), i);
       if (this.isWeekend(date) || this.isPublicHoliday(date)) {
-        newDateRows.push(new DateRow(i, null, null, null, null, null, null));
+        newDateRows.push(new DateRow(i, undefined, undefined, undefined, undefined, undefined, undefined));
       } else {
         newDateRows.push(new DateRow(i, 9, 0, 18, 0, 1, 0));
       }
