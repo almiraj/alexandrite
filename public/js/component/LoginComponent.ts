@@ -31,8 +31,8 @@ import { AccountInfo } from '../entity/AccountInfo';
   ]
 })
 export class LoginComponent {
-  userId:String
-  password:String
+  userId:string
+  password:string
 
   constructor(
     public router:Router,

@@ -6,8 +6,8 @@ import { DateRow } from '../entity/DateRow';
 @Component({
   selector: 'TimeSheetComponent',
   template: `
-    <div class="table-responsive">
-      <table class="table table-striped table-responsive">
+    <div>
+      <table class="table table-striped">
         <thead>
           <tr>
             <th></th>
@@ -22,31 +22,31 @@ import { DateRow } from '../entity/DateRow';
         </thead>
         <tbody>
           <tr *ngFor="let dateRow of dateRows; let i = index" id="{{'dateRow' + i}}">
-            <td class="text-right">
+            <td class="td-date">
               {{dateRow.date}}
             </td>
-            <td class="text-nowrap">
+            <td>
               <select [(ngModel)]="dateRow.beginHour"><option *ngFor="let h of allHours" [value]="h">{{h}}</option></select
               ><select [(ngModel)]="dateRow.beginMinute"><option *ngFor="let m of allMinutes" [value]="m">{{m}}</option></select>
             </td>
-            <td class="text-nowrap">
+            <td>
               <select [(ngModel)]="dateRow.endHour"><option *ngFor="let h of allHours" [value]="h">{{h}}</option></select
               ><select [(ngModel)]="dateRow.endMinute"><option *ngFor="let m of allMinutes" [value]="m">{{m}}</option></select>
             </td>
-            <td class="d-none d-sm-table-cell text-nowrap">
+            <td class="d-none d-sm-table-cell">
               <select [(ngModel)]="dateRow.intervalHour"><option value=""></option><option value="午前休">午前休</option><option value="午後休">午後休</option></select>
             </td>
-            <td class="d-none d-sm-table-cell text-nowrap">
+            <td class="d-none d-sm-table-cell">
               <select [(ngModel)]="dateRow.intervalHour"><option *ngFor="let h of allHours" [value]="h">{{h}}</option></select
               ><select [(ngModel)]="dateRow.intervalMinute"><option *ngFor="let m of allMinutes" [value]="m">{{m}}</option></select>
             </td>
-            <td class="d-none d-sm-table-cell text-nowrap">
-              <input type="text" style="width:12rem;">
+            <td class="d-none d-sm-table-cell">
+              <input type="text" class="input-remarks">
             </td>
-            <td class="d-none d-sm-table-cell text-nowrap">
+            <td class="d-none d-sm-table-cell">
               {{dateRow | DateRowSummaryPipe | HourMinutePipe}}
             </td>
-            <td class="d-sm-none text-nowrap">
+            <td class="d-sm-none">
               <!-- Button trigger modal -->
               <a (click)="openModal('#exampleModalCenter' + i)">
                 <i class="fa fa-window-restore" aria-hidden="true"></i>
@@ -62,9 +62,18 @@ import { DateRow } from '../entity/DateRow';
                       </button>
                     </div>
                     <div class="modal-body">
-                      <table class="table table-striped table-responsive">
+                      <table class="table table-striped">
                         <tbody>
                           <tr>
+                            <td>勤務時間</td>
+                            <td>
+                              <select [(ngModel)]="dateRow.beginHour"><option *ngFor="let h of allHours" [value]="h">{{h}}</option></select
+                              ><select [(ngModel)]="dateRow.beginMinute"><option *ngFor="let m of allMinutes" [value]="m">{{m}}</option></select>
+                              ～
+                              <select [(ngModel)]="dateRow.endHour"><option *ngFor="let h of allHours" [value]="h">{{h}}</option></select
+                              ><select [(ngModel)]="dateRow.endMinute"><option *ngFor="let m of allMinutes" [value]="m">{{m}}</option></select>
+                            </td>
+                          </tr><tr>
                             <td>有給</td>
                             <td><select [(ngModel)]="dateRow.intervalHour"><option value=""></option><option value="午前休">午前休</option><option value="午後休">午後休</option></select></td>
                           </tr><tr>
@@ -75,7 +84,7 @@ import { DateRow } from '../entity/DateRow';
                             </td>
                           </tr><tr>
                             <td>備考</td>
-                            <td><input type="text" style="width:12rem;"></td>
+                            <td><input type="text" class="input-remarks"></td>
                           </tr><tr>
                             <td>計</td>
                             <td>{{dateRow | DateRowSummaryPipe | HourMinutePipe}}</td>
@@ -98,14 +107,18 @@ import { DateRow } from '../entity/DateRow';
   `,
   styles: [
     'th { font-weight: normal; }',
-    'th, td { padding: 2px 4px; }',
-    'select { border:1px solid #eee; border-radius: 0.3rem; }'
+    'th, td { white-space: nowrap; padding: 2px 4px; text-align: center; vertical-align: middle; }',
+    '.td-date { text-align: right; }',
+    '.input-remarks { width: 100%; }',
+    '.modal-body th, .modal-body td { text-align: left; }',
+    'select { border:1px solid #eee; border-radius: 0.3rem; }',
+    '.fa-window-restore { font-size: 0.8em; }',
   ]
 })
 export class TimeSheetComponent implements OnChanges {
   @Input() timeSheet:TimeSheet
-  allHours:Array<String> = []
-  allMinutes:Array<String> = []
+  allHours:Array<string> = []
+  allMinutes:Array<string> = []
   dateRows:Array<DateRow>
   constructor() {
     const minutesInterval = 15;

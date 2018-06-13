@@ -11,13 +11,13 @@ export class TimeSheetUtils {
   static toDD(date:Date):string {
     return ('0' + date.getDate()).slice(-2);
   }
-  static toYYYYMM(date:Date):String {
+  static toYYYYMM(date:Date):string {
     return this.toYYYY(date) + this.toMM(date);
   }
-  static toMMDD(date:Date):String {
+  static toMMDD(date:Date):string {
     return this.toMM(date) + this.toDD(date);
   }
-  static calcMinutes(hhmm:String):number {
+  static calcMinutes(hhmm:string):number {
     if (hhmm && /(\d{1,2})(\d{2})/.test(String(hhmm))) {
       const hour = Number(RegExp.$1);
       const minute = Number(RegExp.$2);
