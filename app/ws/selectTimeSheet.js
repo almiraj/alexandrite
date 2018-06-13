@@ -4,7 +4,7 @@ module.exports = function(req) {
   return new Promise((resolve, reject) => {
     TimeSheetUsersModel.findOne({
       'userId': req.query.userId,
-      'timeSheets.month': req.query.month
+      'timeSheets.yearMonth': req.query.yearMonth
     })
     .then(result => {
       if (!result) {

@@ -26,25 +26,25 @@ import { DateRow } from '../entity/DateRow';
               {{dateRow.date}}
             </td>
             <td>
-              <select [(ngModel)]="dateRow.beginHour"><option *ngFor="let h of allHours" [value]="h">{{h}}</option></select
-              ><select [(ngModel)]="dateRow.beginMinute"><option *ngFor="let m of allMinutes" [value]="m">{{m}}</option></select>
+              <select [(ngModel)]="dateRow.beginHour"><option *ngFor="let h of allHours" [value]="h">{{h | FillZeroPipe:2}}</option></select
+              ><select [(ngModel)]="dateRow.beginMinute"><option *ngFor="let m of allMinutes" [value]="m">{{m | FillZeroPipe:2}}</option></select>
             </td>
             <td>
-              <select [(ngModel)]="dateRow.endHour"><option *ngFor="let h of allHours" [value]="h">{{h}}</option></select
-              ><select [(ngModel)]="dateRow.endMinute"><option *ngFor="let m of allMinutes" [value]="m">{{m}}</option></select>
+              <select [(ngModel)]="dateRow.endHour"><option *ngFor="let h of allHours" [value]="h">{{h | FillZeroPipe:2}}</option></select
+              ><select [(ngModel)]="dateRow.endMinute"><option *ngFor="let m of allMinutes" [value]="m">{{m | FillZeroPipe:2}}</option></select>
             </td>
             <td class="d-none d-sm-table-cell">
               <select [(ngModel)]="dateRow.intervalHour"><option value=""></option><option value="午前休">午前休</option><option value="午後休">午後休</option></select>
             </td>
             <td class="d-none d-sm-table-cell">
-              <select [(ngModel)]="dateRow.intervalHour"><option *ngFor="let h of allHours" [value]="h">{{h}}</option></select
-              ><select [(ngModel)]="dateRow.intervalMinute"><option *ngFor="let m of allMinutes" [value]="m">{{m}}</option></select>
+              <select [(ngModel)]="dateRow.intervalHour"><option *ngFor="let h of allHours" [value]="h">{{h | FillZeroPipe:2}}</option></select
+              ><select [(ngModel)]="dateRow.intervalMinute"><option *ngFor="let m of allMinutes" [value]="m">{{m | FillZeroPipe:2}}</option></select>
             </td>
             <td class="d-none d-sm-table-cell">
               <input type="text" class="input-remarks">
             </td>
             <td class="d-none d-sm-table-cell">
-              {{dateRow | DateRowSummaryPipe | HourMinutePipe}}
+              {{dateRow | DateRowSummaryPipe}}
             </td>
             <td class="d-sm-none">
               <!-- Button trigger modal -->
@@ -56,7 +56,9 @@ import { DateRow } from '../entity/DateRow';
                 <div class="modal-dialog modal-dialog-centered" role="document">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h5 class="modal-title" id="exampleModalLongTitle">{{timeSheet.month | YmdPipe:dateRow.date}}</h5>
+                      <h5 class="modal-title" id="exampleModalLongTitle">
+                        {{timeSheet.yearMonth}}/{{dateRow.date | FillZeroPipe:2}}
+                      </h5>
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                       </button>
@@ -67,27 +69,27 @@ import { DateRow } from '../entity/DateRow';
                           <tr>
                             <td>勤務時間</td>
                             <td>
-                              <select [(ngModel)]="dateRow.beginHour"><option *ngFor="let h of allHours" [value]="h">{{h}}</option></select
-                              ><select [(ngModel)]="dateRow.beginMinute"><option *ngFor="let m of allMinutes" [value]="m">{{m}}</option></select>
+                              <select [(ngModel)]="dateRow.beginHour"><option *ngFor="let h of allHours" [value]="h">{{h | FillZeroPipe:2}}</option></select
+                              ><select [(ngModel)]="dateRow.beginMinute"><option *ngFor="let m of allMinutes" [value]="m">{{m | FillZeroPipe:2}}</option></select>
                               ～
-                              <select [(ngModel)]="dateRow.endHour"><option *ngFor="let h of allHours" [value]="h">{{h}}</option></select
-                              ><select [(ngModel)]="dateRow.endMinute"><option *ngFor="let m of allMinutes" [value]="m">{{m}}</option></select>
+                              <select [(ngModel)]="dateRow.endHour"><option *ngFor="let h of allHours" [value]="h">{{h | FillZeroPipe:2}}</option></select
+                              ><select [(ngModel)]="dateRow.endMinute"><option *ngFor="let m of allMinutes" [value]="m">{{m | FillZeroPipe:2}}</option></select>
                             </td>
                           </tr><tr>
                             <td>有給</td>
-                            <td><select [(ngModel)]="dateRow.intervalHour"><option value=""></option><option value="午前休">午前休</option><option value="午後休">午後休</option></select></td>
+                            <td><select><option value=""></option><option value="午前休">午前休</option><option value="午後休">午後休</option></select></td>
                           </tr><tr>
                             <td>休憩</td>
                             <td>
-                              <select [(ngModel)]="dateRow.intervalHour"><option *ngFor="let h of allHours" [value]="h">{{h}}</option></select
-                              ><select [(ngModel)]="dateRow.intervalMinute"><option *ngFor="let m of allMinutes" [value]="m">{{m}}</option></select>
+                              <select [(ngModel)]="dateRow.intervalHour"><option *ngFor="let h of allHours" [value]="h">{{h | FillZeroPipe:2}}</option></select
+                              ><select [(ngModel)]="dateRow.intervalMinute"><option *ngFor="let m of allMinutes" [value]="m">{{m | FillZeroPipe:2}}</option></select>
                             </td>
                           </tr><tr>
                             <td>備考</td>
                             <td><input type="text" class="input-remarks"></td>
                           </tr><tr>
                             <td>計</td>
-                            <td>{{dateRow | DateRowSummaryPipe | HourMinutePipe}}</td>
+                            <td>{{dateRow | DateRowSummaryPipe}}</td>
                           </tr>
                         </tbody>
                       </table>
@@ -117,17 +119,17 @@ import { DateRow } from '../entity/DateRow';
 })
 export class TimeSheetComponent implements OnChanges {
   @Input() timeSheet:TimeSheet
-  allHours:Array<string> = []
-  allMinutes:Array<string> = []
+  allHours:Array<number> = []
+  allMinutes:Array<number> = []
   dateRows:Array<DateRow>
   constructor() {
     const minutesInterval = 15;
     for (var hour = 0; hour < 24; hour++) {
-      this.allHours.push(String(hour).replace(/^(\d)$/, '0$1'));
+      this.allHours.push(hour);
     }
     for (var minute = 0; minute < 59; minute++) {
       if (minute % minutesInterval == 0) {
-        this.allMinutes.push(String(minute).replace(/^(\d)$/, '0$1'));
+        this.allMinutes.push(minute);
       }
     }
   }

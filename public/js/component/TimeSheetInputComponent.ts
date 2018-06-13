@@ -22,9 +22,9 @@ import { TimeSheetUtils } from '../util/TimeSheetUtils';
         <input type="text" value="b">
       </div>
       <div>
-        <select [(ngModel)]="selectedMonth" (change)="selectMonth()">
-          <option *ngFor="let timeSheet of timeSheets | ReversePipe" [value]="timeSheet.month" [selected]="timeSheets[0] == timeSheet">
-            {{timeSheet.month | YearMonthPipe}}
+        <select [(ngModel)]="selectedYearMonth" (change)="selectYearMonth()">
+          <option *ngFor="let timeSheet of timeSheets | ReversePipe" [value]="timeSheet.yearMonth" [selected]="timeSheets[0] == timeSheet">
+            {{timeSheet.yearMonth}}
           </option>
         </select>
       </div>
@@ -44,7 +44,7 @@ export class TimeSheetInputComponent implements OnInit {
   userId:String
   timeSheets:Array<TimeSheet>
   selectedTimeSheet:TimeSheet
-  selectedMonth:String
+  selectedYearMonth:String
 
   constructor(
     public route:ActivatedRoute,
@@ -62,14 +62,14 @@ export class TimeSheetInputComponent implements OnInit {
           }
           this.timeSheets = timeSheets;
           this.selectedTimeSheet = timeSheets[timeSheets.length - 1];
-          this.selectedMonth = this.selectedTimeSheet.month;
+          this.selectedYearMonth = this.selectedTimeSheet.yearMonth;
         })
         .catch(e => this.modalService.alertError(e));
     });
   }
-  selectMonth() {
+  selectYearMonth() {
     this.selectedTimeSheet = this.timeSheets.find((timeSheet:TimeSheet) => {
-      return timeSheet.month == this.selectedMonth;
+      return timeSheet.yearMonth == this.selectedYearMonth;
     });
   }
   save() {

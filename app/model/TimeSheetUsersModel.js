@@ -6,12 +6,15 @@ module.exports = (function() {
     userId: { type: String, index: { unique: true } },
     userName: { type: String },
     timeSheets: [ new Schema({
-      month: { type: String, index: true },
+      yearMonth: { type: String, index: true },
       dateRows: [ new Schema({
-        date: { type: String, index: true },
-        begin: { type: String },
-        end: { type: String },
-        interval: { type: String },
+        date: { type: Number, index: true },
+        beginHour: { type: Number },
+        beginMinute: { type: Number },
+        endHour: { type: Number },
+        endMinute: { type: Number },
+        intervalHour: { type: Number },
+        intervalMinute: { type: Number },
         workTime: { type: Number }
       }) ],
     }) ]

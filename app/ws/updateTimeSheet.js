@@ -14,7 +14,7 @@ module.exports = function(req) {
 
       const reqTimeSheet = JSON.parse(reqBody.timeSheet);
       for (var i = 0; i < result.timeSheets.length; i++) {
-        if (result.timeSheets[i].month == reqTimeSheet.month) {
+        if (result.timeSheets[i].yearMonth == reqTimeSheet.yearMonth) {
           // update
           result.timeSheets[i] = reqTimeSheet;
           return result.save().then(() => resolve()).catch(e => reject(e));
