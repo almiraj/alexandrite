@@ -28,7 +28,7 @@ import { TimeSheetUtils } from '../util/TimeSheetUtils';
           </option>
         </select>
       </div>
-      保存
+      <span (click)="save()">保存</span>
     </nav>
     <div id="timesheet">
       <TimeSheetComponent [timeSheet]=selectedTimeSheet></TimeSheetComponent>

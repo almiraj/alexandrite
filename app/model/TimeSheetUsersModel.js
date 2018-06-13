@@ -18,5 +18,7 @@ module.exports = (function() {
         workTime: { type: Number }
       }) ],
     }) ]
+  }, {
+    usePushEach: true
   }));
 })();
