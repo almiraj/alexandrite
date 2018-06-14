@@ -1,14 +1,14 @@
-const TimeSheetUsersModel = require('../model/TimeSheetUsersModel');
+const UserInfoModel = require('../model/UserInfoModel');
 
 module.exports = function(req) {
   return new Promise((resolve, reject) => {
     const reqBody = req.body;
 
-    TimeSheetUsersModel.findOne({
+    UserInfoModel.findOne({
       'userId': reqBody.userId
     })
     .then(result => {
-      return resolve(result ? result.timeSheets : []);
+      return resolve(result ? result : {});
     })
     .catch(e => {
       return reject(e);

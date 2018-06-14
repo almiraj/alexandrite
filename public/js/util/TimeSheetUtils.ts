@@ -44,4 +44,20 @@ export class TimeSheetUtils {
     }
     return new TimeSheet(TimeSheetUtils.toYYYYMMSlash(today), newDateRows);
   }
+  static allHours():Array<number> {
+    const allHours:Array<number> = [];
+    for (var hour = 0; hour < 24; hour++) {
+      allHours.push(hour);
+    }
+    return allHours;
+  }
+  static allMinutes(minutesInterval:number):Array<number> {
+    const allMinutes:Array<number> = [];
+    for (var minute = 0; minute < 59; minute++) {
+      if (minute % minutesInterval == 0) {
+        allMinutes.push(minute);
+      }
+    }
+    return allMinutes;
+  }
 }

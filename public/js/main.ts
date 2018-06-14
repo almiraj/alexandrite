@@ -20,7 +20,7 @@ import { AccountService } from './service/AccountService';
 import { HttpService } from './service/HttpService';
 import { ModalService } from './service/ModalService';
 import { SetupService } from './service/SetupService';
-import { TimeSheetService } from './service/TimeSheetService';
+import { UserInfoService } from './service/UserInfoService';
 
 const appRoutes:Routes = [
   { path: 'Login', component: LoginComponent },
@@ -51,7 +51,7 @@ const appRoutes:Routes = [
       HttpService,
       ModalService,
       SetupService,
-      TimeSheetService
+      UserInfoService
     ],
     imports: [
       BrowserModule,

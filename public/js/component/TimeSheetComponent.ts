@@ -1,7 +1,8 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, ChangeDetectorRef } from '@angular/core';
 
-import { TimeSheet } from '../entity/TimeSheet';
 import { DateRow } from '../entity/DateRow';
+import { TimeSheet } from '../entity/TimeSheet';
+import { UserConfig } from '../entity/UserConfig';
 
 @Component({
   selector: 'TimeSheetComponent',
@@ -37,8 +38,8 @@ import { DateRow } from '../entity/DateRow';
               <select (change)="setDefault(dateRow)"><option value=""></option><option value="午前休">午前休</option><option value="午後休">午後休</option></select>
             </td>
             <td class="d-none d-sm-table-cell" [ngClass]="{'not-default': dateRow.isNotDefaultInterval}">
-              <select [(ngModel)]="dateRow.intervalHour" (change)="setDefault(dateRow)"><option *ngFor="let h of allHours" [value]="h">{{h | FillZeroPipe:2}}</option></select
-              ><select [(ngModel)]="dateRow.intervalMinute" (change)="setDefault(dateRow)"><option *ngFor="let m of allMinutes" [value]="m">{{m | FillZeroPipe:2}}</option></select>
+              <select [(ngModel)]="dateRow.breakHour" (change)="setDefault(dateRow)"><option *ngFor="let h of allHours" [value]="h">{{h | FillZeroPipe:2}}</option></select
+              ><select [(ngModel)]="dateRow.breakMinute" (change)="setDefault(dateRow)"><option *ngFor="let m of allMinutes" [value]="m">{{m | FillZeroPipe:2}}</option></select>
             </td>
             <td class="d-none d-sm-table-cell">
               <input type="text" class="input-remarks">
@@ -81,8 +82,8 @@ import { DateRow } from '../entity/DateRow';
                           </tr><tr>
                             <td>休憩</td>
                             <td [ngClass]="{'not-default': dateRow.isNotDefaultInterval}">
-                              <select [(ngModel)]="dateRow.intervalHour" (change)="setDefault(dateRow)"><option *ngFor="let h of allHours" [value]="h">{{h | FillZeroPipe:2}}</option></select
-                              ><select [(ngModel)]="dateRow.intervalMinute" (change)="setDefault(dateRow)"><option *ngFor="let m of allMinutes" [value]="m">{{m | FillZeroPipe:2}}</option></select>
+                              <select [(ngModel)]="dateRow.breakHour" (change)="setDefault(dateRow)"><option *ngFor="let h of allHours" [value]="h">{{h | FillZeroPipe:2}}</option></select
+                              ><select [(ngModel)]="dateRow.breakMinute" (change)="setDefault(dateRow)"><option *ngFor="let m of allMinutes" [value]="m">{{m | FillZeroPipe:2}}</option></select>
                             </td>
                           </tr><tr>
                             <td>備考</td>
@@ -119,26 +120,37 @@ import { DateRow } from '../entity/DateRow';
     '.not-default select { background-color: red; }'
   ]
 })
-export class TimeSheetComponent implements OnChanges {
+export class TimeSheetComponent {
+  @Input() userConfig:UserConfig
   @Input() timeSheet:TimeSheet
   allHours:Array<number> = []
   allMinutes:Array<number> = []
   dateRows:Array<DateRow>
-  constructor() {
-    const minutesInterval = 15;
-    for (var hour = 0; hour < 24; hour++) {
-      this.allHours.push(hour);
-    }
-    for (var minute = 0; minute < 59; minute++) {
-      if (minute % minutesInterval == 0) {
-        this.allMinutes.push(minute);
+
+  constructor(
+    public ref:ChangeDetectorRef
+  ) {}
+
+  ngOnChanges() {
+    if (this.userConfig) {
+      this.allHours = [];
+      this.allMinutes = [];
+      for (var hour = 0; hour < 24; hour++) {
+        this.allHours.push(hour);
+      }
+      for (var minute = 0; minute < 59; minute++) {
+        if (minute % this.userConfig.minutesInterval == 0) {
+          this.allMinutes.push(minute);
+        }
       }
     }
-  }
-  ngOnChanges() {
     if (this.timeSheet) {
       this.dateRows = this.timeSheet.dateRows;
     }
+  }
+  reload() {
+    this.ngOnChanges();
+    this.ref.detectChanges();
   }
   openModal(modalId:String) {
     // ngForの中では宣言的にモーダルを作れないので、click時に明示的にモーダルを開く
@@ -147,22 +159,22 @@ export class TimeSheetComponent implements OnChanges {
   }
   setDefault(dateRow:DateRow) {
     if (dateRow.beginHour <= 12) {
-      if (dateRow.intervalHour === undefined) {
-        dateRow.intervalHour = 1;
+      if (dateRow.breakHour === undefined) {
+        dateRow.breakHour = 1;
       }
-      if (dateRow.intervalMinute === undefined) {
-        dateRow.intervalMinute = 0;
+      if (dateRow.breakMinute === undefined) {
+        dateRow.breakMinute = 0;
       }
     } else {
-      if (dateRow.intervalHour === undefined) {
-        dateRow.intervalHour = 0;
+      if (dateRow.breakHour === undefined) {
+        dateRow.breakHour = 0;
       }
-      if (dateRow.intervalMinute === undefined) {
-        dateRow.intervalMinute = 0;
+      if (dateRow.breakMinute === undefined) {
+        dateRow.breakMinute = 0;
       }
     }
-    dateRow.isNotDefaultInterval = (dateRow.beginHour <= 12 && (dateRow.intervalHour != 1 || dateRow.intervalMinute != 0))
-      || (dateRow.beginHour > 12 && (dateRow.intervalHour != 0 || dateRow.intervalMinute != 0))
-      || !!(!dateRow.beginHour && (dateRow.intervalHour || dateRow.intervalMinute));
+    dateRow.isNotDefaultInterval = (dateRow.beginHour <= 12 && (dateRow.breakHour != 1 || dateRow.breakMinute != 0))
+      || (dateRow.beginHour > 12 && (dateRow.breakHour != 0 || dateRow.breakMinute != 0))
+      || !!(!dateRow.beginHour && (dateRow.breakHour || dateRow.breakMinute));
   }
 }

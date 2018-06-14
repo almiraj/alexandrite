@@ -11,11 +11,11 @@ export class DateRowSummaryPipe implements PipeTransform {
   transform(dateRow:DateRow):string {
     const end = dateRow.endHour * 60 + Number(dateRow.endMinute);
     const begin = dateRow.beginHour * 60 + Number(dateRow.beginMinute);
-    const interval = dateRow.intervalHour * 60 + Number(dateRow.intervalMinute);
-    if (!end || !begin || !interval) {
+    const breakTime = dateRow.breakHour * 60 + Number(dateRow.breakMinute);
+    if (!end || !begin || !breakTime) {
       return '';
     }
-    const sum = end - begin - interval;
+    const sum = end - begin - breakTime;
     if (sum <= 0) {
       return '';
     }

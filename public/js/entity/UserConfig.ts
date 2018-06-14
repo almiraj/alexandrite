@@ -1,12 +1,11 @@
-export class DateRow {
+export class UserConfig {
   constructor(
-    public date:number,
     public beginHour:number,
     public beginMinute:number,
     public endHour:number,
     public endMinute:number,
-    public breakHour:number,
-    public breakMinute:number
+    public breaklHour:number,
+    public breaklMinute:number,
+    public minutesInterval:number
   ) {}
-  isNotDefaultInterval:boolean
 }
