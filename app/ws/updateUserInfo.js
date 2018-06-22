@@ -1,23 +1,22 @@
 const UserInfoModel = require('../model/UserInfoModel');
+const checkToken = require('../ws/checkToken');
 
 module.exports = function(req) {
   return new Promise((resolve, reject) => {
-    const reqBody = req.body;
-
-    UserInfoModel.findOne({
-      'userId': reqBody.userId
-    })
-    .then(result => {
-      if (!result) {
-        return reject('Not Found');
-      }
-
-      result.userConfig = reqBody.userConfig;
-      result.timeSheets = reqBody.timeSheets;
-      return result.save().then(() => resolve()).catch(e => reject(e));
-    })
-    .catch(e => {
-      return reject(e);
-    });
+    checkToken(req)
+      .then(() => {
+        UserInfoModel.findOne({
+          userId: req.body.userId
+        })
+      })
+      .then(result => {
+        if (!result) {
+          return reject('勤務情報が見つかりませんでした');
+        }
+        result.userConfig = req.body.userConfig;
+        result.timeSheets = req.body.timeSheets;
+        return result.save();
+      })
+      .catch(e => reject(e));
   });
 };

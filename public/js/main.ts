@@ -7,7 +7,6 @@ import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './component/AppComponent';
 import { LoginComponent } from './component/LoginComponent';
-import { AccountComponent } from './component/AccountComponent';
 import { TimeSheetInputComponent } from './component/TimeSheetInputComponent';
 import { TimeSheetComponent } from './component/TimeSheetComponent';
 import { PageNotFoundComponent } from './component/PageNotFoundComponent';
@@ -16,16 +15,16 @@ import { DateRowSummaryPipe } from './pipe/DateRowSummaryPipe';
 import { FillZeroPipe } from './pipe/FillZeroPipe';
 import { ReversePipe } from './pipe/ReversePipe';
 
-import { AccountService } from './service/AccountService';
+import { LoginInfo } from './entity/LoginInfo';
+
+import { LoginService } from './service/LoginService';
 import { HttpService } from './service/HttpService';
 import { ModalService } from './service/ModalService';
-import { SetupService } from './service/SetupService';
 import { UserInfoService } from './service/UserInfoService';
 
 const appRoutes:Routes = [
   { path: 'Login', component: LoginComponent },
-  { path: 'Account', component: AccountComponent },
-  { path: 'TimeSheetInput/:userId', component: TimeSheetInputComponent },
+  { path: 'TimeSheetInput/:loginId', component: TimeSheetInputComponent },
   {
     path: '',
     redirectTo: '/Login',
@@ -38,7 +37,6 @@ const appRoutes:Routes = [
     declarations: [
       AppComponent,
       LoginComponent,
-      AccountComponent,
       TimeSheetInputComponent,
       TimeSheetComponent,
       PageNotFoundComponent,
@@ -47,10 +45,10 @@ const appRoutes:Routes = [
       ReversePipe
     ],
     providers: [
-      AccountService,
+      LoginInfo,
+      LoginService,
       HttpService,
       ModalService,
-      SetupService,
       UserInfoService
     ],
     imports: [

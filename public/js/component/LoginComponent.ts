@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { AccountService } from '../service/AccountService';
+import { LoginService } from '../service/LoginService';
 import { ModalService } from '../service/ModalService';
-import { SetupService } from '../service/SetupService';
-import { AccountInfo } from '../entity/AccountInfo';
+import { LoginInfo } from '../entity/LoginInfo';
 
 @Component({
   selector: 'LoginComponent',
@@ -12,49 +11,47 @@ import { AccountInfo } from '../entity/AccountInfo';
     <br>
     <div class="form-inline">
       <div class="form-group">
-        <input type="text" id="userId" class="form-control" placeholder="ユーザID" [(ngModel)]="userId">
+        <input type="text" id="loginId" class="form-control" placeholder="ユーザID" [(ngModel)]="loginId">
       </div>
       <div class="form-group">
-        <input type="password" id="password" class="form-control" placeholder="パスワード" [(ngModel)]="password">
+        <input type="password" id="loginPassword" class="form-control" placeholder="パスワード" [(ngModel)]="loginPassword">
       </div>
       <div class="form-group">
         <button class="btn btn-default" (click)="login()">ログイン</button>
       </div>
     </div>
-    <div id="test-message">
-      <p>admin/adminでログインするとアカウントの一覧が見れます。アカウントとパスワードは今のところ全て同じです。</p>
-      <p><button class="btn btn-default" (click)="setup()">初期データ投入</button></p>
-    </div>
-  `,
-  styles: [
-    '#test-message {margin-top:2em;padding:0;color:red;}'
-  ]
+  `
 })
 export class LoginComponent {
-  userId:string
-  password:string
+  loginId:string
+  loginPassword:string
 
   constructor(
     public router:Router,
-    public accountService:AccountService,
-    public setupService:SetupService,
+    public loginService:LoginService,
     public modalService:ModalService
   ) {}
 
-  login() {
-    this.accountService.login(this.userId, this.password)
-      .then((accountInfo:AccountInfo) => {
-        if (accountInfo.isAdmin) {
-          this.router.navigate(['/Account']);
-        } else {
-          this.router.navigate(['/TimeSheetInput', accountInfo.userId]);
-        }
-      })
-      .catch(e => this.modalService.alertError(e));
+  ngOnInit() {
+    const loginToken = localStorage.getItem('loginToken');
+    if (loginToken) {
+      this.loginService.checkToken(this.loginId, loginToken)
+        .then(() => this.router.navigate(['/TimeSheetInput', this.loginId]))
+        .catch(e => {/*NOP*/});
+    }
   }
-  setup() {
-    this.setupService.setup()
-      .then(() => this.modalService.alert('初期化しました'))
-      .catch(e => this.modalService.alertError(e));
+  login() {
+    this.loginService.login(this.loginId, this.loginPassword)
+      .then((accountInfo:LoginInfo) => {
+        localStorage.setItem('loginToken', accountInfo.loginToken);
+        this.router.navigate(['/TimeSheetInput', accountInfo.loginId]);
+      })
+      .catch(e => {
+        if (String(e).includes('Missing credentials')) {
+          this.modalService.alertError('ユーザIDまたはパスワードが違います');
+        } else {
+          this.modalService.alertError(e);
+        }
+      });
   }
 }

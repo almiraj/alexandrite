@@ -4,7 +4,6 @@ module.exports = (function() {
   const Schema = mongoose.Schema;
   return mongoose.model('UserInfo', new Schema({
     userId: { type: String, index: { unique: true } },
-    userName: { type: String },
     userConfig: new Schema({
       beginHour: { type: Number },
       beginMinute: { type: Number },

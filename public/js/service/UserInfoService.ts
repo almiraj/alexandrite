@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { TimeSheet } from '../entity/TimeSheet';
 import { DateRow } from '../entity/DateRow';
+import { UserInfo } from '../entity/UserInfo';
 import { HttpService } from '../service/HttpService';
 
 @Injectable()

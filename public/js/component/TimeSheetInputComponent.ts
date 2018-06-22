@@ -6,9 +6,10 @@ import { DateRow } from '../entity/DateRow';
 import { TimeSheet } from '../entity/TimeSheet';
 import { UserConfig } from '../entity/UserConfig';
 import { UserInfo } from '../entity/UserInfo';
+import { LoginService } from '../service/LoginService';
 import { ModalService } from '../service/ModalService';
-import { TimeSheetUtils } from '../util/TimeSheetUtils';
 import { UserInfoService } from '../service/UserInfoService';
+import { TimeSheetUtils } from '../util/TimeSheetUtils';
 
 @Component({
   selector: 'TimeSheetInputComponent',
@@ -96,24 +97,34 @@ export class TimeSheetInputComponent {
 
   constructor(
     public route:ActivatedRoute,
+    public loginService:LoginService,
     public modalService:ModalService,
     public userInfoService:UserInfoService
   ) {}
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      this.userId = String(params['userId']);
-      this.userInfoService.selectUserInfo(this.userId)
-        .then((userInfo:UserInfo) => {
-          if (!TimeSheetUtils.findThisMonthSheet(userInfo.timeSheets)) {
-            userInfo.timeSheets.push(TimeSheetUtils.createThisMonthSheet());
-          }
-          this.userInfo = userInfo;
-          this.selectedTimeSheet = userInfo.timeSheets[userInfo.timeSheets.length - 1];
-          this.selectedYearMonth = this.selectedTimeSheet.yearMonth;
+      const loginId = params['loginId'];
+      const loginToken = localStorage.getItem('loginToken');
+      if (!loginToken) {
+        this.modalService.alertError('ログインしてください');
+      }
+      this.loginService.checkToken(loginId, loginToken)
+        .then(() => {
+          this.userInfoService.selectUserInfo(loginId)
+            .then((userInfo:UserInfo) => {
+              if (!userInfo || !TimeSheetUtils.findThisMonthSheet(userInfo.timeSheets)) {
+                userInfo.timeSheets.push(TimeSheetUtils.createThisMonthSheet());
+              }
+              this.userInfo = userInfo;
+              this.selectedTimeSheet = userInfo.timeSheets[userInfo.timeSheets.length - 1];
+              this.selectedYearMonth = this.selectedTimeSheet.yearMonth;
+            })
+            .catch(e => this.modalService.alertError(e));
         })
         .catch(e => this.modalService.alertError(e));
     });
+
     $(() => $('#exampleModalCenter').on('hide.bs.modal', e => {
       this.child.reload();
     }));
