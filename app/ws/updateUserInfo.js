@@ -5,17 +5,24 @@ module.exports = function(req) {
   return new Promise((resolve, reject) => {
     checkToken(req)
       .then(() => {
-        UserInfoModel.findOne({
+        return UserInfoModel.findOne({
           userId: req.body.userId
-        })
+        });
       })
       .then(result => {
         if (!result) {
-          return reject('勤務情報が見つかりませんでした');
+          UserInfoModel.collection.insert([
+            new UserInfoModel({
+              userId: req.body.userId,
+              userConfig: req.body.userConfig,
+              timeSheets: req.body.timeSheets
+            })
+          ]);
+          return resolve(result);
         }
         result.userConfig = req.body.userConfig;
         result.timeSheets = req.body.timeSheets;
-        return result.save();
+        return result.save().then(result => resolve(result));
       })
       .catch(e => reject(e));
   });

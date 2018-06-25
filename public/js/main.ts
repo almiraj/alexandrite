@@ -13,7 +13,6 @@ import { PageNotFoundComponent } from './component/PageNotFoundComponent';
 
 import { DateRowSummaryPipe } from './pipe/DateRowSummaryPipe';
 import { FillZeroPipe } from './pipe/FillZeroPipe';
-import { ReversePipe } from './pipe/ReversePipe';
 
 import { LoginService } from './service/LoginService';
 import { HttpService } from './service/HttpService';
@@ -39,8 +38,7 @@ const appRoutes:Routes = [
       TimeSheetComponent,
       PageNotFoundComponent,
       DateRowSummaryPipe,
-      FillZeroPipe,
-      ReversePipe
+      FillZeroPipe
     ],
     providers: [
       LoginService,

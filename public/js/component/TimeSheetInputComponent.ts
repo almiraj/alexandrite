@@ -24,12 +24,12 @@ import { UserInfoService } from '../service/UserInfoService';
         </div>
         <div>
           <select [(ngModel)]="selectedYearMonth">
-            <option *ngFor="let timeSheet of userInfoService.userInfo.timeSheets | ReversePipe">
+            <option *ngFor="let timeSheet of userInfoService.userInfo.timeSheets">
               {{timeSheet.yearMonth}}
             </option>
           </select>
         </div>
-        <a href="#" id="saveButton" (click)="save()">保存</a>
+        <button (click)="save()">保存</button>
       </nav>
       <div id="timesheet">
         <TimeSheetComponent [selectedYearMonth]="selectedYearMonth"></TimeSheetComponent>
@@ -50,17 +50,17 @@ import { UserInfoService } from '../service/UserInfoService';
                   <tr>
                     <td>勤務時間</td>
                     <td>
-                      <select [(ngModel)]="userInfoService.userInfo.userConfig.beginHour"><option *ngFor="let h of allHours" [value]="h">{{h | FillZeroPipe:2}}</option></select
-                      ><select [(ngModel)]="userInfoService.userInfo.userConfig.beginMinute"><option *ngFor="let m of allMinutes" [value]="m">{{m | FillZeroPipe:2}}</option></select>
+                      <select [(ngModel)]="userInfoService.userInfo.userConfig.beginHour"><option *ngFor="let h of userInfoService.hourSelections" [value]="h">{{h | FillZeroPipe:2}}</option></select
+                      ><select [(ngModel)]="userInfoService.userInfo.userConfig.beginMinute"><option *ngFor="let m of userInfoService.minuteSelections" [value]="m">{{m | FillZeroPipe:2}}</option></select>
                       ～
-                      <select [(ngModel)]="userInfoService.userInfo.userConfig.endHour"><option *ngFor="let h of allHours" [value]="h">{{h | FillZeroPipe:2}}</option></select
-                      ><select [(ngModel)]="userInfoService.userInfo.userConfig.endMinute"><option *ngFor="let m of allMinutes" [value]="m">{{m | FillZeroPipe:2}}</option></select>
+                      <select [(ngModel)]="userInfoService.userInfo.userConfig.endHour"><option *ngFor="let h of userInfoService.hourSelections" [value]="h">{{h | FillZeroPipe:2}}</option></select
+                      ><select [(ngModel)]="userInfoService.userInfo.userConfig.endMinute"><option *ngFor="let m of userInfoService.minuteSelections" [value]="m">{{m | FillZeroPipe:2}}</option></select>
                     </td>
                   </tr><tr>
                     <td>休憩時間</td>
                     <td>
-                      <select [(ngModel)]="userInfoService.userInfo.userConfig.breakHour"><option *ngFor="let h of allHours" [value]="h">{{h | FillZeroPipe:2}}</option></select
-                      ><select [(ngModel)]="userInfoService.userInfo.userConfig.breakMinute"><option *ngFor="let m of allMinutes" [value]="m">{{m | FillZeroPipe:2}}</option></select>
+                      <select [(ngModel)]="userInfoService.userInfo.userConfig.breakHour"><option *ngFor="let h of userInfoService.hourSelections" [value]="h">{{h | FillZeroPipe:2}}</option></select
+                      ><select [(ngModel)]="userInfoService.userInfo.userConfig.breakMinute"><option *ngFor="let m of userInfoService.minuteSelections" [value]="m">{{m | FillZeroPipe:2}}</option></select>
                     </td>
                   </tr><tr>
                     <td>分刻み間隔</td>
@@ -83,7 +83,7 @@ import { UserInfoService } from '../service/UserInfoService';
   styles: [
     'nav { background-color: #17a2b8; }',
     '#timesheet { margin-top: 3rem; }',
-    '.fa-diamond, #saveButton { color: #ffffff; font-weight: bold; }',
+    '.fa-diamond { color: #ffffff; font-weight: bold; }',
     '.input-time { width: 4rem; }'
   ]
 })
@@ -103,12 +103,13 @@ export class TimeSheetInputComponent {
       const userId = params['userId'];
       this.userInfoService.selectUserInfo(userId)
         .then(() => {
-          this.selectedYearMonth = this.userInfoService.userInfo.timeSheets[this.userInfoService.userInfo.timeSheets.length - 1].yearMonth;
+          this.selectedYearMonth = this.userInfoService.userInfo.timeSheets[0].yearMonth;
         })
         .catch(e => this.modalService.alertError(e));
     });
 
     $(() => $('#exampleModalCenter').on('hide.bs.modal', e => {
+      this.userInfoService.reloadHourMinuteSelections();
       this.child.reload();
     }));
   }

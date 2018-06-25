@@ -5,12 +5,11 @@ module.exports = function(req) {
   return new Promise((resolve, reject) => {
     checkToken(req)
       .then(() => {
-        UserInfoModel.findOne({
+        return UserInfoModel.findOne({
           userId: req.body.userId
-        })
-        .then(result => resolve(result))
-        .catch(e => reject(e));
+        });
       })
+      .then(result => resolve(result))
       .catch(e => reject(e));
   });
 };

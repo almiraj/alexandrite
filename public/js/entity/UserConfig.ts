@@ -4,8 +4,8 @@ export class UserConfig {
     public beginMinute:number,
     public endHour:number,
     public endMinute:number,
-    public breaklHour:number,
-    public breaklMinute:number,
+    public breakHour:number,
+    public breakMinute:number,
     public minutesInterval:number
   ) {}
 }

@@ -27,19 +27,19 @@ import { UserInfoService } from '../service/UserInfoService';
               {{dateRow.date}}
             </td>
             <td>
-              <select [(ngModel)]="dateRow.beginHour" (change)="setDefault(dateRow)"><option *ngFor="let h of allHours" [value]="h">{{h | FillZeroPipe:2}}</option></select
-              ><select [(ngModel)]="dateRow.beginMinute" (change)="setDefault(dateRow)"><option *ngFor="let m of allMinutes" [value]="m">{{m | FillZeroPipe:2}}</option></select>
+              <select [(ngModel)]="dateRow.beginHour" (change)="setDefault(dateRow)"><option *ngFor="let h of userInfoService.hourSelections" [value]="h">{{h | FillZeroPipe:2}}</option></select
+              ><select [(ngModel)]="dateRow.beginMinute" (change)="setDefault(dateRow)"><option *ngFor="let m of userInfoService.minuteSelections" [value]="m">{{m | FillZeroPipe:2}}</option></select>
             </td>
             <td>
-              <select [(ngModel)]="dateRow.endHour" (change)="setDefault(dateRow)"><option *ngFor="let h of allHours" [value]="h">{{h | FillZeroPipe:2}}</option></select
-              ><select [(ngModel)]="dateRow.endMinute" (change)="setDefault(dateRow)"><option *ngFor="let m of allMinutes" [value]="m">{{m | FillZeroPipe:2}}</option></select>
+              <select [(ngModel)]="dateRow.endHour" (change)="setDefault(dateRow)"><option *ngFor="let h of userInfoService.hourSelections" [value]="h">{{h | FillZeroPipe:2}}</option></select
+              ><select [(ngModel)]="dateRow.endMinute" (change)="setDefault(dateRow)"><option *ngFor="let m of userInfoService.minuteSelections" [value]="m">{{m | FillZeroPipe:2}}</option></select>
             </td>
             <td class="d-none d-sm-table-cell">
               <select (change)="setDefault(dateRow)"><option value=""></option><option value="午前休">午前休</option><option value="午後休">午後休</option></select>
             </td>
             <td class="d-none d-sm-table-cell" [ngClass]="{'not-default': dateRow.isNotDefaultInterval}">
-              <select [(ngModel)]="dateRow.breakHour" (change)="setDefault(dateRow)"><option *ngFor="let h of allHours" [value]="h">{{h | FillZeroPipe:2}}</option></select
-              ><select [(ngModel)]="dateRow.breakMinute" (change)="setDefault(dateRow)"><option *ngFor="let m of allMinutes" [value]="m">{{m | FillZeroPipe:2}}</option></select>
+              <select [(ngModel)]="dateRow.breakHour" (change)="setDefault(dateRow)"><option *ngFor="let h of userInfoService.hourSelections" [value]="h">{{h | FillZeroPipe:2}}</option></select
+              ><select [(ngModel)]="dateRow.breakMinute" (change)="setDefault(dateRow)"><option *ngFor="let m of userInfoService.minuteSelections" [value]="m">{{m | FillZeroPipe:2}}</option></select>
             </td>
             <td class="d-none d-sm-table-cell">
               <input type="text" class="input-remarks">
@@ -70,11 +70,11 @@ import { UserInfoService } from '../service/UserInfoService';
                           <tr>
                             <td>勤務時間</td>
                             <td>
-                              <select [(ngModel)]="dateRow.beginHour" (change)="setDefault(dateRow)"><option *ngFor="let h of allHours" [value]="h">{{h | FillZeroPipe:2}}</option></select
-                              ><select [(ngModel)]="dateRow.beginMinute" (change)="setDefault(dateRow)"><option *ngFor="let m of allMinutes" [value]="m">{{m | FillZeroPipe:2}}</option></select>
+                              <select [(ngModel)]="dateRow.beginHour" (change)="setDefault(dateRow)"><option *ngFor="let h of userInfoService.hourSelections" [value]="h">{{h | FillZeroPipe:2}}</option></select
+                              ><select [(ngModel)]="dateRow.beginMinute" (change)="setDefault(dateRow)"><option *ngFor="let m of userInfoService.minuteSelections" [value]="m">{{m | FillZeroPipe:2}}</option></select>
                               ～
-                              <select [(ngModel)]="dateRow.endHour" (change)="setDefault(dateRow)"><option *ngFor="let h of allHours" [value]="h">{{h | FillZeroPipe:2}}</option></select
-                              ><select [(ngModel)]="dateRow.endMinute" (change)="setDefault(dateRow)"><option *ngFor="let m of allMinutes" [value]="m">{{m | FillZeroPipe:2}}</option></select>
+                              <select [(ngModel)]="dateRow.endHour" (change)="setDefault(dateRow)"><option *ngFor="let h of userInfoService.hourSelections" [value]="h">{{h | FillZeroPipe:2}}</option></select
+                              ><select [(ngModel)]="dateRow.endMinute" (change)="setDefault(dateRow)"><option *ngFor="let m of userInfoService.minuteSelections" [value]="m">{{m | FillZeroPipe:2}}</option></select>
                             </td>
                           </tr><tr>
                             <td>有給</td>
@@ -82,8 +82,8 @@ import { UserInfoService } from '../service/UserInfoService';
                           </tr><tr>
                             <td>休憩</td>
                             <td [ngClass]="{'not-default': dateRow.isNotDefaultInterval}">
-                              <select [(ngModel)]="dateRow.breakHour" (change)="setDefault(dateRow)"><option *ngFor="let h of allHours" [value]="h">{{h | FillZeroPipe:2}}</option></select
-                              ><select [(ngModel)]="dateRow.breakMinute" (change)="setDefault(dateRow)"><option *ngFor="let m of allMinutes" [value]="m">{{m | FillZeroPipe:2}}</option></select>
+                              <select [(ngModel)]="dateRow.breakHour" (change)="setDefault(dateRow)"><option *ngFor="let h of userInfoService.hourSelections" [value]="h">{{h | FillZeroPipe:2}}</option></select
+                              ><select [(ngModel)]="dateRow.breakMinute" (change)="setDefault(dateRow)"><option *ngFor="let m of userInfoService.minuteSelections" [value]="m">{{m | FillZeroPipe:2}}</option></select>
                             </td>
                           </tr><tr>
                             <td>備考</td>
@@ -122,8 +122,6 @@ import { UserInfoService } from '../service/UserInfoService';
 })
 export class TimeSheetComponent {
   @Input() selectedYearMonth:string
-  allHours:Array<number> = []
-  allMinutes:Array<number> = []
   timeSheet:TimeSheet
 
   constructor(
@@ -132,18 +130,6 @@ export class TimeSheetComponent {
   ) {}
 
   ngOnChanges() {
-    if (this.userInfoService.userInfo.userConfig) {
-      this.allHours = [];
-      this.allMinutes = [];
-      for (var hour = 0; hour < 24; hour++) {
-        this.allHours.push(hour);
-      }
-      for (var minute = 0; minute < 59; minute++) {
-        if (minute % this.userInfoService.userInfo.userConfig.minutesInterval == 0) {
-          this.allMinutes.push(minute);
-        }
-      }
-    }
     this.timeSheet = this.userInfoService.userInfo.timeSheets.find((timeSheet:TimeSheet) => {
       return timeSheet.yearMonth == this.selectedYearMonth;
     });
