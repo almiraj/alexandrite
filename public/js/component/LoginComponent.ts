@@ -11,10 +11,10 @@ import { LoginInfo } from '../entity/LoginInfo';
     <br>
     <div class="form-inline">
       <div class="form-group">
-        <input type="text" id="loginId" class="form-control" placeholder="ユーザID" [(ngModel)]="loginId">
+        <input type="text" class="form-control" placeholder="ユーザID" [(ngModel)]="loginId">
       </div>
       <div class="form-group">
-        <input type="password" id="loginPassword" class="form-control" placeholder="パスワード" [(ngModel)]="loginPassword">
+        <input type="password" class="form-control" placeholder="パスワード" [(ngModel)]="loginPassword">
       </div>
       <div class="form-group">
         <button class="btn btn-default" (click)="login()">ログイン</button>
@@ -33,25 +33,13 @@ export class LoginComponent {
   ) {}
 
   ngOnInit() {
-    const loginToken = localStorage.getItem('loginToken');
-    if (loginToken) {
-      this.loginService.checkToken(this.loginId, loginToken)
-        .then(() => this.router.navigate(['/TimeSheetInput', this.loginId]))
-        .catch(e => {/*NOP*/});
-    }
+    this.loginService.checkToken()
+      .then(() => this.router.navigate(['/TimeSheetInput', this.loginId]));
   }
+
   login() {
     this.loginService.login(this.loginId, this.loginPassword)
-      .then((accountInfo:LoginInfo) => {
-        localStorage.setItem('loginToken', accountInfo.loginToken);
-        this.router.navigate(['/TimeSheetInput', accountInfo.loginId]);
-      })
-      .catch(e => {
-        if (String(e).includes('Missing credentials')) {
-          this.modalService.alertError('ユーザIDまたはパスワードが違います');
-        } else {
-          this.modalService.alertError(e);
-        }
-      });
+      .then(() => this.router.navigate(['/TimeSheetInput', this.loginId]))
+      .catch(e => this.modalService.alertError(e));
   }
 }

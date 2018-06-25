@@ -15,8 +15,6 @@ import { DateRowSummaryPipe } from './pipe/DateRowSummaryPipe';
 import { FillZeroPipe } from './pipe/FillZeroPipe';
 import { ReversePipe } from './pipe/ReversePipe';
 
-import { LoginInfo } from './entity/LoginInfo';
-
 import { LoginService } from './service/LoginService';
 import { HttpService } from './service/HttpService';
 import { ModalService } from './service/ModalService';
@@ -24,7 +22,7 @@ import { UserInfoService } from './service/UserInfoService';
 
 const appRoutes:Routes = [
   { path: 'Login', component: LoginComponent },
-  { path: 'TimeSheetInput/:loginId', component: TimeSheetInputComponent },
+  { path: 'TimeSheetInput/:userId', component: TimeSheetInputComponent },
   {
     path: '',
     redirectTo: '/Login',
@@ -45,7 +43,6 @@ const appRoutes:Routes = [
       ReversePipe
     ],
     providers: [
-      LoginInfo,
       LoginService,
       HttpService,
       ModalService,

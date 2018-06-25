@@ -9,7 +9,6 @@ import { UserInfo } from '../entity/UserInfo';
 import { LoginService } from '../service/LoginService';
 import { ModalService } from '../service/ModalService';
 import { UserInfoService } from '../service/UserInfoService';
-import { TimeSheetUtils } from '../util/TimeSheetUtils';
 
 @Component({
   selector: 'TimeSheetInputComponent',
@@ -104,23 +103,12 @@ export class TimeSheetInputComponent {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      const loginId = params['loginId'];
-      const loginToken = localStorage.getItem('loginToken');
-      if (!loginToken) {
-        this.modalService.alertError('ログインしてください');
-      }
-      this.loginService.checkToken(loginId, loginToken)
-        .then(() => {
-          this.userInfoService.selectUserInfo(loginId)
-            .then((userInfo:UserInfo) => {
-              if (!userInfo || !TimeSheetUtils.findThisMonthSheet(userInfo.timeSheets)) {
-                userInfo.timeSheets.push(TimeSheetUtils.createThisMonthSheet());
-              }
-              this.userInfo = userInfo;
-              this.selectedTimeSheet = userInfo.timeSheets[userInfo.timeSheets.length - 1];
-              this.selectedYearMonth = this.selectedTimeSheet.yearMonth;
-            })
-            .catch(e => this.modalService.alertError(e));
+      const userId = params['userId'];
+      this.userInfoService.selectUserInfo(userId)
+        .then((userInfo:UserInfo) => {
+          this.userInfo = userInfo;
+          this.selectedTimeSheet = userInfo.timeSheets[userInfo.timeSheets.length - 1];
+          this.selectedYearMonth = this.selectedTimeSheet.yearMonth;
         })
         .catch(e => this.modalService.alertError(e));
     });

@@ -8,7 +8,7 @@ module.exports = function(req) {
         UserInfoModel.findOne({
           userId: req.body.userId
         })
-        .then(result => result ? resolve(result) : resolve({ userId: req.body.userId, userConfig: {}, timeSheets: [] }))
+        .then(result => resolve(result))
         .catch(e => reject(e));
       })
       .catch(e => reject(e));
