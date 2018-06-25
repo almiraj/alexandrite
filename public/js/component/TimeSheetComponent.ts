@@ -2,7 +2,7 @@ import { Component, Input, ChangeDetectorRef } from '@angular/core';
 
 import { DateRow } from '../entity/DateRow';
 import { TimeSheet } from '../entity/TimeSheet';
-import { UserConfig } from '../entity/UserConfig';
+import { UserInfoService } from '../service/UserInfoService';
 
 @Component({
   selector: 'TimeSheetComponent',
@@ -22,7 +22,7 @@ import { UserConfig } from '../entity/UserConfig';
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let dateRow of dateRows; let i = index" id="{{'dateRow' + i}}">
+          <tr *ngFor="let dateRow of timeSheet.dateRows; let i = index" id="{{'dateRow' + i}}">
             <td class="td-date">
               {{dateRow.date}}
             </td>
@@ -121,32 +121,32 @@ import { UserConfig } from '../entity/UserConfig';
   ]
 })
 export class TimeSheetComponent {
-  @Input() userConfig:UserConfig
-  @Input() timeSheet:TimeSheet
+  @Input() selectedYearMonth:string
   allHours:Array<number> = []
   allMinutes:Array<number> = []
-  dateRows:Array<DateRow>
+  timeSheet:TimeSheet
 
   constructor(
-    public ref:ChangeDetectorRef
+    public ref:ChangeDetectorRef,
+    public userInfoService:UserInfoService
   ) {}
 
   ngOnChanges() {
-    if (this.userConfig) {
+    if (this.userInfoService.userInfo.userConfig) {
       this.allHours = [];
       this.allMinutes = [];
       for (var hour = 0; hour < 24; hour++) {
         this.allHours.push(hour);
       }
       for (var minute = 0; minute < 59; minute++) {
-        if (minute % this.userConfig.minutesInterval == 0) {
+        if (minute % this.userInfoService.userInfo.userConfig.minutesInterval == 0) {
           this.allMinutes.push(minute);
         }
       }
     }
-    if (this.timeSheet) {
-      this.dateRows = this.timeSheet.dateRows;
-    }
+    this.timeSheet = this.userInfoService.userInfo.timeSheets.find((timeSheet:TimeSheet) => {
+      return timeSheet.yearMonth == this.selectedYearMonth;
+    });
   }
   reload() {
     this.ngOnChanges();

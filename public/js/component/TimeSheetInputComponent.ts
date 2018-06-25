@@ -13,7 +13,7 @@ import { UserInfoService } from '../service/UserInfoService';
 @Component({
   selector: 'TimeSheetInputComponent',
   template: `
-    <div *ngIf="userInfo">
+    <div *ngIf="userInfoService.userInfo">
       <nav class="navbar navbar-expand-xs fixed-top bg-primary text-white font-weight-bold">
         <a href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fa fa-diamond" aria-hidden="true"></i>
@@ -23,8 +23,8 @@ import { UserInfoService } from '../service/UserInfoService';
           <a href="#" class="dropdown-item" data-toggle="modal" data-target="#exampleModalCenter">勤務時間設定</a>
         </div>
         <div>
-          <select id="selectedYearMonth" [(ngModel)]="selectedYearMonth" (change)="selectYearMonth()">
-            <option *ngFor="let timeSheet of userInfo.timeSheets | ReversePipe" [value]="timeSheet.yearMonth" [selected]="userInfo.timeSheets[0] == timeSheet">
+          <select [(ngModel)]="selectedYearMonth">
+            <option *ngFor="let timeSheet of userInfoService.userInfo.timeSheets | ReversePipe">
               {{timeSheet.yearMonth}}
             </option>
           </select>
@@ -32,7 +32,7 @@ import { UserInfoService } from '../service/UserInfoService';
         <a href="#" id="saveButton" (click)="save()">保存</a>
       </nav>
       <div id="timesheet">
-        <TimeSheetComponent [userConfig]="userInfo.userConfig" [timeSheet]="selectedTimeSheet"></TimeSheetComponent>
+        <TimeSheetComponent [selectedYearMonth]="selectedYearMonth"></TimeSheetComponent>
       </div>
       <!-- Modal -->
       <div class="modal" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -50,22 +50,22 @@ import { UserInfoService } from '../service/UserInfoService';
                   <tr>
                     <td>勤務時間</td>
                     <td>
-                      <select [(ngModel)]="userInfo.userConfig.beginHour"><option *ngFor="let h of allHours" [value]="h">{{h | FillZeroPipe:2}}</option></select
-                      ><select [(ngModel)]="userInfo.userConfig.beginMinute"><option *ngFor="let m of allMinutes" [value]="m">{{m | FillZeroPipe:2}}</option></select>
+                      <select [(ngModel)]="userInfoService.userInfo.userConfig.beginHour"><option *ngFor="let h of allHours" [value]="h">{{h | FillZeroPipe:2}}</option></select
+                      ><select [(ngModel)]="userInfoService.userInfo.userConfig.beginMinute"><option *ngFor="let m of allMinutes" [value]="m">{{m | FillZeroPipe:2}}</option></select>
                       ～
-                      <select [(ngModel)]="userInfo.userConfig.endHour"><option *ngFor="let h of allHours" [value]="h">{{h | FillZeroPipe:2}}</option></select
-                      ><select [(ngModel)]="userInfo.userConfig.endMinute"><option *ngFor="let m of allMinutes" [value]="m">{{m | FillZeroPipe:2}}</option></select>
+                      <select [(ngModel)]="userInfoService.userInfo.userConfig.endHour"><option *ngFor="let h of allHours" [value]="h">{{h | FillZeroPipe:2}}</option></select
+                      ><select [(ngModel)]="userInfoService.userInfo.userConfig.endMinute"><option *ngFor="let m of allMinutes" [value]="m">{{m | FillZeroPipe:2}}</option></select>
                     </td>
                   </tr><tr>
                     <td>休憩時間</td>
                     <td>
-                      <select [(ngModel)]="userInfo.userConfig.breakHour"><option *ngFor="let h of allHours" [value]="h">{{h | FillZeroPipe:2}}</option></select
-                      ><select [(ngModel)]="userInfo.userConfig.breakMinute"><option *ngFor="let m of allMinutes" [value]="m">{{m | FillZeroPipe:2}}</option></select>
+                      <select [(ngModel)]="userInfoService.userInfo.userConfig.breakHour"><option *ngFor="let h of allHours" [value]="h">{{h | FillZeroPipe:2}}</option></select
+                      ><select [(ngModel)]="userInfoService.userInfo.userConfig.breakMinute"><option *ngFor="let m of allMinutes" [value]="m">{{m | FillZeroPipe:2}}</option></select>
                     </td>
                   </tr><tr>
                     <td>分刻み間隔</td>
                     <td>
-                    <input type="text" class="input-time" [(ngModel)]="userInfo.userConfig.minutesInterval">分
+                    <input type="text" class="input-time" [(ngModel)]="userInfoService.userInfo.userConfig.minutesInterval">分
                     </td>
                   </tr>
                 </tbody>
@@ -89,10 +89,7 @@ import { UserInfoService } from '../service/UserInfoService';
 })
 export class TimeSheetInputComponent {
   @ViewChild(TimeSheetComponent) child:TimeSheetComponent
-  userId:String
-  userInfo:UserInfo
-  selectedTimeSheet:TimeSheet
-  selectedYearMonth:String
+  selectedYearMonth:string
 
   constructor(
     public route:ActivatedRoute,
@@ -105,10 +102,8 @@ export class TimeSheetInputComponent {
     this.route.params.subscribe(params => {
       const userId = params['userId'];
       this.userInfoService.selectUserInfo(userId)
-        .then((userInfo:UserInfo) => {
-          this.userInfo = userInfo;
-          this.selectedTimeSheet = userInfo.timeSheets[userInfo.timeSheets.length - 1];
-          this.selectedYearMonth = this.selectedTimeSheet.yearMonth;
+        .then(() => {
+          this.selectedYearMonth = this.userInfoService.userInfo.timeSheets[this.userInfoService.userInfo.timeSheets.length - 1].yearMonth;
         })
         .catch(e => this.modalService.alertError(e));
     });
@@ -117,13 +112,8 @@ export class TimeSheetInputComponent {
       this.child.reload();
     }));
   }
-  selectYearMonth() {
-    this.selectedTimeSheet = this.userInfo.timeSheets.find((timeSheet:TimeSheet) => {
-      return timeSheet.yearMonth == this.selectedYearMonth;
-    });
-  }
   save() {
-    this.userInfoService.updateUserInfo(this.userInfo)
+    this.userInfoService.updateUserInfo()
       .then(() => this.modalService.alertSaved())
       .catch(e => this.modalService.alertError(e));
   }

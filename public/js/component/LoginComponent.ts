@@ -34,12 +34,12 @@ export class LoginComponent {
 
   ngOnInit() {
     this.loginService.checkToken()
-      .then(() => this.router.navigate(['/TimeSheetInput', this.loginId]));
+      .then(loginInfo => this.router.navigate(['/TimeSheetInput', loginInfo.loginId]));
   }
 
   login() {
     this.loginService.login(this.loginId, this.loginPassword)
-      .then(() => this.router.navigate(['/TimeSheetInput', this.loginId]))
+      .then(loginInfo => this.router.navigate(['/TimeSheetInput', loginInfo.loginId]))
       .catch(e => this.modalService.alertError(e));
   }
 }

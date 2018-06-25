@@ -9,18 +9,19 @@ export class LoginService {
     public httpService:HttpService
   ) {}
 
-  login(loginId:string, loginPassword:string):Promise<void> {
+  login(loginId:string, loginPassword:string):Promise<LoginInfo> {
     return this.httpService
       .post<LoginInfo>('/ws/login', { loginId, loginPassword })
       .then(resBody => {
         const loginInfo:LoginInfo = resBody;
         localStorage.setItem('loginId', loginInfo.loginId);
         localStorage.setItem('loginToken', loginInfo.loginToken);
+        return loginInfo;
       });
   }
-  checkToken():Promise<void> {
+  checkToken():Promise<LoginInfo> {
     const loginId = localStorage.getItem('loginId');
     const loginToken = localStorage.getItem('loginToken');
-    return this.httpService.post<void>('/ws/checkToken', { loginId, loginToken });
+    return this.httpService.post<LoginInfo>('/ws/checkToken', { loginId, loginToken });
   }
 }
