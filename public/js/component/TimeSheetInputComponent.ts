@@ -15,13 +15,7 @@ import { UserInfoService } from '../service/UserInfoService';
   template: `
     <div *ngIf="userInfoService.userInfo">
       <nav class="navbar navbar-expand-xs fixed-top bg-primary text-white font-weight-bold">
-        <a href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <i class="fa fa-diamond" aria-hidden="true"></i>
-        </a>
-        <div class="collapse navbar-collapse dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <!-- Button trigger modal -->
-          <a href="#" class="dropdown-item" data-toggle="modal" data-target="#exampleModalCenter">勤務時間設定</a>
-        </div>
+        <button id="configButton" class="fa fa-diamond" data-toggle="modal" data-target="#userConfigModal"></button>
         <div>
           <select [(ngModel)]="selectedYearMonth">
             <option *ngFor="let timeSheet of userInfoService.userInfo.timeSheets">
@@ -29,17 +23,17 @@ import { UserInfoService } from '../service/UserInfoService';
             </option>
           </select>
         </div>
-        <button (click)="save()">保存</button>
+        <button id="saveButton" (click)="save()">保存</button>
       </nav>
       <div id="timesheet">
         <TimeSheetComponent [selectedYearMonth]="selectedYearMonth"></TimeSheetComponent>
       </div>
       <!-- Modal -->
-      <div class="modal" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal" id="userConfigModal" tabindex="-1" role="dialog" aria-labelledby="userConfigModalTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">勤務時間設定</h5>
+              <h5 class="modal-title" id="exampleModalLongTitle">設定</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -48,7 +42,7 @@ import { UserInfoService } from '../service/UserInfoService';
               <table class="table table-striped">
                 <tbody>
                   <tr>
-                    <td>勤務時間</td>
+                    <td>基本勤務時間</td>
                     <td>
                       <select [(ngModel)]="userInfoService.userInfo.userConfig.beginHour"><option *ngFor="let h of userInfoService.hourSelections" [value]="h">{{h | FillZeroPipe:2}}</option></select
                       ><select [(ngModel)]="userInfoService.userInfo.userConfig.beginMinute"><option *ngFor="let m of userInfoService.minuteSelections" [value]="m">{{m | FillZeroPipe:2}}</option></select>
@@ -71,10 +65,6 @@ import { UserInfoService } from '../service/UserInfoService';
                 </tbody>
               </table>
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
           </div>
         </div>
       </div>
@@ -83,8 +73,10 @@ import { UserInfoService } from '../service/UserInfoService';
   styles: [
     'nav { background-color: #17a2b8; }',
     '#timesheet { margin-top: 3rem; }',
-    '.fa-diamond { color: #ffffff; font-weight: bold; }',
-    '.input-time { width: 4rem; }'
+    '#configButton, #saveButton { color: #fff; font-weight: bold; background-color: transparent; border: 1px solid #fff; height: 1.9rem; cursor: pointer; }',
+    '#configButton { width: 1.9rem; }',
+    '.input-time { width: 4rem; }',
+    '.modal-content { max-width: 25rem; }'
   ]
 })
 export class TimeSheetInputComponent {
@@ -108,7 +100,7 @@ export class TimeSheetInputComponent {
         .catch(e => this.modalService.alertError(e));
     });
 
-    $(() => $('#exampleModalCenter').on('hide.bs.modal', e => {
+    $(() => $('#userConfigModal').on('hide.bs.modal', e => {
       this.userInfoService.reloadHourMinuteSelections();
       this.child.reload();
     }));
