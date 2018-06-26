@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { TimeSheetComponent } from '../component/TimeSheetComponent';
 import { DateRow } from '../entity/DateRow';
@@ -33,7 +33,7 @@ import { UserInfoService } from '../service/UserInfoService';
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">設定</h5>
+              <h5 class="modal-title fa fa-diamond" aria-hidden="true"></h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -61,6 +61,11 @@ import { UserInfoService } from '../service/UserInfoService';
                     <td>
                     <input type="text" class="input-time" [(ngModel)]="userInfoService.userInfo.userConfig.minutesInterval">分
                     </td>
+                  </tr><tr>
+                    <td>ログアウト</td>
+                    <td>
+                      <button id="logoutButton" class="fa fa-user-times" (click)="logout()"></button>
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -73,8 +78,9 @@ import { UserInfoService } from '../service/UserInfoService';
   styles: [
     'nav { background-color: #17a2b8; }',
     '#timesheet { margin-top: 3rem; }',
-    '#configButton, #saveButton { color: #fff; font-weight: bold; background-color: transparent; border: 1px solid #fff; height: 1.9rem; cursor: pointer; }',
-    '#configButton { width: 1.9rem; }',
+    '#configButton { color: #fff; font-weight: bold; background-color: transparent; border: 1px solid #fff; height: 1.9rem; cursor: pointer; width: 1.9rem; }',
+    '#saveButton   { color: #fff; font-weight: bold; background-color: transparent; border: 1px solid #fff; height: 1.9rem; cursor: pointer; }',
+    '#logoutButton { color: #000; font-weight: normal; background-color: transparent; border: 1px solid #ccc; height: 1.9rem; cursor: pointer; width: 1.9rem; }',
     '.input-time { width: 4rem; }',
     '.modal-content { max-width: 25rem; }'
   ]
@@ -84,6 +90,7 @@ export class TimeSheetInputComponent {
   selectedYearMonth:string
 
   constructor(
+    public router:Router,
     public route:ActivatedRoute,
     public loginService:LoginService,
     public modalService:ModalService,
@@ -108,6 +115,13 @@ export class TimeSheetInputComponent {
   save() {
     this.userInfoService.updateUserInfo()
       .then(() => this.modalService.alertSaved())
+      .catch(e => this.modalService.alertError(e));
+  }
+  logout() {
+    this.loginService.logout()
+      .then(() => {
+        location.href = '/';
+      })
       .catch(e => this.modalService.alertError(e));
   }
 }

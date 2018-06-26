@@ -6,6 +6,7 @@ module.exports = function(req) {
       loginId: req.body.loginId,
       loginToken: req.body.loginToken
     })
-    .then(result => result ? resolve(result) : reject('ログインしてください'));
+    .then(result => result ? resolve(result) : reject('ログインしていません'))
+    .catch(e => reject(e));
   });
 };

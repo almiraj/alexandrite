@@ -34,7 +34,8 @@ export class LoginComponent {
 
   ngOnInit() {
     this.loginService.checkToken()
-      .then(loginInfo => this.router.navigate(['/TimeSheetInput', loginInfo.loginId]));
+      .then(loginInfo => this.router.navigate(['/TimeSheetInput', loginInfo.loginId]))
+      .catch(e => {/*NOP*/});
   }
 
   login() {

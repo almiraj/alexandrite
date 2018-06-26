@@ -24,4 +24,11 @@ export class LoginService {
     const loginToken = localStorage.getItem('loginToken');
     return this.httpService.post<LoginInfo>('/ws/checkToken', { loginId, loginToken });
   }
+  logout():Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      localStorage.removeItem('loginId');
+      localStorage.removeItem('loginToken');
+      return resolve();
+    });
+  }
 }
