@@ -9,8 +9,11 @@ export class HttpService {
 
   post<T>(url:string, params:Object):Promise<T> {
     return new Promise<T>((resolve, reject) => {
-      this.http
-        .post(url, params)
+      if (!params['loginId']) {
+        params['loginId'] = localStorage.getItem('loginId');
+        params['loginToken'] = localStorage.getItem('loginToken');
+      }
+      this.http.post(url, params)
         .subscribe(
           (res:Response) => {
             const resBody = res.json();

@@ -7,23 +7,20 @@ import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './component/AppComponent';
 import { LoginComponent } from './component/LoginComponent';
-import { AccountComponent } from './component/AccountComponent';
 import { TimeSheetInputComponent } from './component/TimeSheetInputComponent';
 import { TimeSheetComponent } from './component/TimeSheetComponent';
 import { PageNotFoundComponent } from './component/PageNotFoundComponent';
 
-import { ReversePipe } from './pipe/ReversePipe';
 import { DateRowSummaryPipe } from './pipe/DateRowSummaryPipe';
+import { FillZeroPipe } from './pipe/FillZeroPipe';
 
-import { AccountService } from './service/AccountService';
+import { LoginService } from './service/LoginService';
 import { HttpService } from './service/HttpService';
 import { ModalService } from './service/ModalService';
-import { SetupService } from './service/SetupService';
-import { TimeSheetService } from './service/TimeSheetService';
+import { UserInfoService } from './service/UserInfoService';
 
 const appRoutes:Routes = [
   { path: 'Login', component: LoginComponent },
-  { path: 'Account', component: AccountComponent },
   { path: 'TimeSheetInput/:userId', component: TimeSheetInputComponent },
   {
     path: '',
@@ -37,19 +34,17 @@ const appRoutes:Routes = [
     declarations: [
       AppComponent,
       LoginComponent,
-      AccountComponent,
       TimeSheetInputComponent,
       TimeSheetComponent,
       PageNotFoundComponent,
       DateRowSummaryPipe,
-      ReversePipe
+      FillZeroPipe
     ],
     providers: [
-      AccountService,
+      LoginService,
       HttpService,
       ModalService,
-      SetupService,
-      TimeSheetService
+      UserInfoService
     ],
     imports: [
       BrowserModule,
