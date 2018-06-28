@@ -13,9 +13,9 @@ import { UserInfoService } from '../service/UserInfoService';
 @Component({
   selector: 'TimeSheetInputComponent',
   template: `
-    <div *ngIf="userInfoService.userInfo">
+    <div class="container" *ngIf="userInfoService.userInfo">
       <nav class="navbar navbar-expand-xs fixed-top bg-primary text-white font-weight-bold">
-        <button id="configButton" class="fa fa-diamond" data-toggle="modal" data-target="#userConfigModal"></button>
+        <button id="configButton" class="fa fa-lg fa-diamond" data-toggle="modal" data-target="#userConfigModal"></button>
         <div>
           <select [(ngModel)]="selectedYearMonth">
             <option *ngFor="let timeSheet of userInfoService.userInfo.timeSheets">
@@ -78,9 +78,9 @@ import { UserInfoService } from '../service/UserInfoService';
   styles: [
     'nav { background-color: #17a2b8; }',
     '#timesheet { margin-top: 3rem; }',
-    '#configButton { color: #fff; font-weight: bold; background-color: transparent; border: 1px solid #fff; height: 1.9rem; cursor: pointer; width: 1.9rem; }',
-    '#saveButton   { color: #fff; font-weight: bold; background-color: transparent; border: 1px solid #fff; height: 1.9rem; cursor: pointer; }',
-    '#logoutButton { color: #000; font-weight: normal; background-color: transparent; border: 1px solid #ccc; height: 1.9rem; cursor: pointer; width: 1.9rem; }',
+    '#configButton { color: #fff; font-weight: bold; background-color: transparent; border-style: none; height: 1.9rem; cursor: pointer; }',
+    '#saveButton   { color: #fff; font-weight: bold; background-color: transparent; border-style: none; height: 1.9rem; cursor: pointer; font-size: 1.1rem; }',
+    '#logoutButton { color: #ccc; font-weight: normal; background-color: transparent; border: 1px solid #ccc; height: 1.9rem; cursor: pointer; }',
     '.input-time { width: 4rem; }',
     '.modal-content { max-width: 25rem; }'
   ]

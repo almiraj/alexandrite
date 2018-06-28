@@ -4,9 +4,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'my-app',
   template: `
-    <div class="container">
-      <router-outlet></router-outlet>
-    </div>
+    <router-outlet></router-outlet>
   `
 })
 export class AppComponent {
