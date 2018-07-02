@@ -22,11 +22,21 @@ export class UserInfoService {
       .then(resBody => {
         this.userInfo = resBody;
         if (!this.userInfo.userId) {
+          // まだ保存したことのないアカウントの場合、クライアント側で情報を生成する
           this.userInfo = new UserInfo(userId, initUserConfig, []);
+        } else {
+          // 保存したことのあるアカウントの場合、取得したString型の日付をDate型にパースする
+          this.userInfo.timeSheets.forEach(timeSheet => {
+            timeSheet.dateRows.forEach(dateRow => {
+              dateRow.date = new Date(dateRow.date.toString());
+            });
+          });
         }
         if (!TimeSheetUtils.findThisMonthSheet(this.userInfo.timeSheets)) {
+          // 今月の勤務表が取得できなかった場合、先頭に今月の情報を追加する
           this.userInfo.timeSheets.unshift(TimeSheetUtils.createThisMonthSheet());
         }
+        // 「分刻み間隔」を元に決定される時間と分のセレクトボックス情報を更新する
         this.reloadHourMinuteSelections();
       });
   }

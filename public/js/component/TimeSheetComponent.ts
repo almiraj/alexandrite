@@ -23,9 +23,9 @@ import { TimeSheetUtils } from '../util/TimeSheetUtils';
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let dateRow of timeSheet.dateRows; let i = index" [ngClass]="{sunday: dateRow.date.getDay() == 0, saturday: dateRow.date.getDay() == 6, holiday: timeSheetUtils.isHoliday(dateRow.date)}">
+          <tr *ngFor="let dateRow of timeSheet.dateRows; let i = index" [ngClass]="{saturday: dateRow.date.getDay() == 6, sunday: dateRow.date.getDay() == 0, holiday: timeSheetUtils.isHoliday(dateRow.date)}">
             <td class="td-date">
-              {{dateRow.date | date:'d'}}
+              {{dateRow.date | date:'d'}}<span class="day"> ({{['日', '月', '火', '水', '木', '金', '土'][dateRow.date.getDay()]}})</span>
             </td>
             <td>
               <select [(ngModel)]="dateRow.beginHour" (change)="setDefault(dateRow)"><option *ngFor="let h of userInfoService.hourSelections" [value]="h">{{h | FillZeroPipe:2}}</option></select
@@ -43,23 +43,21 @@ import { TimeSheetUtils } from '../util/TimeSheetUtils';
               ><select [(ngModel)]="dateRow.breakMinute" (change)="setDefault(dateRow)"><option *ngFor="let m of userInfoService.minuteSelections" [value]="m">{{m | FillZeroPipe:2}}</option></select>
             </td>
             <td class="d-none d-sm-table-cell">
-              <input type="text" class="input-remarks">
+              <input type="text" class="remarks-textbox">
             </td>
             <td class="d-none d-sm-table-cell">
               {{dateRow | DateRowSummaryPipe}}
             </td>
             <td class="d-sm-none">
               <!-- Button trigger modal -->
-              <a id="openModalDateRowButton{{i}}" (click)="openModal('#modalDateRow' + i)">
-                <i class="fa fa-window-restore" [ngClass]="{'not-default': dateRow.isNotDefaultInterval}" aria-hidden="true"></i>
-              </a>
+              <i id="modal-button{{i}}" class="modal-button fa fa-window-restore" (click)="openModal('#modal-window' + i)" [ngClass]="{'not-default': dateRow.isNotDefaultInterval}" aria-hidden="true"></i>
               <!-- Modal -->
-              <div class="modal" id="modalDateRow{{i}}" tabindex="-1" role="dialog" [attr.aria-labelledby]="'openModalDateRowButton' + i" aria-hidden="true">
+              <div class="modal" id="modal-window{{i}}" tabindex="-1" role="dialog" [attr.aria-labelledby]="'modal-button' + i" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                   <div class="modal-content">
                     <div class="modal-header">
                       <h5 class="modal-title">
-                        {{timeSheet.yearMonth}}/{{dateRow.date | date:'dd'}}
+                        {{dateRow.date | date:'y/M/d'}}
                       </h5>
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -88,17 +86,13 @@ import { TimeSheetUtils } from '../util/TimeSheetUtils';
                             </td>
                           </tr><tr>
                             <td>備考</td>
-                            <td><input type="text" class="input-remarks"></td>
+                            <td><input type="text" class="remarks-textbox"></td>
                           </tr><tr>
                             <td>計</td>
                             <td>{{dateRow | DateRowSummaryPipe}}</td>
                           </tr>
                         </tbody>
                       </table>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                      <button type="button" class="btn btn-primary">Save changes</button>
                     </div>
                   </div>
                 </div>
@@ -110,18 +104,20 @@ import { TimeSheetUtils } from '../util/TimeSheetUtils';
     </div>
   `,
   styles: [
+    'select { border:1px solid #eee; border-radius: 0.3rem; }',
     'th { font-weight: normal; }',
     'th, td { white-space: nowrap; padding: 2px 4px; text-align: center; vertical-align: middle; }',
     '.td-date { text-align: right; }',
-    '.input-remarks { width: 100%; }',
-    '.modal-body th, .modal-body td { text-align: left; }',
-    'select { border:1px solid #eee; border-radius: 0.3rem; }',
-    '.fa-window-restore { font-size: 0.8em; }',
+    '.td-date .day { font-size: 0.7rem; color: #666; }',
+    '.remarks-textbox { width: 100%; }',
+    '.modal-button { font-size: 0.9rem; cursor: pointer; }',
     '.not-default { color: red; }',
     '.not-default select { background-color: red; }',
-    '.saturday { background-color: #78b0d3; }',
-    '.sunday { background-color: #c14927; }',
-    '.holiday { background-color: #fabf67; }',
+    '.saturday { background-color: rgb(152,192,214); }',
+    '.sunday { background-color: #C7A5DC; }',
+    '.holiday { background-color: rgb(201,221,164); }',
+    '.modal-header, .modal-header span { color: rgb(248,242,251); background-color: #69A5C4; }',
+    '.modal-body th, .modal-body td { text-align: left; }',
   ]
 })
 export class TimeSheetComponent {

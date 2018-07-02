@@ -13,26 +13,26 @@ import { UserInfoService } from '../service/UserInfoService';
   selector: 'TimeSheetInputComponent',
   template: `
     <div class="container" *ngIf="userInfoService.userInfo">
-      <nav class="navbar navbar-expand-xs fixed-top bg-primary text-white font-weight-bold">
-        <button id="configButton" class="fa fa-lg fa-diamond" data-toggle="modal" data-target="#userConfigModal"></button>
+      <nav class="navbar navbar-expand-xs fixed-top text-white font-weight-bold">
+        <button id="modal-button" class="fa fa-lg fa-diamond" data-toggle="modal" data-target="#modal-window"></button>
         <div>
-          <select [(ngModel)]="selectedYearMonth">
+          <select id="year-month-select" [(ngModel)]="selectedYearMonth">
             <option *ngFor="let timeSheet of userInfoService.userInfo.timeSheets">
               {{timeSheet.yearMonth}}
             </option>
           </select>
         </div>
-        <button id="saveButton" (click)="save()">保存</button>
+        <button id="save-button" (click)="save()">保存</button>
       </nav>
       <div id="timesheet">
         <TimeSheetComponent [selectedYearMonth]="selectedYearMonth"></TimeSheetComponent>
       </div>
       <!-- Modal -->
-      <div class="modal" id="userConfigModal" tabindex="-1" role="dialog" aria-labelledby="configButton" aria-hidden="true">
+      <div class="modal" id="modal-window" tabindex="-1" role="dialog" aria-labelledby="modal-button" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title fa fa-diamond" aria-hidden="true"></h5>
+              <h5 class="modal-title" aria-hidden="true">設定</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -58,12 +58,12 @@ import { UserInfoService } from '../service/UserInfoService';
                   </tr><tr>
                     <td>分刻み間隔</td>
                     <td>
-                    <input type="text" class="input-time" [(ngModel)]="userInfoService.userInfo.userConfig.minutesInterval">分
+                      <input type="text" id="config-minutes-interval" [(ngModel)]="userInfoService.userInfo.userConfig.minutesInterval">分
                     </td>
                   </tr><tr>
                     <td>ログアウト</td>
                     <td>
-                      <button id="logoutButton" class="fa fa-user-times" (click)="logout()"></button>
+                      <button id="config-logout-button" class="fa fa-user-times" (click)="logout()"></button>
                     </td>
                   </tr>
                 </tbody>
@@ -75,13 +75,16 @@ import { UserInfoService } from '../service/UserInfoService';
     </div>
   `,
   styles: [
-    'nav { background-color: #17a2b8; }',
+    'nav { background-color: #69A5C4; }',
     '#timesheet { margin-top: 3rem; }',
-    '#configButton { color: #fff; font-weight: bold; background-color: transparent; border-style: none; height: 1.9rem; cursor: pointer; }',
-    '#saveButton   { color: #fff; font-weight: bold; background-color: transparent; border-style: none; height: 1.9rem; cursor: pointer; font-size: 1.1rem; }',
-    '#logoutButton { color: #ccc; font-weight: normal; background-color: transparent; border: 1px solid #ccc; height: 1.9rem; cursor: pointer; }',
-    '.input-time { width: 4rem; }',
-    '.modal-content { max-width: 25rem; }'
+    '#modal-button { color: rgb(248,242,251); font-weight: bold; background-color: transparent; border-style: none; height: 1.9rem; cursor: pointer; }',
+    '#save-button   { color: rgb(248,242,251); font-weight: bold; background-color: transparent; border-style: none; height: 1.9rem; cursor: pointer; }',
+    '#year-month-select { color: rgb(58,29,75); }',
+    '#config-logout-button { color: #ccc; font-weight: normal; background-color: transparent; border: 1px solid #ccc; height: 1.9rem; cursor: pointer; }',
+    '#config-minutes-interval { width: 4rem; }',
+    '.modal-content { max-width: 25rem; }',
+    '.modal-content select { border:1px solid #eee; border-radius: 0.3rem; }',
+    '.modal-header, .modal-header span { color: rgb(248,242,251); background-color: #69A5C4; }',
   ]
 })
 export class TimeSheetInputComponent {
@@ -106,7 +109,7 @@ export class TimeSheetInputComponent {
         .catch(e => this.modalService.alertError(e));
     });
 
-    $(() => $('#userConfigModal').on('hide.bs.modal', e => {
+    $(() => $('#modal-window').on('hide.bs.modal', e => {
       this.userInfoService.reloadHourMinuteSelections();
       this.child.reload();
     }));
