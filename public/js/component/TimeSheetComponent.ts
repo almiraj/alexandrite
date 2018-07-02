@@ -3,12 +3,13 @@ import { Component, Input, ChangeDetectorRef } from '@angular/core';
 import { DateRow } from '../entity/DateRow';
 import { TimeSheet } from '../entity/TimeSheet';
 import { UserInfoService } from '../service/UserInfoService';
+import { TimeSheetUtils } from '../util/TimeSheetUtils';
 
 @Component({
   selector: 'TimeSheetComponent',
   template: `
     <div>
-      <table class="table table-striped">
+      <table class="table">
         <thead>
           <tr>
             <th></th>
@@ -22,9 +23,9 @@ import { UserInfoService } from '../service/UserInfoService';
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let dateRow of timeSheet.dateRows; let i = index" id="{{'dateRow' + i}}">
+          <tr *ngFor="let dateRow of timeSheet.dateRows; let i = index" [ngClass]="{sunday: dateRow.date.getDay() == 0, saturday: dateRow.date.getDay() == 6, holiday: timeSheetUtils.isHoliday(dateRow.date)}">
             <td class="td-date">
-              {{dateRow.date}}
+              {{dateRow.date | date:'d'}}
             </td>
             <td>
               <select [(ngModel)]="dateRow.beginHour" (change)="setDefault(dateRow)"><option *ngFor="let h of userInfoService.hourSelections" [value]="h">{{h | FillZeroPipe:2}}</option></select
@@ -49,16 +50,16 @@ import { UserInfoService } from '../service/UserInfoService';
             </td>
             <td class="d-sm-none">
               <!-- Button trigger modal -->
-              <a (click)="openModal('#exampleModalCenter' + i)">
+              <a id="openModalDateRowButton{{i}}" (click)="openModal('#modalDateRow' + i)">
                 <i class="fa fa-window-restore" [ngClass]="{'not-default': dateRow.isNotDefaultInterval}" aria-hidden="true"></i>
               </a>
               <!-- Modal -->
-              <div class="modal" id="exampleModalCenter{{i}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+              <div class="modal" id="modalDateRow{{i}}" tabindex="-1" role="dialog" [attr.aria-labelledby]="'openModalDateRowButton' + i" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h5 class="modal-title" id="exampleModalLongTitle">
-                        {{timeSheet.yearMonth}}/{{dateRow.date | FillZeroPipe:2}}
+                      <h5 class="modal-title">
+                        {{timeSheet.yearMonth}}/{{dateRow.date | date:'dd'}}
                       </h5>
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -117,10 +118,14 @@ import { UserInfoService } from '../service/UserInfoService';
     'select { border:1px solid #eee; border-radius: 0.3rem; }',
     '.fa-window-restore { font-size: 0.8em; }',
     '.not-default { color: red; }',
-    '.not-default select { background-color: red; }'
+    '.not-default select { background-color: red; }',
+    '.saturday { background-color: #78b0d3; }',
+    '.sunday { background-color: #c14927; }',
+    '.holiday { background-color: #fabf67; }',
   ]
 })
 export class TimeSheetComponent {
+  timeSheetUtils:TimeSheetUtils = TimeSheetUtils
   @Input() selectedYearMonth:string
   timeSheet:TimeSheet
 

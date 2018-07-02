@@ -1,3 +1,5 @@
+import { isHoliday } from 'japanese-holidays';
+
 import { TimeSheet } from '../entity/TimeSheet';
 import { DateRow } from '../entity/DateRow';
 
@@ -20,8 +22,8 @@ export class TimeSheetUtils {
   static isWeekend(date:Date):Boolean {
     return date.getDay() == 0 || date.getDay() == 6;
   }
-  static isPublicHoliday(date:Date):Boolean {
-    return [].includes(this.toMMDD(date)); // TODO
+  static isHoliday(date:Date):Boolean {
+    return !!isHoliday(date);
   }
   static findThisMonthSheet(timeSheets:Array<TimeSheet>):TimeSheet {
     const todayYearMonth = this.toYYYYMMSlash(new Date());
@@ -36,10 +38,10 @@ export class TimeSheetUtils {
     const newDateRows = new Array<DateRow>();
     for (var i = 1; i <= lastDayOfThisMonth; i++) {
       const date = new Date(today.getFullYear(), today.getMonth(), i);
-      if (this.isWeekend(date) || this.isPublicHoliday(date)) {
-        newDateRows.push(new DateRow(i, undefined, undefined, undefined, undefined, undefined, undefined));
+      if (this.isWeekend(date) || this.isHoliday(date)) {
+        newDateRows.push(new DateRow(date, undefined, undefined, undefined, undefined, undefined, undefined));
       } else {
-        newDateRows.push(new DateRow(i, 9, 0, 18, 0, 1, 0));
+        newDateRows.push(new DateRow(date, 9, 0, 18, 0, 1, 0));
       }
     }
     return new TimeSheet(TimeSheetUtils.toYYYYMMSlash(today), newDateRows);

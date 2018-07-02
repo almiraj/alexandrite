@@ -2,7 +2,6 @@ import { Component, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { TimeSheetComponent } from '../component/TimeSheetComponent';
-import { DateRow } from '../entity/DateRow';
 import { TimeSheet } from '../entity/TimeSheet';
 import { UserConfig } from '../entity/UserConfig';
 import { UserInfo } from '../entity/UserInfo';
@@ -29,7 +28,7 @@ import { UserInfoService } from '../service/UserInfoService';
         <TimeSheetComponent [selectedYearMonth]="selectedYearMonth"></TimeSheetComponent>
       </div>
       <!-- Modal -->
-      <div class="modal" id="userConfigModal" tabindex="-1" role="dialog" aria-labelledby="userConfigModalTitle" aria-hidden="true">
+      <div class="modal" id="userConfigModal" tabindex="-1" role="dialog" aria-labelledby="configButton" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header">

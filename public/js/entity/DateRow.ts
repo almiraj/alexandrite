@@ -1,6 +1,8 @@
 export class DateRow {
+  isNotDefaultInterval:boolean
+
   constructor(
-    public date:number,
+    public date:Date,
     public beginHour:number,
     public beginMinute:number,
     public endHour:number,
@@ -8,5 +10,4 @@ export class DateRow {
     public breakHour:number,
     public breakMinute:number
   ) {}
-  isNotDefaultInterval:boolean
 }

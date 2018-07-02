@@ -16,7 +16,7 @@ module.exports = (function() {
     timeSheets: [ new Schema({
       yearMonth: { type: String, index: true },
       dateRows: [ new Schema({
-        date: { type: Number, index: true },
+        date: { type: Date, index: true },
         beginHour: { type: Number },
         beginMinute: { type: Number },
         endHour: { type: Number },
