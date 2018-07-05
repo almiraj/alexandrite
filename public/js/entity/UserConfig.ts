@@ -1,11 +1,9 @@
 export class UserConfig {
-  constructor(
-    public beginHour:number,
-    public beginMinute:number,
-    public endHour:number,
-    public endMinute:number,
-    public breakHour:number,
-    public breakMinute:number,
-    public minutesInterval:number
-  ) {}
+  beginHour:number
+  beginMinute:number
+  endHour:number
+  endMinute:number
+  breakHour:number
+  breakMinute:number
+  minutesInterval:number
 }

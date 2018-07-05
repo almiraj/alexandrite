@@ -1,13 +1,13 @@
 export class DateRow {
+  beginHour:number
+  beginMinute:number
+  endHour:number
+  endMinute:number
+  breakHour:number
+  breakMinute:number
   isNotDefaultInterval:boolean
 
   constructor(
-    public date:Date,
-    public beginHour:number,
-    public beginMinute:number,
-    public endHour:number,
-    public endMinute:number,
-    public breakHour:number,
-    public breakMinute:number
+    public date:Date
   ) {}
 }

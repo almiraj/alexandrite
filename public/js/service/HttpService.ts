@@ -4,7 +4,7 @@ import { Http, Response } from '@angular/http';
 @Injectable()
 export class HttpService {
   constructor(
-    public http:Http
+    private http:Http
   ) {}
 
   post<T>(url:string, params:Object):Promise<T> {

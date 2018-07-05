@@ -5,7 +5,14 @@ import { UserConfig } from '../entity/UserConfig';
 import { HttpService } from '../service/HttpService';
 import { TimeSheetUtils } from '../util/TimeSheetUtils';
 
-const initUserConfig = new UserConfig(9, 0, 18, 0, 1, 0, 15);
+const initUserConfig = new UserConfig();
+initUserConfig.beginHour       = 9;
+initUserConfig.beginMinute     = 0;
+initUserConfig.endHour         = 18;
+initUserConfig.endMinute       = 0;
+initUserConfig.breakHour       = 1;
+initUserConfig.breakMinute     = 0;
+initUserConfig.minutesInterval = 15;
 
 @Injectable()
 export class UserInfoService {
@@ -14,7 +21,7 @@ export class UserInfoService {
   minuteSelections:Array<number>
 
   constructor(
-    public httpService:HttpService
+    private httpService:HttpService
   ) {}
 
   selectUserInfo(userId:string):Promise<void> {
@@ -23,7 +30,10 @@ export class UserInfoService {
         this.userInfo = resBody;
         if (!this.userInfo.userId) {
           // まだ保存したことのないアカウントの場合、クライアント側で情報を生成する
-          this.userInfo = new UserInfo(userId, initUserConfig, []);
+          this.userInfo = new UserInfo();
+          this.userInfo.userId = userId;
+          this.userInfo.userConfig = initUserConfig;
+          this.userInfo.timeSheets = [];
         } else {
           // 保存したことのあるアカウントの場合、取得したString型の日付をDate型にパースする
           this.userInfo.timeSheets.forEach(timeSheet => {

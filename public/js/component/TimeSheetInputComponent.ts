@@ -92,11 +92,11 @@ export class TimeSheetInputComponent {
   selectedYearMonth:string
 
   constructor(
-    public router:Router,
-    public route:ActivatedRoute,
-    public loginService:LoginService,
-    public modalService:ModalService,
-    public userInfoService:UserInfoService
+    private router:Router,
+    private route:ActivatedRoute,
+    private loginService:LoginService,
+    private modalService:ModalService,
+    private userInfoService:UserInfoService
   ) {}
 
   ngOnInit() {

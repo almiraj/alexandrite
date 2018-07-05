@@ -32,19 +32,29 @@ export class TimeSheetUtils {
     });
   }
   static createThisMonthSheet():TimeSheet {
-    const today = new Date();
-    const lastDayOfThisMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
+    const now = new Date();
+    const lastDayOfThisMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
 
     const newDateRows = new Array<DateRow>();
     for (var i = 1; i <= lastDayOfThisMonth; i++) {
-      const date = new Date(today.getFullYear(), today.getMonth(), i);
+      const date = new Date(now.getFullYear(), now.getMonth(), i);
       if (this.isWeekend(date) || this.isHoliday(date)) {
-        newDateRows.push(new DateRow(date, undefined, undefined, undefined, undefined, undefined, undefined));
+        newDateRows.push(new DateRow(date));
       } else {
-        newDateRows.push(new DateRow(date, 9, 0, 18, 0, 1, 0));
+        const dateRow = new DateRow(date);
+        dateRow.beginHour   = 9;
+        dateRow.beginMinute = 0;
+        dateRow.endHour     = 18;
+        dateRow.endMinute   = 0;
+        dateRow.breakHour   = 1;
+        dateRow.breakMinute = 0;
+        newDateRows.push(dateRow);
       }
     }
-    return new TimeSheet(TimeSheetUtils.toYYYYMMSlash(today), newDateRows);
+    const timeSheet = new TimeSheet();
+    timeSheet.yearMonth = TimeSheetUtils.toYYYYMMSlash(now);
+    timeSheet.dateRows = newDateRows;
+    return timeSheet;
   }
   static allHours():Array<number> {
     const allHours:Array<number> = [];

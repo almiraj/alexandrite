@@ -125,8 +125,8 @@ export class TimeSheetComponent {
   timeSheet:TimeSheet
 
   constructor(
-    public ref:ChangeDetectorRef,
-    public userInfoService:UserInfoService
+    private ref:ChangeDetectorRef,
+    private userInfoService:UserInfoService
   ) {}
 
   ngOnChanges() {

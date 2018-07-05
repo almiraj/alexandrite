@@ -55,9 +55,9 @@ export class LoginComponent {
   loginPassword:string
 
   constructor(
-    public router:Router,
-    public loginService:LoginService,
-    public modalService:ModalService
+    private router:Router,
+    private loginService:LoginService,
+    private modalService:ModalService
   ) {}
 
   login() {

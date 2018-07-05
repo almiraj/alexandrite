@@ -22,8 +22,8 @@ import { UserInfoService } from './service/UserInfoService';
 @Injectable()
 class LoginResolver implements Resolve<void> {
   constructor(
-    public router:Router,
-    public loginService:LoginService
+    private router:Router,
+    private loginService:LoginService
   ) {}
 
   resolve(route:ActivatedRouteSnapshot, state:RouterStateSnapshot):Promise<void> {

@@ -6,7 +6,7 @@ import { HttpService } from '../service/HttpService';
 @Injectable()
 export class LoginService {
   constructor(
-    public httpService:HttpService
+    private httpService:HttpService
   ) {}
 
   login(loginId:string, loginPassword:string):Promise<LoginInfo> {
