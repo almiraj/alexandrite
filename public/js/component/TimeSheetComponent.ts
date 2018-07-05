@@ -9,7 +9,7 @@ import { TimeSheetUtils } from '../util/TimeSheetUtils';
   selector: 'TimeSheetComponent',
   template: `
     <div>
-      <table class="table">
+      <table id="timeSheetTable" class="table">
         <thead>
           <tr>
             <th></th>
@@ -104,9 +104,8 @@ import { TimeSheetUtils } from '../util/TimeSheetUtils';
     </div>
   `,
   styles: [
-    'select { border:1px solid #eee; border-radius: 0.3rem; }',
-    'th { font-weight: normal; }',
-    'th, td { white-space: nowrap; padding: 2px 4px; text-align: center; vertical-align: middle; }',
+    '#timeSheetTable > thead > th { font-weight: normal; }',
+    '#timeSheetTable > thead > tr > th, #timeSheetTable > tbody > tr > td { white-space: nowrap; padding: 2px 4px; text-align: center; vertical-align: middle; }',
     '.td-date { text-align: right; }',
     '.td-date .day { font-size: 0.7rem; color: #666; }',
     '.remarks-textbox { width: 100%; }',
