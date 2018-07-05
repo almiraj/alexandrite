@@ -15,6 +15,9 @@ export class DateRow {
   get dayOfJapan():string {
     return ['日', '月', '火', '水', '木', '金', '土'][this.date.getDay()];
   }
+  get isToday():boolean {
+    return this.date.getDate() == new Date().getDate();
+  }
   get isSaturday():boolean {
     return this.date.getDay() == 6;
   }

@@ -22,7 +22,7 @@ import { UserInfoService } from '../service/UserInfoService';
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let dateRow of timeSheet.dateRows; let i = index" [ngClass]="{saturday: dateRow.isSaturday, sunday: dateRow.isSunday, holiday: dateRow.isHoliday}">
+          <tr *ngFor="let dateRow of timeSheet.dateRows; let i = index" [ngClass]="{today: dateRow.isToday, saturday: dateRow.isSaturday, sunday: dateRow.isSunday, holiday: dateRow.isHoliday}">
             <td class="td-date">
               {{dateRow.date | date:'d'}}<span class="day"> ({{dateRow.dayOfJapan}})</span>
             </td>
@@ -114,6 +114,7 @@ import { UserInfoService } from '../service/UserInfoService';
     '.saturday { background-color: rgb(152,192,214); }',
     '.sunday { background-color: #C7A5DC; }',
     '.holiday { background-color: rgb(201,221,164); }',
+    '.today { border: 6px solid rgb(223,206,162); border-width: 0 6px; }',
     '.modal-header, .modal-header span { color: rgb(248,242,251); background-color: #69A5C4; }',
     '.modal-body th, .modal-body td { text-align: left; }',
   ]
