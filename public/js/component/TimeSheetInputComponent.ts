@@ -104,13 +104,23 @@ export class TimeSheetInputComponent {
       const userId = params['userId'];
       this.userInfoService.selectUserInfo(userId)
         .then(() => {
-          this.selectedYearMonth = this.userInfoService.userInfo.timeSheets[0].yearMonth;
+          // 今月の勤務表を表示する
+          this.selectedYearMonth = TimeSheet.getTodayYearMonth();
+          // 今月の勤務表が取得できていなかった場合、先頭に今月の情報を追加する
+          const timeSheets = this.userInfoService.userInfo.timeSheets;
+          if (timeSheets.length == 0 || timeSheets[0].yearMonth != this.selectedYearMonth) {
+            timeSheets.unshift(TimeSheet.createTodaySheet());
+          }
+          // 「分刻み間隔」を元に決定される時間と分のセレクトボックス情報を更新する
+          this.userInfoService.reloadHourMinuteSelections();
         })
         .catch(e => this.modalService.alertError(e));
     });
 
     $(() => $('#modal-window').on('hide.bs.modal', e => {
+      // 「分刻み間隔」を元に決定される時間と分のセレクトボックス情報を更新する
       this.userInfoService.reloadHourMinuteSelections();
+      // 自身を再描画する
       this.child.reload();
     }));
   }

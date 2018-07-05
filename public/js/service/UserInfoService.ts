@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 
 import { UserInfo } from '../entity/UserInfo';
 import { UserConfig } from '../entity/UserConfig';
+import { DateRow } from '../entity/DateRow';
 import { HttpService } from '../service/HttpService';
-import { TimeSheetUtils } from '../util/TimeSheetUtils';
 
 const initUserConfig = new UserConfig();
 initUserConfig.beginHour       = 9;
@@ -35,19 +35,14 @@ export class UserInfoService {
           this.userInfo.userConfig = initUserConfig;
           this.userInfo.timeSheets = [];
         } else {
-          // 保存したことのあるアカウントの場合、取得したString型の日付をDate型にパースする
+          // 保存したことのあるアカウントの場合、取得したString型の日付をDate型にパースし、さらにDateRow型にパースする
           this.userInfo.timeSheets.forEach(timeSheet => {
-            timeSheet.dateRows.forEach(dateRow => {
+            timeSheet.dateRows.map((dateRow, i, arr) => {
               dateRow.date = new Date(dateRow.date.toString());
+              arr[i] = $.extend(true, new DateRow(dateRow.date), dateRow);
             });
           });
         }
-        if (!TimeSheetUtils.findThisMonthSheet(this.userInfo.timeSheets)) {
-          // 今月の勤務表が取得できなかった場合、先頭に今月の情報を追加する
-          this.userInfo.timeSheets.unshift(TimeSheetUtils.createThisMonthSheet());
-        }
-        // 「分刻み間隔」を元に決定される時間と分のセレクトボックス情報を更新する
-        this.reloadHourMinuteSelections();
       });
   }
   updateUserInfo():Promise<void> {

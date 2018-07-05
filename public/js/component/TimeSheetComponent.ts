@@ -3,7 +3,6 @@ import { Component, Input, ChangeDetectorRef } from '@angular/core';
 import { DateRow } from '../entity/DateRow';
 import { TimeSheet } from '../entity/TimeSheet';
 import { UserInfoService } from '../service/UserInfoService';
-import { TimeSheetUtils } from '../util/TimeSheetUtils';
 
 @Component({
   selector: 'TimeSheetComponent',
@@ -23,30 +22,30 @@ import { TimeSheetUtils } from '../util/TimeSheetUtils';
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let dateRow of timeSheet.dateRows; let i = index" [ngClass]="{saturday: dateRow.date.getDay() == 6, sunday: dateRow.date.getDay() == 0, holiday: timeSheetUtils.isHoliday(dateRow.date)}">
+          <tr *ngFor="let dateRow of timeSheet.dateRows; let i = index" [ngClass]="{saturday: dateRow.isSaturday, sunday: dateRow.isSunday, holiday: dateRow.isHoliday}">
             <td class="td-date">
-              {{dateRow.date | date:'d'}}<span class="day"> ({{['日', '月', '火', '水', '木', '金', '土'][dateRow.date.getDay()]}})</span>
+              {{dateRow.date | date:'d'}}<span class="day"> ({{dateRow.dayOfJapan}})</span>
             </td>
             <td>
-              <select [(ngModel)]="dateRow.beginHour" (change)="setDefault(dateRow)"><option *ngFor="let h of userInfoService.hourSelections" [value]="h">{{h | FillZeroPipe:2}}</option></select
-              ><select [(ngModel)]="dateRow.beginMinute" (change)="setDefault(dateRow)"><option *ngFor="let m of userInfoService.minuteSelections" [value]="m">{{m | FillZeroPipe:2}}</option></select>
+              <select [(ngModel)]="dateRow.beginHour" (change)="dateRow.setDefaultBreakTime()"><option *ngFor="let h of userInfoService.hourSelections" [value]="h">{{h | FillZeroPipe:2}}</option></select
+              ><select [(ngModel)]="dateRow.beginMinute" (change)="dateRow.setDefaultBreakTime()"><option *ngFor="let m of userInfoService.minuteSelections" [value]="m">{{m | FillZeroPipe:2}}</option></select>
             </td>
             <td>
-              <select [(ngModel)]="dateRow.endHour" (change)="setDefault(dateRow)"><option *ngFor="let h of userInfoService.hourSelections" [value]="h">{{h | FillZeroPipe:2}}</option></select
-              ><select [(ngModel)]="dateRow.endMinute" (change)="setDefault(dateRow)"><option *ngFor="let m of userInfoService.minuteSelections" [value]="m">{{m | FillZeroPipe:2}}</option></select>
+              <select [(ngModel)]="dateRow.endHour" (change)="dateRow.setDefaultBreakTime()"><option *ngFor="let h of userInfoService.hourSelections" [value]="h">{{h | FillZeroPipe:2}}</option></select
+              ><select [(ngModel)]="dateRow.endMinute" (change)="dateRow.setDefaultBreakTime()"><option *ngFor="let m of userInfoService.minuteSelections" [value]="m">{{m | FillZeroPipe:2}}</option></select>
             </td>
             <td class="d-none d-sm-table-cell">
-              <select (change)="setDefault(dateRow)"><option value=""></option><option value="午前休">午前休</option><option value="午後休">午後休</option></select>
+              <select (change)="dateRow.setDefaultBreakTime()"><option value=""></option><option value="午前休">午前休</option><option value="午後休">午後休</option></select>
             </td>
             <td class="d-none d-sm-table-cell" [ngClass]="{'not-default': dateRow.isNotDefaultInterval}">
-              <select [(ngModel)]="dateRow.breakHour" (change)="setDefault(dateRow)"><option *ngFor="let h of userInfoService.hourSelections" [value]="h">{{h | FillZeroPipe:2}}</option></select
-              ><select [(ngModel)]="dateRow.breakMinute" (change)="setDefault(dateRow)"><option *ngFor="let m of userInfoService.minuteSelections" [value]="m">{{m | FillZeroPipe:2}}</option></select>
+              <select [(ngModel)]="dateRow.breakHour" (change)="dateRow.setDefaultBreakTime()"><option *ngFor="let h of userInfoService.hourSelections" [value]="h">{{h | FillZeroPipe:2}}</option></select
+              ><select [(ngModel)]="dateRow.breakMinute" (change)="dateRow.setDefaultBreakTime()"><option *ngFor="let m of userInfoService.minuteSelections" [value]="m">{{m | FillZeroPipe:2}}</option></select>
             </td>
             <td class="d-none d-sm-table-cell">
               <input type="text" class="remarks-textbox">
             </td>
             <td class="d-none d-sm-table-cell">
-              {{dateRow | DateRowSummaryPipe}}
+              {{dateRow.summary}}
             </td>
             <td class="d-sm-none">
               <!-- Button trigger modal -->
@@ -69,27 +68,27 @@ import { TimeSheetUtils } from '../util/TimeSheetUtils';
                           <tr>
                             <td>勤務時間</td>
                             <td>
-                              <select [(ngModel)]="dateRow.beginHour" (change)="setDefault(dateRow)"><option *ngFor="let h of userInfoService.hourSelections" [value]="h">{{h | FillZeroPipe:2}}</option></select
-                              ><select [(ngModel)]="dateRow.beginMinute" (change)="setDefault(dateRow)"><option *ngFor="let m of userInfoService.minuteSelections" [value]="m">{{m | FillZeroPipe:2}}</option></select>
+                              <select [(ngModel)]="dateRow.beginHour" (change)="dateRow.setDefaultBreakTime()"><option *ngFor="let h of userInfoService.hourSelections" [value]="h">{{h | FillZeroPipe:2}}</option></select
+                              ><select [(ngModel)]="dateRow.beginMinute" (change)="dateRow.setDefaultBreakTime()"><option *ngFor="let m of userInfoService.minuteSelections" [value]="m">{{m | FillZeroPipe:2}}</option></select>
                               ～
-                              <select [(ngModel)]="dateRow.endHour" (change)="setDefault(dateRow)"><option *ngFor="let h of userInfoService.hourSelections" [value]="h">{{h | FillZeroPipe:2}}</option></select
-                              ><select [(ngModel)]="dateRow.endMinute" (change)="setDefault(dateRow)"><option *ngFor="let m of userInfoService.minuteSelections" [value]="m">{{m | FillZeroPipe:2}}</option></select>
+                              <select [(ngModel)]="dateRow.endHour" (change)="dateRow.setDefaultBreakTime()"><option *ngFor="let h of userInfoService.hourSelections" [value]="h">{{h | FillZeroPipe:2}}</option></select
+                              ><select [(ngModel)]="dateRow.endMinute" (change)="dateRow.setDefaultBreakTime()"><option *ngFor="let m of userInfoService.minuteSelections" [value]="m">{{m | FillZeroPipe:2}}</option></select>
                             </td>
                           </tr><tr>
                             <td>有給</td>
-                            <td><select (change)="setDefault(dateRow)"><option value=""></option><option value="午前休">午前休</option><option value="午後休">午後休</option></select></td>
+                            <td><select (change)="dateRow.setDefaultBreakTime()"><option value=""></option><option value="午前休">午前休</option><option value="午後休">午後休</option></select></td>
                           </tr><tr>
                             <td>休憩</td>
                             <td [ngClass]="{'not-default': dateRow.isNotDefaultInterval}">
-                              <select [(ngModel)]="dateRow.breakHour" (change)="setDefault(dateRow)"><option *ngFor="let h of userInfoService.hourSelections" [value]="h">{{h | FillZeroPipe:2}}</option></select
-                              ><select [(ngModel)]="dateRow.breakMinute" (change)="setDefault(dateRow)"><option *ngFor="let m of userInfoService.minuteSelections" [value]="m">{{m | FillZeroPipe:2}}</option></select>
+                              <select [(ngModel)]="dateRow.breakHour" (change)="dateRow.setDefaultBreakTime()"><option *ngFor="let h of userInfoService.hourSelections" [value]="h">{{h | FillZeroPipe:2}}</option></select
+                              ><select [(ngModel)]="dateRow.breakMinute" (change)="dateRow.setDefaultBreakTime()"><option *ngFor="let m of userInfoService.minuteSelections" [value]="m">{{m | FillZeroPipe:2}}</option></select>
                             </td>
                           </tr><tr>
                             <td>備考</td>
                             <td><input type="text" class="remarks-textbox"></td>
                           </tr><tr>
                             <td>計</td>
-                            <td>{{dateRow | DateRowSummaryPipe}}</td>
+                            <td>{{dateRow.summary}}</td>
                           </tr>
                         </tbody>
                       </table>
@@ -120,7 +119,6 @@ import { TimeSheetUtils } from '../util/TimeSheetUtils';
   ]
 })
 export class TimeSheetComponent {
-  timeSheetUtils:TimeSheetUtils = TimeSheetUtils
   @Input() selectedYearMonth:string
   timeSheet:TimeSheet
 
@@ -142,25 +140,5 @@ export class TimeSheetComponent {
     // ngForの中では宣言的にモーダルを作れないので、click時に明示的にモーダルを開く
     const element:any = $(modalId);
     element.modal();
-  }
-  setDefault(dateRow:DateRow) {
-    if (dateRow.beginHour <= 12) {
-      if (dateRow.breakHour === undefined) {
-        dateRow.breakHour = 1;
-      }
-      if (dateRow.breakMinute === undefined) {
-        dateRow.breakMinute = 0;
-      }
-    } else {
-      if (dateRow.breakHour === undefined) {
-        dateRow.breakHour = 0;
-      }
-      if (dateRow.breakMinute === undefined) {
-        dateRow.breakMinute = 0;
-      }
-    }
-    dateRow.isNotDefaultInterval = (dateRow.beginHour <= 12 && (dateRow.breakHour != 1 || dateRow.breakMinute != 0))
-      || (dateRow.beginHour > 12 && (dateRow.breakHour != 0 || dateRow.breakMinute != 0))
-      || !!(!dateRow.beginHour && (dateRow.breakHour || dateRow.breakMinute));
   }
 }

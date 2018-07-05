@@ -11,7 +11,6 @@ import { TimeSheetInputComponent } from './component/TimeSheetInputComponent';
 import { TimeSheetComponent } from './component/TimeSheetComponent';
 import { PageNotFoundComponent } from './component/PageNotFoundComponent';
 
-import { DateRowSummaryPipe } from './pipe/DateRowSummaryPipe';
 import { FillZeroPipe } from './pipe/FillZeroPipe';
 
 import { LoginService } from './service/LoginService';
@@ -59,7 +58,6 @@ const appRoutes:Routes = [
       TimeSheetInputComponent,
       TimeSheetComponent,
       PageNotFoundComponent,
-      DateRowSummaryPipe,
       FillZeroPipe
     ],
     providers: [
