@@ -11,14 +11,14 @@ import { UserInfoService } from '../service/UserInfoService';
       <table id="timeSheetTable" class="table">
         <thead>
           <tr>
-            <th></th>
-            <th>開始</th>
-            <th>終了</th>
+            <th class="d-none d-sm-table-cell">日</th>
+            <th class="d-none d-sm-table-cell">開始</th>
+            <th class="d-none d-sm-table-cell">終了</th>
             <th class="d-none d-sm-table-cell">有給</th>
             <th class="d-none d-sm-table-cell">休憩</th>
             <th class="d-none d-sm-table-cell">備考</th>
             <th class="d-none d-sm-table-cell">計</th>
-            <th class="d-sm-none"></th>
+            <th class="d-none d-sm-table-cell"><!-- 自動入力ボタン --></th>
           </tr>
         </thead>
         <tbody>
@@ -27,19 +27,19 @@ import { UserInfoService } from '../service/UserInfoService';
               <span class="today-container"><i [ngClass]="{today: dateRow.isToday}"></i>{{dateRow.date | date:'d'}}<span class="day"> ({{dateRow.dayOfJapan}})</span></span>
             </td>
             <td>
-              <select [(ngModel)]="dateRow.beginHour" (change)="dateRow.setDefaultBreakTime()"><option *ngFor="let h of userInfoService.hourSelections" [value]="h">{{h | FillZeroPipe:2}}</option></select
-              ><select [(ngModel)]="dateRow.beginMinute" (change)="dateRow.setDefaultBreakTime()"><option *ngFor="let m of userInfoService.minuteSelections" [value]="m">{{m | FillZeroPipe:2}}</option></select>
+              <select [(ngModel)]="dateRow.beginHour" (change)="dateRow.setDefaultBreakTime()"><option value=""></option><option *ngFor="let h of userInfoService.hourSelections" [value]="h">{{h | FillZeroPipe:2}}</option></select
+              ><select [(ngModel)]="dateRow.beginMinute" (change)="dateRow.setDefaultBreakTime()"><option value=""></option><option *ngFor="let m of userInfoService.minuteSelections" [value]="m">{{m | FillZeroPipe:2}}</option></select>
             </td>
             <td>
-              <select [(ngModel)]="dateRow.endHour" (change)="dateRow.setDefaultBreakTime()"><option *ngFor="let h of userInfoService.hourSelections" [value]="h">{{h | FillZeroPipe:2}}</option></select
-              ><select [(ngModel)]="dateRow.endMinute" (change)="dateRow.setDefaultBreakTime()"><option *ngFor="let m of userInfoService.minuteSelections" [value]="m">{{m | FillZeroPipe:2}}</option></select>
+              <select [(ngModel)]="dateRow.endHour" (change)="dateRow.setDefaultBreakTime()"><option value=""></option><option *ngFor="let h of userInfoService.hourSelections" [value]="h">{{h | FillZeroPipe:2}}</option></select
+              ><select [(ngModel)]="dateRow.endMinute" (change)="dateRow.setDefaultBreakTime()"><option value=""></option><option *ngFor="let m of userInfoService.minuteSelections" [value]="m">{{m | FillZeroPipe:2}}</option></select>
             </td>
             <td class="d-none d-sm-table-cell">
               <select (change)="dateRow.setDefaultBreakTime()"><option value=""></option><option value="午前休">午前休</option><option value="午後休">午後休</option></select>
             </td>
             <td class="d-none d-sm-table-cell" [ngClass]="{'not-default': dateRow.isNotDefaultInterval}">
-              <select [(ngModel)]="dateRow.breakHour" (change)="dateRow.setDefaultBreakTime()"><option *ngFor="let h of userInfoService.hourSelections" [value]="h">{{h | FillZeroPipe:2}}</option></select
-              ><select [(ngModel)]="dateRow.breakMinute" (change)="dateRow.setDefaultBreakTime()"><option *ngFor="let m of userInfoService.minuteSelections" [value]="m">{{m | FillZeroPipe:2}}</option></select>
+              <select [(ngModel)]="dateRow.breakHour" (change)="dateRow.setDefaultBreakTime()"><option value=""></option><option *ngFor="let h of userInfoService.hourSelections" [value]="h">{{h | FillZeroPipe:2}}</option></select
+              ><select [(ngModel)]="dateRow.breakMinute" (change)="dateRow.setDefaultBreakTime()"><option value=""></option><option *ngFor="let m of userInfoService.minuteSelections" [value]="m">{{m | FillZeroPipe:2}}</option></select>
             </td>
             <td class="d-none d-sm-table-cell">
               <input type="text" class="remarks-textbox">
@@ -47,7 +47,10 @@ import { UserInfoService } from '../service/UserInfoService';
             <td class="d-none d-sm-table-cell">
               {{dateRow.summary}}
             </td>
-            <td class="d-sm-none">
+            <td class="td-autofill">
+              <button class="autofill-button fa fa-paint-brush" (click)="autofill(dateRow)"></button>
+            </td>
+            <td class="d-sm-none td-modal">
               <!-- Button trigger modal -->
               <button id="modal-button{{i}}" class="modal-button fa fa-window-restore" (click)="openModal('#modal-window' + i)" [ngClass]="{'not-default': dateRow.isNotDefaultInterval}"></button>
               <!-- Modal -->
@@ -68,11 +71,11 @@ import { UserInfoService } from '../service/UserInfoService';
                           <tr>
                             <td>勤務時間</td>
                             <td>
-                              <select [(ngModel)]="dateRow.beginHour" (change)="dateRow.setDefaultBreakTime()"><option *ngFor="let h of userInfoService.hourSelections" [value]="h">{{h | FillZeroPipe:2}}</option></select
-                              ><select [(ngModel)]="dateRow.beginMinute" (change)="dateRow.setDefaultBreakTime()"><option *ngFor="let m of userInfoService.minuteSelections" [value]="m">{{m | FillZeroPipe:2}}</option></select>
+                              <select [(ngModel)]="dateRow.beginHour" (change)="dateRow.setDefaultBreakTime()"><option value=""></option><option *ngFor="let h of userInfoService.hourSelections" [value]="h">{{h | FillZeroPipe:2}}</option></select
+                              ><select [(ngModel)]="dateRow.beginMinute" (change)="dateRow.setDefaultBreakTime()"><option value=""></option><option *ngFor="let m of userInfoService.minuteSelections" [value]="m">{{m | FillZeroPipe:2}}</option></select>
                               ～
-                              <select [(ngModel)]="dateRow.endHour" (change)="dateRow.setDefaultBreakTime()"><option *ngFor="let h of userInfoService.hourSelections" [value]="h">{{h | FillZeroPipe:2}}</option></select
-                              ><select [(ngModel)]="dateRow.endMinute" (change)="dateRow.setDefaultBreakTime()"><option *ngFor="let m of userInfoService.minuteSelections" [value]="m">{{m | FillZeroPipe:2}}</option></select>
+                              <select [(ngModel)]="dateRow.endHour" (change)="dateRow.setDefaultBreakTime()"><option value=""></option><option *ngFor="let h of userInfoService.hourSelections" [value]="h">{{h | FillZeroPipe:2}}</option></select
+                              ><select [(ngModel)]="dateRow.endMinute" (change)="dateRow.setDefaultBreakTime()"><option value=""></option><option *ngFor="let m of userInfoService.minuteSelections" [value]="m">{{m | FillZeroPipe:2}}</option></select>
                             </td>
                           </tr><tr>
                             <td>有給</td>
@@ -80,8 +83,8 @@ import { UserInfoService } from '../service/UserInfoService';
                           </tr><tr>
                             <td>休憩</td>
                             <td [ngClass]="{'not-default': dateRow.isNotDefaultInterval}">
-                              <select [(ngModel)]="dateRow.breakHour" (change)="dateRow.setDefaultBreakTime()"><option *ngFor="let h of userInfoService.hourSelections" [value]="h">{{h | FillZeroPipe:2}}</option></select
-                              ><select [(ngModel)]="dateRow.breakMinute" (change)="dateRow.setDefaultBreakTime()"><option *ngFor="let m of userInfoService.minuteSelections" [value]="m">{{m | FillZeroPipe:2}}</option></select>
+                              <select [(ngModel)]="dateRow.breakHour" (change)="dateRow.setDefaultBreakTime()"><option value=""></option><option *ngFor="let h of userInfoService.hourSelections" [value]="h">{{h | FillZeroPipe:2}}</option></select
+                              ><select [(ngModel)]="dateRow.breakMinute" (change)="dateRow.setDefaultBreakTime()"><option value=""></option><option *ngFor="let m of userInfoService.minuteSelections" [value]="m">{{m | FillZeroPipe:2}}</option></select>
                             </td>
                           </tr><tr>
                             <td>備考</td>
@@ -104,11 +107,12 @@ import { UserInfoService } from '../service/UserInfoService';
   `,
   styles: [
     '#timeSheetTable > thead > th { font-weight: normal; }',
-    '#timeSheetTable > thead > tr > th, #timeSheetTable > tbody > tr > td { white-space: nowrap; padding: 2px 4px; text-align: center; vertical-align: middle; }',
-    '.td-date { text-align: right; }',
+    '#timeSheetTable > thead > tr > th, #timeSheetTable > tbody > tr > td { white-space: nowrap; padding: 0.75rem 0.12rem; text-align: center; vertical-align: middle; }',
+    '#timeSheetTable > tbody > tr > td.td-date { text-align: right; }',
+    '#timeSheetTable > tbody > tr > td.td-autofill, #timeSheetTable > tbody > tr > td.td-modal { width: 1.6rem; padding: 0.75rem 0; }', // 幅は限界まで小さくする
     '.day { font-size: 70%; color: #666; }',
     '.remarks-textbox { width: 100%; }',
-    '.modal-button { font-size: 0.9rem; background-color: transparent; border-style: none; cursor: pointer; }',
+    '.autofill-button, .modal-button { font-size: 0.9rem; background-color: transparent; border-style: none; cursor: pointer; }',
     '.not-default { color: red; }',
     '.not-default select { background-color: red; }',
     '.saturday { background-color: rgb(152,192,214); }',
@@ -137,6 +141,35 @@ export class TimeSheetComponent {
   reload() {
     this.ngOnChanges();
     this.ref.detectChanges();
+  }
+  autofill(dateRow:DateRow) {
+    if (dateRow.beginHour !== undefined || dateRow.beginMinute !== undefined || dateRow.endHour !== undefined || dateRow.endMinute !== undefined || dateRow.breakHour !== undefined || dateRow.breakMinute !== undefined) {
+      // 既に入力がある場合はクリア機能を提供する
+      if (confirm(dateRow.date.getDate() + '(' + dateRow.dayOfJapan + ') の情報を削除してもよろしいですか？')) {
+        dateRow.beginHour = undefined;
+        dateRow.beginMinute = undefined;
+        dateRow.endHour = undefined;
+        dateRow.endMinute = undefined;
+        dateRow.breakHour = undefined;
+        dateRow.breakMinute = undefined;
+      }
+    } else {
+      // 入力がない場合は自動補完機能を提供する
+      dateRow.beginHour = this.userInfoService.userInfo.userConfig.beginHour;
+      dateRow.beginMinute = this.userInfoService.userInfo.userConfig.beginMinute;
+      if (dateRow.isToday) {
+        // 当日の場合だけ、現在時刻を加味して終了時刻を入力する
+        const i = this.userInfoService.userInfo.userConfig.minutesInterval;
+        const now = new Date();
+        dateRow.endHour = now.getHours();
+        dateRow.endMinute = Math.floor(now.getMinutes() / i) * i; // 現在時刻に一番近いものを選択する
+      } else {
+        dateRow.endHour = this.userInfoService.userInfo.userConfig.endHour;
+        dateRow.endMinute = this.userInfoService.userInfo.userConfig.endMinute;
+      }
+      dateRow.breakHour = this.userInfoService.userInfo.userConfig.breakHour;
+      dateRow.breakMinute = this.userInfoService.userInfo.userConfig.breakMinute;
+    }
   }
   openModal(modalId:String) {
     // ngForの中では宣言的にモーダルを作れないので、click時に明示的にモーダルを開く

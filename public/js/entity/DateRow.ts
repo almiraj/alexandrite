@@ -16,7 +16,10 @@ export class DateRow {
     return ['日', '月', '火', '水', '木', '金', '土'][this.date.getDay()];
   }
   get isToday():boolean {
-    return this.date.getDate() == new Date().getDate();
+    const now = new Date();
+    return this.date.getFullYear() == now.getFullYear()
+      && this.date.getMonth() == now.getMonth()
+      && this.date.getDate() == now.getDate();
   }
   get isSaturday():boolean {
     return this.date.getDay() == 6;

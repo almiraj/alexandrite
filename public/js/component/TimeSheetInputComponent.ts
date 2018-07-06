@@ -12,7 +12,7 @@ import { UserInfoService } from '../service/UserInfoService';
 @Component({
   selector: 'TimeSheetInputComponent',
   template: `
-    <div class="container" *ngIf="userInfoService.userInfo">
+    <div *ngIf="userInfoService.userInfo">
       <nav class="navbar navbar-expand-xs fixed-top text-white font-weight-bold">
         <button id="modal-button" class="fa fa-lg fa-diamond" data-toggle="modal" data-target="#modal-window"></button>
         <div>
