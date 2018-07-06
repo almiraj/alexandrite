@@ -6,7 +6,13 @@ module.exports = function(req) {
       loginId: req.body.loginId,
       loginToken: req.body.loginToken
     })
-    .then(result => result ? resolve(result) : reject('ログインしていません'))
+    .then(result => {
+      if (!result) {
+        return reject('ログインしていません');
+      }
+      result.lastAccessedTime = new Date();
+      result.save().then(() => resolve(result)).catch(e => reject(e));
+    })
     .catch(e => reject(e));
   });
 };

@@ -28,9 +28,17 @@ class LoginResolver implements Resolve<void> {
   resolve(route:ActivatedRouteSnapshot, state:RouterStateSnapshot):Promise<void> {
     return this.loginService.checkToken()
       .then(loginInfo => {
-        this.router.navigate(['/TimeSheetInput', loginInfo.loginId]);
+        // トークン認証が通る場合で、Login画面にいる場合は、TimeSheetInput画面へ遷移する
+        if (route.url.find(url => url.path == 'Login')) {
+          this.router.navigate(['/TimeSheetInput', loginInfo.loginId]);
+        }
       })
-      .catch(e => {/*NOP*/});
+      .catch(e => {
+        // トークン認証が通らない場合で、Login画面以外の画面にいる場合は、Login画面へ遷移する
+        if (!route.url.find(url => url.path == 'Login')) {
+          this.router.navigate(['/Login']);
+        }
+      });
   }
 }
 
@@ -42,7 +50,13 @@ const appRoutes:Routes = [
       void: LoginResolver
     }
   },
-  { path: 'TimeSheetInput/:userId', component: TimeSheetInputComponent },
+  {
+    path: 'TimeSheetInput/:userId',
+    component: TimeSheetInputComponent,
+    resolve: {
+      void: LoginResolver
+    }
+  },
   {
     path: '',
     redirectTo: '/Login',

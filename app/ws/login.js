@@ -22,6 +22,7 @@ module.exports = function(req) {
       text: 'ログインできたよ',
       html: '<b>ログインできたよ</b>'
     }, (e, info) => {
+      smtp.close();
       if (e) {
         const errorMessage = String(e);
         console.log(errorMessage);
@@ -33,27 +34,16 @@ module.exports = function(req) {
         }
         return reject(e);
       }
-      const loginToken = generateUserToken();
-      LoginModel.findOne({
-        'loginId': req.body.loginId
-      })
-      .then(result => {
-        if (result) {
-          result.loginToken = loginToken;
-          return result.save().then(() => resolve(result)).catch(e => reject(e));
-        }
-        const newResult = {
-          'loginId': req.body.loginId,
-          loginToken
-        };
-        return LoginModel.collection.insert([
-          new LoginModel(newResult)
-        ], (e) => !e ? resolve(newResult) : reject(e));
-      })
-      .catch(e => {
-        return reject(e);
-      });
-      smtp.close();
+
+      // SMTP認証が成功した場合はトークンを発行する
+      const loginInfo = {
+        loginId: req.body.loginId,
+        loginToken: generateUserToken(),
+        lastAccessedTime: new Date()
+      };
+      return LoginModel.collection.insert([
+        new LoginModel(loginInfo)
+      ], (e) => !e ? resolve(loginInfo) : reject(e));
     });
   });
 };
