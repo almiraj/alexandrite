@@ -22,9 +22,9 @@ import { UserInfoService } from '../service/UserInfoService';
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let dateRow of timeSheet.dateRows; let i = index" [ngClass]="{today: dateRow.isToday, saturday: dateRow.isSaturday, sunday: dateRow.isSunday, holiday: dateRow.isHoliday}">
+          <tr *ngFor="let dateRow of timeSheet.dateRows; let i = index" [ngClass]="{saturday: dateRow.isSaturday, sunday: dateRow.isSunday, holiday: dateRow.isHoliday}">
             <td class="td-date">
-              {{dateRow.date | date:'d'}}<span class="day"> ({{dateRow.dayOfJapan}})</span>
+              <span class="today-container"><i [ngClass]="{today: dateRow.isToday}"></i>{{dateRow.date | date:'d'}}<span class="day"> ({{dateRow.dayOfJapan}})</span></span>
             </td>
             <td>
               <select [(ngModel)]="dateRow.beginHour" (change)="dateRow.setDefaultBreakTime()"><option *ngFor="let h of userInfoService.hourSelections" [value]="h">{{h | FillZeroPipe:2}}</option></select
@@ -49,14 +49,14 @@ import { UserInfoService } from '../service/UserInfoService';
             </td>
             <td class="d-sm-none">
               <!-- Button trigger modal -->
-              <i id="modal-button{{i}}" class="modal-button fa fa-window-restore" (click)="openModal('#modal-window' + i)" [ngClass]="{'not-default': dateRow.isNotDefaultInterval}" aria-hidden="true"></i>
+              <button id="modal-button{{i}}" class="modal-button fa fa-window-restore" (click)="openModal('#modal-window' + i)" [ngClass]="{'not-default': dateRow.isNotDefaultInterval}"></button>
               <!-- Modal -->
               <div class="modal" id="modal-window{{i}}" tabindex="-1" role="dialog" [attr.aria-labelledby]="'modal-button' + i" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                   <div class="modal-content">
                     <div class="modal-header">
                       <h5 class="modal-title">
-                        {{dateRow.date | date:'y/M/d'}}
+                        <span class="today-container"><i [ngClass]="{today: dateRow.isToday}"></i>{{dateRow.date | date:'d'}}<span class="day"> ({{dateRow.dayOfJapan}})</span></span>
                       </h5>
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -106,15 +106,16 @@ import { UserInfoService } from '../service/UserInfoService';
     '#timeSheetTable > thead > th { font-weight: normal; }',
     '#timeSheetTable > thead > tr > th, #timeSheetTable > tbody > tr > td { white-space: nowrap; padding: 2px 4px; text-align: center; vertical-align: middle; }',
     '.td-date { text-align: right; }',
-    '.td-date .day { font-size: 0.7rem; color: #666; }',
+    '.day { font-size: 70%; color: #666; }',
     '.remarks-textbox { width: 100%; }',
-    '.modal-button { font-size: 0.9rem; cursor: pointer; }',
+    '.modal-button { font-size: 0.9rem; background-color: transparent; border-style: none; cursor: pointer; }',
     '.not-default { color: red; }',
     '.not-default select { background-color: red; }',
     '.saturday { background-color: rgb(152,192,214); }',
     '.sunday { background-color: #C7A5DC; }',
     '.holiday { background-color: rgb(201,221,164); }',
-    '.today { border: 6px solid rgb(223,206,162); border-width: 0 6px; }',
+    '.today-container { position: relative; }',
+    '.today:before { font-family: FontAwesome; content: "\\f00c"; position: absolute; bottom: 0.55rem; right: -0.35rem; color: rgb(223,206,162); }',
     '.modal-header, .modal-header span { color: rgb(248,242,251); background-color: #69A5C4; }',
     '.modal-body th, .modal-body td { text-align: left; }',
   ]
