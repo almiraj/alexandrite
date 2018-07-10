@@ -25,20 +25,19 @@ class LoginResolver implements Resolve<void> {
     private loginService:LoginService
   ) {}
 
-  resolve(route:ActivatedRouteSnapshot, state:RouterStateSnapshot):Promise<void> {
-    return this.loginService.checkToken()
-      .then(loginInfo => {
-        // トークン認証が通る場合で、Login画面にいる場合は、TimeSheetInput画面へ遷移する
-        if (route.url.find(url => url.path == 'Login')) {
-          this.router.navigate(['/TimeSheetInput', loginInfo.loginId]);
-        }
-      })
-      .catch(e => {
-        // トークン認証が通らない場合で、Login画面以外の画面にいる場合は、Login画面へ遷移する
-        if (!route.url.find(url => url.path == 'Login')) {
-          this.router.navigate(['/Login']);
-        }
-      });
+  resolve(route:ActivatedRouteSnapshot, state:RouterStateSnapshot) {
+    const loginId = localStorage.getItem('loginId');
+    if (loginId) {
+      // トークン情報がある場合は、TimeSheetInput画面へ遷移する
+      if (route.url.find(url => url.path == 'Login')) {
+        this.router.navigate(['/TimeSheetInput', loginId]);
+      }
+    } else {
+      // トークン認証がない場合で、Login画面以外の画面にいる場合は、Login画面へ遷移する
+      if (!route.url.find(url => url.path == 'Login')) {
+        this.router.navigate(['/Login']);
+      }
+    }
   }
 }
 

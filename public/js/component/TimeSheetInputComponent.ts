@@ -5,6 +5,7 @@ import { TimeSheetComponent } from '../component/TimeSheetComponent';
 import { TimeSheet } from '../entity/TimeSheet';
 import { UserConfig } from '../entity/UserConfig';
 import { UserInfo } from '../entity/UserInfo';
+import { HttpService } from '../service/HttpService';
 import { LoginService } from '../service/LoginService';
 import { ModalService } from '../service/ModalService';
 import { UserInfoService } from '../service/UserInfoService';
@@ -114,7 +115,13 @@ export class TimeSheetInputComponent {
           // 「分刻み間隔」を元に決定される時間と分のセレクトボックス情報を更新する
           this.userInfoService.reloadHourMinuteSelections();
         })
-        .catch(e => this.modalService.alertError(e));
+        .catch(e => {
+          if (e == HttpService.NO_TOKEN_ERROR) {
+            this.router.navigate(['/Login']);
+          } else {
+            this.modalService.alertError(e);
+          }
+        });
     });
 
     $(() => $('#modal-window').on('hide.bs.modal', e => {

@@ -1,4 +1,6 @@
 export class LoginInfo {
-  loginId:string
-  loginToken:string
+  constructor(
+    public loginId:string,
+    public loginToken:string
+  ) {}
 }
