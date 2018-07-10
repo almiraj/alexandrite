@@ -13,17 +13,9 @@ export class LoginService {
     return this.httpService
       .post<LoginInfo>('/ws/login', { loginId, loginPassword })
       .then(resBody => {
-        const loginInfo:LoginInfo = resBody;
-        localStorage.setItem('loginId', loginInfo.loginId);
-        localStorage.setItem('loginToken', loginInfo.loginToken);
+        const loginInfo:LoginInfo = $.extend(true, new LoginInfo(), resBody);
+        loginInfo.saveToLocal();
         return loginInfo;
       });
-  }
-  logout():Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-      localStorage.removeItem('loginId');
-      localStorage.removeItem('loginToken');
-      return resolve();
-    });
   }
 }

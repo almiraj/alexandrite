@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { TimeSheetComponent } from '../component/TimeSheetComponent';
+import { LoginInfo } from '../entity/LoginInfo';
 import { TimeSheet } from '../entity/TimeSheet';
 import { UserConfig } from '../entity/UserConfig';
 import { UserInfo } from '../entity/UserInfo';
@@ -116,11 +117,10 @@ export class TimeSheetInputComponent {
           this.userInfoService.reloadHourMinuteSelections();
         })
         .catch(e => {
-          if (e == HttpService.NO_TOKEN_ERROR) {
-            this.router.navigate(['/Login']);
-          } else {
-            this.modalService.alertError(e);
+          if (e == LoginInfo.NO_TOKEN_ERROR) {
+            return this.logout();
           }
+          this.modalService.alertError(e);
         });
     });
 
@@ -137,10 +137,7 @@ export class TimeSheetInputComponent {
       .catch(e => this.modalService.alertError(e));
   }
   logout() {
-    this.loginService.logout()
-      .then(() => {
-        location.href = '/';
-      })
-      .catch(e => this.modalService.alertError(e));
+    LoginInfo.clearLocal();
+    location.href = '/';
   }
 }

@@ -13,6 +13,8 @@ import { PageNotFoundComponent } from './component/PageNotFoundComponent';
 
 import { FillZeroPipe } from './pipe/FillZeroPipe';
 
+import { LoginInfo } from './entity/LoginInfo';
+
 import { LoginService } from './service/LoginService';
 import { HttpService } from './service/HttpService';
 import { ModalService } from './service/ModalService';
@@ -21,16 +23,15 @@ import { UserInfoService } from './service/UserInfoService';
 @Injectable()
 class LoginResolver implements Resolve<void> {
   constructor(
-    private router:Router,
-    private loginService:LoginService
+    private router:Router
   ) {}
 
   resolve(route:ActivatedRouteSnapshot, state:RouterStateSnapshot) {
-    const loginId = localStorage.getItem('loginId');
-    if (loginId) {
+    const loginInfo = LoginInfo.getLocal();
+    if (loginInfo) {
       // トークン情報がある場合は、TimeSheetInput画面へ遷移する
       if (route.url.find(url => url.path == 'Login')) {
-        this.router.navigate(['/TimeSheetInput', loginId]);
+        this.router.navigate(['/TimeSheetInput', loginInfo.loginId]);
       }
     } else {
       // トークン認証がない場合で、Login画面以外の画面にいる場合は、Login画面へ遷移する
