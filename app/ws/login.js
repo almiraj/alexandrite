@@ -1,17 +1,22 @@
+'use strict';
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
-
 const LoginModel = require('../model/LoginModel');
 
 const CONFIRM_MAIL_ADDRESS = process.env.CONFIRM_MAIL_ADDRESS;
 
+// SMTP認証を行い、認証が通らなければrejectし、通ればトークンを発行する
 module.exports = function(req) {
+  return sendMail(req).then(() => LoginModel.create({ loginId: req.body.loginId, loginToken: generateToken(), lastAccessedTime: new Date() }));
+}
+
+function sendMail(req) {
   return new Promise((resolve, reject) => {
     const smtp = nodemailer.createTransport({
       host: 'smtp.office365.com',
       auth: {
-        user: req.body.loginId,
-        pass: req.body.loginPassword,
+        user : req.body.loginId,
+        pass : req.body.loginPassword,
         port: '587'
       }
     });
@@ -23,32 +28,23 @@ module.exports = function(req) {
       html: '<b>ログインできたよ</b>'
     }, (e, info) => {
       smtp.close();
-      if (e) {
-        const errorMessage = String(e);
-        console.log(errorMessage);
-        if (errorMessage.includes('Missing credentials') || errorMessage.includes('Authentication unsuccessful')) {
-          return reject('ユーザIDまたはパスワードが違います');
-        }
-        if (errorMessage.includes('ENOTFOUND')) {
-          return reject('接続に失敗しました');
-        }
-        return reject(e);
+      if (!e) {
+        return resolve();
       }
-
-      // SMTP認証が成功した場合はトークンを発行する
-      const loginInfo = {
-        loginId: req.body.loginId,
-        loginToken: generateUserToken(),
-        lastAccessedTime: new Date()
-      };
-      return LoginModel.collection.insert([
-        new LoginModel(loginInfo)
-      ], (e) => !e ? resolve(loginInfo) : reject(e));
+      const originalMessage = String(e);
+      console.log(originalMessage);
+      if (originalMessage.includes('Missing credentials') || originalMessage.includes('Authentication unsuccessful')) {
+        return reject('ユーザIDまたはパスワードが違います');
+      }
+      if (originalMessage.includes('ENOTFOUND')) {
+        return reject('接続に失敗しました');
+      }
+      return reject(originalMessage);
     });
   });
-};
+}
 
-function generateUserToken() {
+function generateToken() {
   const hashsum = crypto.createHash('SHA256');
   hashsum.update('}d' + new Date() + 'P1');
   return hashsum.digest('hex');
