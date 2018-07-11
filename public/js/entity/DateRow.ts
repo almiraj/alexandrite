@@ -1,5 +1,7 @@
 import { isHoliday } from 'japanese-holidays';
 
+import { PaidOffType } from '../constant/PaidOffType';
+
 export class DateRow {
   beginHour:number
   beginMinute:number
@@ -7,6 +9,8 @@ export class DateRow {
   endMinute:number
   breakHour:number
   breakMinute:number
+  paidOffType:PaidOffType
+  remarks:string
 
   constructor(
     public date:Date

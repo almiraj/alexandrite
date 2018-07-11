@@ -24,6 +24,8 @@ module.exports = (function() {
         endMinute: { type: Number },
         breakHour: { type: Number },
         breakMinute: { type: Number },
+        paidOffType: { type: String, enum: ['AM', 'PM'] },
+        remarks: { type: String },
         workTime: { type: Number }
       }) ],
     }) ]
