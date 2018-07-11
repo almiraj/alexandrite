@@ -3,7 +3,9 @@ export class UserConfig {
   beginMinute:number
   endHour:number
   endMinute:number
-  breakHour:number
-  breakMinute:number
+  lunchBeginHour: number
+  lunchBeginMinute: number
+  lunchEndHour: number
+  lunchEndMinute: number
   minutesInterval:number
 }

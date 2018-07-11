@@ -6,13 +6,15 @@ import { DateRow } from '../entity/DateRow';
 import { HttpService } from '../service/HttpService';
 
 const initUserConfig = new UserConfig();
-initUserConfig.beginHour       = 9;
-initUserConfig.beginMinute     = 0;
-initUserConfig.endHour         = 18;
-initUserConfig.endMinute       = 0;
-initUserConfig.breakHour       = 1;
-initUserConfig.breakMinute     = 0;
-initUserConfig.minutesInterval = 15;
+initUserConfig.beginHour        = 9;
+initUserConfig.beginMinute      = 0;
+initUserConfig.endHour          = 18;
+initUserConfig.endMinute        = 0;
+initUserConfig.lunchBeginHour   = 12;
+initUserConfig.lunchBeginMinute = 0;
+initUserConfig.lunchEndHour     = 13;
+initUserConfig.lunchEndMinute   = 0;
+initUserConfig.minutesInterval  = 15;
 
 @Injectable()
 export class UserInfoService {

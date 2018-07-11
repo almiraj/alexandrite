@@ -10,8 +10,10 @@ module.exports = (function() {
       beginMinute: { type: Number },
       endHour: { type: Number },
       endMinute: { type: Number },
-      breakHour: { type: Number },
-      breakMinute: { type: Number },
+      lunchBeginHour: { type: Number },
+      lunchBeginMinute: { type: Number },
+      lunchEndHour: { type: Number },
+      lunchEndMinute: { type: Number },
       minutesInterval: { type: Number }
     }),
     timeSheets: [ new Schema({

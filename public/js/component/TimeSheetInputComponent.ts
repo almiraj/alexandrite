@@ -52,10 +52,13 @@ import { UserInfoService } from '../service/UserInfoService';
                       ><select [(ngModel)]="userInfoService.userInfo.userConfig.endMinute"><option *ngFor="let m of userInfoService.minuteSelections" [value]="m">{{m | FillZeroPipe:2}}</option></select>
                     </td>
                   </tr><tr>
-                    <td>休憩時間</td>
+                    <td>昼休み</td>
                     <td>
-                      <select [(ngModel)]="userInfoService.userInfo.userConfig.breakHour"><option *ngFor="let h of userInfoService.hourSelections" [value]="h">{{h | FillZeroPipe:2}}</option></select
-                      ><select [(ngModel)]="userInfoService.userInfo.userConfig.breakMinute"><option *ngFor="let m of userInfoService.minuteSelections" [value]="m">{{m | FillZeroPipe:2}}</option></select>
+                      <select [(ngModel)]="userInfoService.userInfo.userConfig.lunchBeginHour"><option *ngFor="let h of userInfoService.hourSelections" [value]="h">{{h | FillZeroPipe:2}}</option></select
+                      ><select [(ngModel)]="userInfoService.userInfo.userConfig.lunchBeginMinute"><option *ngFor="let m of userInfoService.minuteSelections" [value]="m">{{m | FillZeroPipe:2}}</option></select>
+                      ～
+                      <select [(ngModel)]="userInfoService.userInfo.userConfig.lunchEndHour"><option *ngFor="let h of userInfoService.hourSelections" [value]="h">{{h | FillZeroPipe:2}}</option></select
+                      ><select [(ngModel)]="userInfoService.userInfo.userConfig.lunchEndMinute"><option *ngFor="let m of userInfoService.minuteSelections" [value]="m">{{m | FillZeroPipe:2}}</option></select>
                     </td>
                   </tr><tr>
                     <td>分刻み間隔</td>
