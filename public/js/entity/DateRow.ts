@@ -14,6 +14,7 @@ export class DateRow {
   remarks:string
 
   constructor(
+    public userConfig:UserConfig,
     public date:Date
   ) {}
 
@@ -55,18 +56,18 @@ export class DateRow {
     return ('0000' + sumHour).slice(-2) + ':' + ('0000' + sumMinute).slice(-2);
   }
 
-  isCareful(userConfig:UserConfig):boolean {
-    return !!this.paidOffType || !!this.remarks || !this.isDefaultBreakTime(userConfig);
+  isCareful():boolean {
+    return !!this.paidOffType || !!this.remarks || !this.isDefaultBreakTime();
   }
-  isDefaultBegin(userConfig:UserConfig):boolean {
+  isDefaultBegin():boolean {
     if (![this.beginHour, this.beginMinute].every($.isNumeric)) {
       // 両方の開始時刻が入力されていない場合は、デフォルト休憩時間とみなす
       return true;
     }
-    return this.beginHour == userConfig.beginHour && this.beginMinute == userConfig.beginMinute;
+    return this.beginHour == this.userConfig.beginHour && this.beginMinute == this.userConfig.beginMinute;
   }
-  isDefaultBreakTime(userConfig:UserConfig):boolean {
-    const o = this.getDefaultBreakTime(userConfig);
+  isDefaultBreakTime():boolean {
+    const o = this.getDefaultBreakTime();
     if (!o) {
       // デフォルト休憩時間が算出できない状況の場合は、デフォルト休憩時間とみなす
       return true;
@@ -84,30 +85,30 @@ export class DateRow {
   clearAnyTimeSelection():void {
     this.beginHour = this.beginMinute = this.endHour = this.endMinute = this.breakHour = this.breakMinute = this.paidOffType = undefined;
   }
-  fillBeginAndEnd(userConfig:UserConfig):void {
-    this.beginHour = userConfig.beginHour;
-    this.beginMinute = userConfig.beginMinute;
+  fillBeginAndEnd():void {
+    this.beginHour = this.userConfig.beginHour;
+    this.beginMinute = this.userConfig.beginMinute;
     if (this.isToday) {
       // 当日の場合だけ、現在時刻を加味して終了時刻を入力する
-      const i = userConfig.minutesInterval;
+      const i = this.userConfig.minutesInterval;
       const now = new Date();
       this.endHour = now.getHours();
       this.endMinute = Math.floor(now.getMinutes() / i) * i; // 現在時刻に一番近いものを選択する
     } else {
-      this.endHour = userConfig.endHour;
-      this.endMinute = userConfig.endMinute;
+      this.endHour = this.userConfig.endHour;
+      this.endMinute = this.userConfig.endMinute;
     }
   }
-  fillBreakTime(userConfig:UserConfig):void {
+  fillBreakTime():void {
     if (this.paidOffType == PaidOffType.ALL || this.paidOffType == PaidOffType.AM) {
-      this.beginHour = userConfig.beginHour;
-      this.beginMinute = userConfig.beginMinute;
+      this.beginHour = this.userConfig.beginHour;
+      this.beginMinute = this.userConfig.beginMinute;
     }
     if (this.paidOffType == PaidOffType.ALL || this.paidOffType == PaidOffType.PM) {
-      this.endHour = userConfig.endHour;
-      this.endMinute = userConfig.endMinute;
+      this.endHour = this.userConfig.endHour;
+      this.endMinute = this.userConfig.endMinute;
     }
-    const o = this.getDefaultBreakTime(userConfig);
+    const o = this.getDefaultBreakTime();
     if (o) {
       this.breakHour = o.breakHour;
       this.breakMinute = o.breakMinute;
@@ -116,7 +117,7 @@ export class DateRow {
     }
   }
 
-  private getDefaultBreakTime(userConfig:UserConfig):any {
+  private getDefaultBreakTime():any {
     // 何かしら未入力の時刻があれば、算出不能とする
     if (![this.endHour, this.endMinute, this.beginHour, this.beginMinute].every($.isNumeric)) {
       return null;
@@ -124,8 +125,8 @@ export class DateRow {
     // 分情報に変換する
     const end = this.endHour * 60 + Number(this.endMinute);
     const begin = this.beginHour * 60 + Number(this.beginMinute);
-    const lunchEnd = userConfig.lunchEndHour * 60 + Number(userConfig.lunchEndMinute);
-    const lunchBegin = userConfig.lunchBeginHour * 60 + Number(userConfig.lunchBeginMinute);
+    const lunchEnd = this.userConfig.lunchEndHour * 60 + Number(this.userConfig.lunchEndMinute);
+    const lunchBegin = this.userConfig.lunchBeginHour * 60 + Number(this.userConfig.lunchBeginMinute);
     // 差分を計算する (マイナスの場合は0扱い)
     const breakTime = Math.min(end, lunchEnd) - Math.max(begin, lunchBegin);
     if (breakTime < 0) {

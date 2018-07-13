@@ -41,7 +41,7 @@ export class UserInfoService {
           this.userInfo.timeSheets.forEach(timeSheet => {
             timeSheet.dateRows.map((dateRow, i, arr) => {
               dateRow.date = new Date(dateRow.date.toString());
-              arr[i] = $.extend(true, new DateRow(dateRow.date), dateRow);
+              arr[i] = $.extend(true, new DateRow(this.userInfo.userConfig, dateRow.date), dateRow);
             });
           });
         }

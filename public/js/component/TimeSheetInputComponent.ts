@@ -114,7 +114,7 @@ export class TimeSheetInputComponent {
           // 今月の勤務表が取得できていなかった場合、先頭に今月の情報を追加する
           const timeSheets = this.userInfoService.userInfo.timeSheets;
           if (timeSheets.length == 0 || timeSheets[0].yearMonth != this.selectedYearMonth) {
-            timeSheets.unshift(TimeSheet.createTodaySheet());
+            timeSheets.unshift(TimeSheet.createTodaySheet(this.userInfoService.userInfo.userConfig));
           }
           // 「分刻み間隔」を元に決定される時間と分のセレクトボックス情報を更新する
           this.userInfoService.reloadHourMinuteSelections();
