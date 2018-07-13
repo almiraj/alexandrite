@@ -155,22 +155,10 @@ export class TimeSheetComponent {
     this.ref.detectChanges();
   }
   autofill(dateRow:DateRow) {
-    if (dateRow.beginHour !== undefined
-        || dateRow.beginMinute !== undefined
-        || dateRow.endHour !== undefined
-        || dateRow.endMinute !== undefined
-        || dateRow.breakHour !== undefined
-        || dateRow.breakMinute !== undefined
-        || dateRow.paidOffType !== undefined) {
+    if ([dateRow.beginHour, dateRow.beginMinute, dateRow.endHour, dateRow.endMinute, dateRow.breakHour, dateRow.breakMinute, dateRow.paidOffType].some($.isNumeric)) {
       // 既に入力がある場合はクリア機能を提供する
       if (confirm(dateRow.date.getDate() + '(' + dateRow.dayOfJapan + ') の情報を削除してもよろしいですか？')) {
-        dateRow.beginHour = undefined;
-        dateRow.beginMinute = undefined;
-        dateRow.endHour = undefined;
-        dateRow.endMinute = undefined;
-        dateRow.breakHour = undefined;
-        dateRow.breakMinute = undefined;
-        dateRow.paidOffType = undefined;
+        dateRow.beginHour = dateRow.beginMinute = dateRow.endHour = dateRow.endMinute = dateRow.breakHour = dateRow.breakMinute = dateRow.paidOffType = undefined;
       }
     } else {
       // 入力がない場合は自動補完機能を提供する

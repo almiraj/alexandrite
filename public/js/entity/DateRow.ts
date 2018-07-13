@@ -37,13 +37,7 @@ export class DateRow {
   }
   get summary():string {
     // 何かしら未入力の時刻があればクリアする
-    if (this.endHour === undefined || String(this.endHour) == ''
-        || this.endMinute === undefined || String(this.endMinute) == ''
-        || this.beginHour === undefined || String(this.beginHour) == ''
-        || this.beginMinute === undefined || String(this.beginMinute) == ''
-        || this.breakHour === undefined || String(this.breakHour) == ''
-        || this.breakMinute === undefined || String(this.breakMinute) == ''
-    ) {
+    if (![this.endHour, this.endMinute, this.beginHour, this.beginMinute, this.breakHour, this.breakMinute].every($.isNumeric)) {
       return '';
     }
     // 分情報に変換する
@@ -63,7 +57,16 @@ export class DateRow {
 
   isNotDefaultInterval(userConfig:UserConfig):boolean {
     const o = this.getDefaultBreakTime(userConfig);
-    return (this.breakHour != o.breakHour || this.breakMinute != o.breakMinute);
+    if (!o) {
+      // デフォルト休憩時間が算出できない状況の場合は、デフォルト休憩時間とみなす
+      return false;
+    }
+    // デフォルト休憩時間が算出できるのに、休憩時間が選択されていなければ、デフォルト休憩時間ではないと見なす
+    if (!$.isNumeric(this.breakHour) || !$.isNumeric(this.breakMinute)) {
+      return true;
+    }
+    // デフォルト休憩時間と一致しないものが選択されている場合は、デフォルト休憩時間ではないと見なす
+    return o.breakHour != this.breakHour || o.breakMinute != this.breakMinute;
   }
   setDefaultBreakTime(userConfig:UserConfig):void {
     if (this.paidOffType == PaidOffType.ALL || this.paidOffType == PaidOffType.AM) {
@@ -75,18 +78,18 @@ export class DateRow {
       this.endMinute = userConfig.endMinute;
     }
     const o = this.getDefaultBreakTime(userConfig);
-    this.breakHour = o.breakHour;
-    this.breakMinute = o.breakMinute;
+    if (o) {
+      this.breakHour = o.breakHour;
+      this.breakMinute = o.breakMinute;
+    } else {
+      this.breakHour = this.breakMinute = undefined;
+    }
   }
 
   private getDefaultBreakTime(userConfig:UserConfig):any {
-    // 何かしら未入力の時刻があればクリアする
-    if (this.endHour === undefined || String(this.endHour) == ''
-        || this.endMinute === undefined || String(this.endMinute) == ''
-        || this.beginHour === undefined || String(this.beginHour) == ''
-        || this.beginMinute === undefined || String(this.beginMinute) == ''
-    ) {
-      return {};
+    // 何かしら未入力の時刻があれば、算出不能とする
+    if (![this.endHour, this.endMinute, this.beginHour, this.beginMinute].every($.isNumeric)) {
+      return null;
     }
     // 分情報に変換する
     const end = this.endHour * 60 + Number(this.endMinute);
