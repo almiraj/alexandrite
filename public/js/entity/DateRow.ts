@@ -66,24 +66,27 @@ export class DateRow {
     return (this.breakHour != o.breakHour || this.breakMinute != o.breakMinute);
   }
   setDefaultBreakTime(userConfig:UserConfig):void {
+    if (this.paidOffType == PaidOffType.ALL || this.paidOffType == PaidOffType.AM) {
+      this.beginHour = userConfig.beginHour;
+      this.beginMinute = userConfig.beginMinute;
+    }
+    if (this.paidOffType == PaidOffType.ALL || this.paidOffType == PaidOffType.PM) {
+      this.endHour = userConfig.endHour;
+      this.endMinute = userConfig.endMinute;
+    }
     const o = this.getDefaultBreakTime(userConfig);
     this.breakHour = o.breakHour;
     this.breakMinute = o.breakMinute;
   }
-  getDefaultBreakTime(userConfig:UserConfig):any {
+
+  private getDefaultBreakTime(userConfig:UserConfig):any {
     // 何かしら未入力の時刻があればクリアする
     if (this.endHour === undefined || String(this.endHour) == ''
         || this.endMinute === undefined || String(this.endMinute) == ''
         || this.beginHour === undefined || String(this.beginHour) == ''
         || this.beginMinute === undefined || String(this.beginMinute) == ''
-        || this.breakHour === undefined || String(this.breakHour) == ''
-        || this.breakMinute === undefined || String(this.breakMinute) == ''
-        || userConfig.lunchEndHour === undefined || String(userConfig.lunchEndHour) == ''
-        || userConfig.lunchEndMinute === undefined || String(userConfig.lunchEndMinute) == ''
-        || userConfig.lunchBeginHour === undefined || String(userConfig.lunchBeginHour) == ''
-        || userConfig.lunchBeginMinute === undefined || String(userConfig.lunchBeginMinute) == ''
     ) {
-      return '';
+      return {};
     }
     // 分情報に変換する
     const end = this.endHour * 60 + Number(this.endMinute);

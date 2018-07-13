@@ -17,9 +17,9 @@ import { UserInfoService } from '../service/UserInfoService';
             <th class="d-none d-sm-table-cell">終了</th>
             <th class="d-none d-sm-table-cell">有給</th>
             <th class="d-none d-sm-table-cell">休憩</th>
+            <th class="d-none d-sm-table-cell"><!-- 自動入力ボタン --></th>
             <th class="d-none d-sm-table-cell">備考</th>
             <th class="d-none d-sm-table-cell">計</th>
-            <th class="d-none d-sm-table-cell"><!-- 自動入力ボタン --></th>
           </tr>
         </thead>
         <tbody>
@@ -28,28 +28,38 @@ import { UserInfoService } from '../service/UserInfoService';
               <span class="today-container"><i [ngClass]="{today: dateRow.isToday}"></i>{{dateRow.date | date:'d'}}<span class="day"> ({{dateRow.dayOfJapan}})</span></span>
             </td>
             <td>
-              <select [(ngModel)]="dateRow.beginHour" (change)="dateRow.setDefaultBreakTime(userInfoService.userInfo.userConfig)"><option value=""></option><option *ngFor="let h of userInfoService.hourSelections" [value]="h">{{h | FillZeroPipe:2}}</option></select
-              ><select [(ngModel)]="dateRow.beginMinute" (change)="dateRow.setDefaultBreakTime(userInfoService.userInfo.userConfig)"><option value=""></option><option *ngFor="let m of userInfoService.minuteSelections" [value]="m">{{m | FillZeroPipe:2}}</option></select>
+              <div *ngIf="dateRow.paidOffType != PaidOffType.ALL && dateRow.paidOffType != PaidOffType.AM">
+                <select [(ngModel)]="dateRow.beginHour" (change)="dateRow.setDefaultBreakTime(userInfoService.userInfo.userConfig)"><option value=""></option><option *ngFor="let h of userInfoService.hourSelections" [value]="h">{{h | FillZeroPipe:2}}</option></select
+                ><select [(ngModel)]="dateRow.beginMinute" (change)="dateRow.setDefaultBreakTime(userInfoService.userInfo.userConfig)"><option value=""></option><option *ngFor="let m of userInfoService.minuteSelections" [value]="m">{{m | FillZeroPipe:2}}</option></select>
+              </div>
+              <div *ngIf="dateRow.paidOffType == PaidOffType.ALL || dateRow.paidOffType == PaidOffType.AM">
+                {{dateRow.beginHour | FillZeroPipe:2}}:{{dateRow.beginMinute | FillZeroPipe:2}}
+              </div>
             </td>
             <td>
-              <select [(ngModel)]="dateRow.endHour" (change)="dateRow.setDefaultBreakTime(userInfoService.userInfo.userConfig)"><option value=""></option><option *ngFor="let h of userInfoService.hourSelections" [value]="h">{{h | FillZeroPipe:2}}</option></select
-              ><select [(ngModel)]="dateRow.endMinute" (change)="dateRow.setDefaultBreakTime(userInfoService.userInfo.userConfig)"><option value=""></option><option *ngFor="let m of userInfoService.minuteSelections" [value]="m">{{m | FillZeroPipe:2}}</option></select>
+              <div *ngIf="dateRow.paidOffType != PaidOffType.ALL && dateRow.paidOffType != PaidOffType.PM">
+                <select [(ngModel)]="dateRow.endHour" (change)="dateRow.setDefaultBreakTime(userInfoService.userInfo.userConfig)"><option value=""></option><option *ngFor="let h of userInfoService.hourSelections" [value]="h">{{h | FillZeroPipe:2}}</option></select
+                ><select [(ngModel)]="dateRow.endMinute" (change)="dateRow.setDefaultBreakTime(userInfoService.userInfo.userConfig)"><option value=""></option><option *ngFor="let m of userInfoService.minuteSelections" [value]="m">{{m | FillZeroPipe:2}}</option></select>
+              </div>
+              <div *ngIf="dateRow.paidOffType == PaidOffType.ALL || dateRow.paidOffType == PaidOffType.PM">
+                {{dateRow.endHour | FillZeroPipe:2}}:{{dateRow.endMinute | FillZeroPipe:2}}
+              </div>
             </td>
             <td class="d-none d-sm-table-cell">
-              <select [(ngModel)]="dateRow.paidOffType" (change)="dateRow.setDefaultBreakTime(userInfoService.userInfo.userConfig)"><option value=""><option *ngFor="let k of objectkeys(paidOffType)" [value]="paidOffType[k]">{{k}}</option></select>
+              <select [(ngModel)]="dateRow.paidOffType" (change)="dateRow.setDefaultBreakTime(userInfoService.userInfo.userConfig)"><option value=""><option *ngFor="let k of PaidOffType.keys()" [value]="k">{{PaidOffType.toLabel(k)}}</option></select>
             </td>
             <td class="d-none d-sm-table-cell" [ngClass]="{'not-default': dateRow.isNotDefaultInterval(userInfoService.userInfo.userConfig)}">
               <select [(ngModel)]="dateRow.breakHour"><option value=""></option><option *ngFor="let h of userInfoService.hourSelections" [value]="h">{{h | FillZeroPipe:2}}</option></select
               ><select [(ngModel)]="dateRow.breakMinute"><option value=""></option><option *ngFor="let m of userInfoService.minuteSelections" [value]="m">{{m | FillZeroPipe:2}}</option></select>
+            </td>
+            <td class="td-autofill">
+              <button class="autofill-button fa fa-paint-brush" (click)="autofill(dateRow)"></button>
             </td>
             <td class="d-none d-sm-table-cell">
               <input [(ngModel)]="dateRow.remarks" type="text" class="remarks-textbox">
             </td>
             <td class="d-none d-sm-table-cell">
               {{dateRow.summary}}
-            </td>
-            <td class="td-autofill">
-              <button class="autofill-button fa fa-paint-brush" (click)="autofill(dateRow)"></button>
             </td>
             <td class="d-sm-none td-modal">
               <!-- Button trigger modal -->
@@ -80,7 +90,7 @@ import { UserInfoService } from '../service/UserInfoService';
                             </td>
                           </tr><tr>
                             <td>有給</td>
-                            <td><select [(ngModel)]="dateRow.paidOffType" (change)="dateRow.setDefaultBreakTime(userInfoService.userInfo.userConfig)"><option value=""><option *ngFor="let k of objectkeys(paidOffType)" [value]="paidOffType[k]">{{k}}</option></select></td>
+                            <td><select [(ngModel)]="dateRow.paidOffType" (change)="dateRow.setDefaultBreakTime(userInfoService.userInfo.userConfig)"><option value=""><option *ngFor="let k of PaidOffType.keys()" [value]="k">{{PaidOffType.toLabel(k)}}</option></select></td>
                           </tr><tr>
                             <td>休憩</td>
                             <td [ngClass]="{'not-default': dateRow.isNotDefaultInterval(userInfoService.userInfo.userConfig)}">
@@ -112,7 +122,7 @@ import { UserInfoService } from '../service/UserInfoService';
     '#timeSheetTable > tbody > tr > td.td-date { text-align: right; }',
     '#timeSheetTable > tbody > tr > td.td-autofill, #timeSheetTable > tbody > tr > td.td-modal { width: 1.6rem; padding: 0.75rem 0; }', // 幅は限界まで小さくする
     '.day { font-size: 70%; color: #666; }',
-    '.remarks-textbox { width: 100%; }',
+    '.remarks-textbox { width: 80%; }',
     '.autofill-button, .modal-button { font-size: 0.9rem; background-color: transparent; border-style: none; cursor: pointer; }',
     '.not-default { color: red; }',
     '.not-default select { background-color: red; }',
@@ -128,8 +138,7 @@ import { UserInfoService } from '../service/UserInfoService';
 export class TimeSheetComponent {
   @Input() selectedYearMonth:string
   timeSheet:TimeSheet
-  paidOffType = PaidOffType;
-  objectkeys = Object.keys;
+  PaidOffType = PaidOffType;
 
   constructor(
     private ref:ChangeDetectorRef,
