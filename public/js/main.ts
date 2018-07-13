@@ -1,5 +1,5 @@
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { NgModule, ApplicationRef, Injectable } from '@angular/core';
+import { NgModule, ApplicationRef, Injectable, enableProdMode } from '@angular/core';
 import { RouterModule, Routes, Router, Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule }   from '@angular/forms';
@@ -19,6 +19,8 @@ import { LoginService } from './service/LoginService';
 import { HttpService } from './service/HttpService';
 import { ModalService } from './service/ModalService';
 import { UserInfoService } from './service/UserInfoService';
+
+enableProdMode();
 
 @Injectable()
 class LoginResolver implements Resolve<void> {
