@@ -1,3 +1,4 @@
+'use strict';
 const mongoose = require('mongoose');
 
 module.exports = (function() {
@@ -9,20 +10,24 @@ module.exports = (function() {
       beginMinute: { type: Number },
       endHour: { type: Number },
       endMinute: { type: Number },
-      breakHour: { type: Number },
-      breakMinute: { type: Number },
+      lunchBeginHour: { type: Number },
+      lunchBeginMinute: { type: Number },
+      lunchEndHour: { type: Number },
+      lunchEndMinute: { type: Number },
       minutesInterval: { type: Number }
     }),
     timeSheets: [ new Schema({
       yearMonth: { type: String, index: true },
       dateRows: [ new Schema({
-        date: { type: Number, index: true },
+        date: { type: Date, index: true },
         beginHour: { type: Number },
         beginMinute: { type: Number },
         endHour: { type: Number },
         endMinute: { type: Number },
         breakHour: { type: Number },
         breakMinute: { type: Number },
+        paidOffType: { type: String, enum: ['ALL', 'AM', 'PM'] },
+        remarks: { type: String },
         workTime: { type: Number }
       }) ],
     }) ]

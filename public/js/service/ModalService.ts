@@ -2,9 +2,6 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class ModalService {
-  constructor(
-  ) {}
-
   alert(message:String, addingClass:String = ''):Promise<void> {
     return new Promise<void>((resolve, reject) => {
       alert(message.replace(/<[^>]+>/g, ''));
