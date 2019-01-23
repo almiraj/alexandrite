@@ -101,7 +101,7 @@ export class TimeSheetInputComponent {
     private route:ActivatedRoute,
     private loginService:LoginService,
     private modalService:ModalService,
-    private userInfoService:UserInfoService
+    public userInfoService:UserInfoService
   ) {}
 
   ngOnInit() {
