@@ -3,13 +3,14 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "build": "ng build --prod=true",
-    "buildw": "ng build --watch=true",
+    "cordova": "cordova",
+    "add-android": "cordova platform add android",
+    "add-ios": "cordova platform add ios",
+    "build": "ng build --prod=true && cordova build",
     "serve": "ng serve",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "postinstall": "npm run build",
     "start": "node server/bin/www"
   },
   "private": true,
@@ -26,6 +27,10 @@
     "body-parser": "^1.18.3",
     "bootstrap": "^4.2.1",
     "cookie-parser": "^1.4.3",
+    "cordova": "^8.1.2",
+    "cordova-android": "^7.1.4",
+    "cordova-ios": "^4.5.5",
+    "cordova-plugin-whitelist": "1",
     "core-js": "^2.5.4",
     "express": "^4.16.4",
     "font-awesome": "^4.7.0",
@@ -61,5 +66,14 @@
     "ts-node": "~7.0.0",
     "tslint": "~5.11.0",
     "typescript": "~3.2.2"
+  },
+  "cordova": {
+    "plugins": {
+      "cordova-plugin-whitelist": {}
+    },
+    "platforms": [
+      "android",
+      "ios"
+    ]
   }
 }
