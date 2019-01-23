@@ -1,9 +1,8 @@
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { NgModule, ApplicationRef, Injectable, enableProdMode } from '@angular/core';
+import { NgModule, Injectable } from '@angular/core';
 import { RouterModule, Routes, Router, Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule }   from '@angular/forms';
-import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './component/AppComponent';
 import { LoginComponent } from './component/LoginComponent';
@@ -20,10 +19,8 @@ import { HttpService } from './service/HttpService';
 import { ModalService } from './service/ModalService';
 import { UserInfoService } from './service/UserInfoService';
 
-enableProdMode();
-
 @Injectable()
-class LoginResolver implements Resolve<void> {
+export class LoginResolver implements Resolve<void> {
   constructor(
     private router:Router
   ) {}
@@ -86,12 +83,10 @@ const appRoutes:Routes = [
     imports: [
       BrowserModule,
       FormsModule,
-      HttpModule,
+      HttpClientModule,
       RouterModule.forRoot(appRoutes)
     ],
     bootstrap: [AppComponent]
 })
-class AppModule {
+export class AppModule {
 }
-
-platformBrowserDynamic().bootstrapModule(AppModule);
