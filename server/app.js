@@ -28,7 +28,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, '/../dist/alexandrite/')));
+app.use(express.static(path.join(__dirname, '/../www/')));
 
 app.use('/ws/', routes);
 
@@ -36,7 +36,7 @@ app.use('/ws/', routes);
 // app.use('/node_modules', express.static(path.join(__dirname, 'node_modules')));
 // angular/routerでURL直打ちされたときに対応するため、index.htmlへのマッピングを明示しておく
 app.use('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '/../dist/alexandrite/index.html'));
+  res.sendFile(path.join(__dirname, '/../www/index.html'));
 });
 
 // catch 404 and forward to error handler
