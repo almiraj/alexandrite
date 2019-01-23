@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class HttpService {
   constructor(
-    private http:Http
+    private http:HttpClient
   ) {}
 
   post<T>(url:string, params:Object):Promise<T> {
@@ -15,15 +15,13 @@ export class HttpService {
       }
       this.http.post(url, params)
         .subscribe(
-          (res:Response) => {
-            const resBody = res.json();
-            console.log('resBody : ' + JSON.stringify(resBody));
-            return resBody.errorMessage ? reject(resBody.errorMessage) : resolve(resBody);
+          (res:any) => {
+            console.log('res : ' + JSON.stringify(res));
+            return res.errorMessage ? reject(res.errorMessage) : resolve(res);
           },
-          (res:Response) => {
-            const errBody = String(res);
-            console.log('errBody : ' + errBody);
-            reject(errBody);
+          (res:any) => {
+            console.log('errBody : ' + JSON.stringify(res));
+            return reject(res.message);
           }
         );
     });

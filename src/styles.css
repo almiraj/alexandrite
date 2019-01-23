@@ -1,0 +1,4 @@
+/* You can add global styles to this file, and also import other style files */
+* { color: rgb(58,29,75); }
+body, select, input { background-color: #fafafa; }
+select, input { border:1px solid #eee; border-radius: 0.2rem; }

@@ -1,8 +1,0 @@
-{
-  "resolution": "main",
-  "tree": {
-    "src": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/4a63b322f6e4d6110e3a3b9b7c67af306465e7e0/japanese-holidays/index.d.ts",
-    "raw": "registry:dt/japanese-holidays#1.0.0+20170213223444",
-    "typings": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/4a63b322f6e4d6110e3a3b9b7c67af306465e7e0/japanese-holidays/index.d.ts"
-  }
-}
