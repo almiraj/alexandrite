@@ -13,7 +13,7 @@ export class HttpService {
         params['loginId'] = localStorage.getItem('loginId');
         params['loginToken'] = localStorage.getItem('loginToken');
       }
-      this.http.post(url, params)
+      this.http.post('https://alexandrite.herokuapp.com' + url, params)
         .subscribe(
           (res:any) => {
             console.log('res : ' + JSON.stringify(res));
