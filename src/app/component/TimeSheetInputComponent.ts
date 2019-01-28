@@ -141,6 +141,7 @@ export class TimeSheetInputComponent {
   }
   logout() {
     LoginInfo.clearLocal();
-    location.href = '/';
+    ($('#modal-window') as any).modal('hide');
+    this.router.navigate(['/']);
   }
 }
