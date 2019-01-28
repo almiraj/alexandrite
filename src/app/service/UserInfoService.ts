@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-
+import * as moment from 'moment-timezone';
+moment.tz.setDefault('UTC');
 import { UserInfo } from '../entity/UserInfo';
 import { UserConfig } from '../entity/UserConfig';
 import { DateRow } from '../entity/DateRow';
@@ -40,7 +41,7 @@ export class UserInfoService {
           // 保存したことのあるアカウントの場合、取得したString型の日付をDate型にパースし、さらにDateRow型にパースする
           this.userInfo.timeSheets.forEach(timeSheet => {
             timeSheet.dateRows.map((dateRow, i, arr) => {
-              dateRow.date = new Date(dateRow.date.toString());
+              dateRow.date = moment(dateRow.date.toString());
               arr[i] = $.extend(true, new DateRow(this.userInfo.userConfig, dateRow.date), dateRow);
             });
           });

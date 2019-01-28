@@ -1,4 +1,5 @@
-import { isHoliday } from 'japanese-holidays';
+import * as moment from 'moment';
+import * as JapaneseHolidays from 'japanese-holidays';
 
 import { PaidOffType } from '../constant/PaidOffType';
 import { UserConfig } from '../entity/UserConfig';
@@ -15,26 +16,26 @@ export class DateRow {
 
   constructor(
     public userConfig:UserConfig,
-    public date:Date
+    public date:moment.Moment
   ) {}
 
   get dayOfJapan():string {
-    return ['日', '月', '火', '水', '木', '金', '土'][this.date.getDay()];
+    return ['日', '月', '火', '水', '木', '金', '土'][this.date.weekday()];
   }
   get isToday():boolean {
-    const now = new Date();
-    return this.date.getFullYear() == now.getFullYear()
-      && this.date.getMonth() == now.getMonth()
-      && this.date.getDate() == now.getDate();
+    const now = moment();
+    return this.date.year() == now.year()
+      && this.date.month() == now.month()
+      && this.date.date() == now.date();
   }
   get isSaturday():boolean {
-    return this.date.getDay() == 6;
+    return this.date.weekday() == 6;
   }
   get isSunday():boolean {
-    return this.date.getDay() == 0;
+    return this.date.weekday() == 0;
   }
   get isHoliday():boolean {
-    return !!isHoliday(this.date);
+    return !!JapaneseHolidays.isHoliday(this.date.toDate());
   }
   get summary():string {
     // 何かしら未入力の時刻があればクリアする
@@ -91,7 +92,7 @@ export class DateRow {
     if (this.isToday) {
       // 当日の場合だけ、現在時刻を加味して終了時刻を入力する
       const i = this.userConfig.minutesInterval;
-      const now = new Date();
+      const now = new Date(); // ここはローカル時刻を使う
       this.endHour = now.getHours();
       this.endMinute = Math.floor(now.getMinutes() / i) * i; // 現在時刻に一番近いものを選択する
     } else {

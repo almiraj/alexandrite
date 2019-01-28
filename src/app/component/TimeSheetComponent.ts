@@ -25,7 +25,7 @@ import { UserInfoService } from '../service/UserInfoService';
         <tbody>
           <tr *ngFor="let dateRow of timeSheet.dateRows; let i = index" [ngClass]="{saturday: dateRow.isSaturday, sunday: dateRow.isSunday, holiday: dateRow.isHoliday}">
             <td class="td-date">
-              <span class="today-container"><i [ngClass]="{today: dateRow.isToday}"></i>{{dateRow.date | date:'d'}}<span class="day"> ({{dateRow.dayOfJapan}})</span></span>
+              <span class="today-container"><i [ngClass]="{today: dateRow.isToday}"></i>{{dateRow.date.date()}}<span class="day"> ({{dateRow.dayOfJapan}})</span></span>
             </td>
             <td>
               <div *ngIf="dateRow.paidOffType != PaidOffType.ALL && dateRow.paidOffType != PaidOffType.AM">
@@ -156,7 +156,7 @@ export class TimeSheetComponent {
   autofill(dateRow:DateRow) {
     if (dateRow.hasSomeTimeSelection()) {
       // 既に入力がある場合はクリア機能を提供する
-      if (confirm(dateRow.date.getDate() + '(' + dateRow.dayOfJapan + ') の情報を削除してもよろしいですか？')) {
+      if (confirm(dateRow.date.date() + '(' + dateRow.dayOfJapan + ') の情報を削除してもよろしいですか？')) {
         dateRow.clearAnyTimeSelection();
       }
     } else {
