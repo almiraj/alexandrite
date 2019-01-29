@@ -12,63 +12,54 @@ import { LoginInfo } from '../entity/LoginInfo';
     <div id="header"></div>
     <div class="container">
       <div class="row">
-        <div class="col-md-12 col-sm-12">
-          <div class="tabs-left">
-            <ul class="nav nav-tabs">
-              <li class="active"><a href="#a" data-toggle="tab"><img src="./assets/login-office.png" width="80" height="80"></a></li>
-              <li><a href="#b" data-toggle="tab"><img src="./assets/login-try.png" width="80" height="80"></a></li>
-              <li><img src="./assets/login-wait.png" width="80" height="80"></li>
-              <li><img src="./assets/login-wait.png" width="80" height="80"></li>
+        <div id="col" class="col-md-6 col-sm-8">
+          <div id="tabs">
+            <ul class="nav nav-pills">
+              <li class="nav-item">
+                <a class="nav-link active" href="#office365" data-toggle="tab">Office 365</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#trynow" data-toggle="tab">お試し</a>
+              </li>
             </ul>
             <div class="tab-content">
-              <div class="tab-pane active" id="a">
+              <div class="tab-pane active" id="office365">
                 <div class="form-group">
-                  <input class="form-control" placeholder="Email address" type="text" [(ngModel)]="loginId">
+                  <input class="form-control" placeholder="Email address" type="email" [(ngModel)]="loginId">
                 </div>
                 <div class="form-group">
                   <input class="form-control" placeholder="Password" type="password" [(ngModel)]="loginPassword">
                 </div>
                 <div class="text-center">
-                  <button id="login-button" class="btn btn-default" (click)="login()">Sign in</button>
+                  <button id="login-button" class="btn" (click)="login()">Sign in</button>
                 </div>
               </div>
-              <div class="tab-pane" id="b">
-                <p>お試しアカウントでログインすることができます。</p>
-                <p>このアカウント情報は共有されるため、<br>入力した情報は誰かに閲覧されたり、編集される可能性があります。</p>
+              <div class="tab-pane" id="trynow">
+                <p>お試しアカウントで<br>ログインすることができます。</p>
+                <p>このアカウント情報は共有されるため、<br>入力した情報は誰かに閲覧されたり、<br>編集される可能性があります。</p>
                 <div class="text-center">
-                  <button id="login-button" class="btn btn-default" (click)="tryLogin()">Sign in</button>
+                  <button id="login-button" class="btn" (click)="tryLogin()">Sign in</button>
                 </div>
               </div>
-              <div class="tab-pane" id="c">CCC</div>
-              <div class="tab-pane" id="d">DDD</div>
-              <div class="tab-pane" id="e">EEE</div>
-              <div class="tab-pane" id="f">FFF</div>
-            </div><!-- /tab-content -->
-          </div><!-- /tabbable -->
-        </div><!-- /col -->
-      </div><!-- /row -->
-    </div><!-- /container -->
-    `,
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `,
   styles: [
     '#header { width: 100%; height: 130px; background: center 70% no-repeat url("./assets/header-logo.png"); }',
-    '#login-button { border-color: #333; }',
-    // '.container { margin: 0 auto 3rem auto; }',
-    // https://codepen.io/anon/pen/ZwONgX
-    'h3 { margin-top: 0; }',
-    '.nav-tabs { float: left; border-bottom: 0; width: 100px; }',
-    '.nav-tabs li { float: none; margin: 0; text-align: center; height: 100px; padding-top: 10px; background-color: rgb(201,221,164); }',
-    '.nav-tabs li a { margin-right: 0; border: 0; border-radius: 0; }',
-    '.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus { border: 0; }',
-    '.tab-content { margin-left: 45px; }',
-    '.tab-content .tab-pane { display: none; background-color: #fff; padding: 1.6rem; padding-top: 3.2rem; overflow-y: auto; }',
-    '.tab-content .active { display: block; }',
-    '.list-group { width: 100%; }',
-    '.list-group .list-group-item { height: 50px; }',
-    '.list-group .list-group-item h4, .list-group .list-group-item span { line-height: 11px; }',
-    '.nav { display: block; }',
-    '.tab-content { width: 20rem; }',
-    '.tab-pane { height: 20rem; }',
-    '.nav-tabs li.active-li { background-color: #fff; }',
+    '#login-button { border-color: #333; margin-top: 0.6rem; }',
+    '#col { margin: 3rem auto auto auto; }',
+    '.tab-pane { padding: 2rem; text-align: center; }',
+    '.nav-link.active { background-color: #69A5C4;  }',
+    '.nav-link.active a { color: #fff; }',
+    'a { color: #69A5C4; }',
+    '.tab-pane { background-color: #69A5C4; }',
+    '.tab-pane p { color: #fff; }',
+    '.nav-pills .nav-link { border-radius: 0.25rem 0.25rem 0 0; }',
+    '.btn:focus, .btn.focus { box-shadow: 0 0 0 0.4rem rgba(238, 182, 215, 0.25); }'
+    
   ]
 })
 export class LoginComponent {
