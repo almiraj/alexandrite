@@ -33,6 +33,7 @@
     "core-js": "^2.5.4",
     "express": "^4.16.4",
     "font-awesome": "^4.7.0",
+    "glyphicons": "^0.2.0",
     "jade": "^1.11.0",
     "japanese-holidays": "^1.0.6",
     "jquery": "^3.3.1",
