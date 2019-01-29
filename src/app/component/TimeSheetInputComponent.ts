@@ -10,12 +10,14 @@ import { HttpService } from '../service/HttpService';
 import { LoginService } from '../service/LoginService';
 import { ModalService } from '../service/ModalService';
 import { UserInfoService } from '../service/UserInfoService';
+import { LoginComponent } from './LoginComponent';
 
 @Component({
   selector: 'TimeSheetInputComponent',
   template: `
     <div *ngIf="userInfoService.userInfo">
-      <nav class="navbar navbar-expand-xs fixed-top text-white font-weight-bold">
+      <div id="header"></div>
+      <nav class="navbar navbar-expand-xs text-white font-weight-bold">
         <button id="modal-button" class="fa fa-lg fa-diamond" data-toggle="modal" data-target="#modal-window"></button>
         <div>
           <select id="year-month-select" [(ngModel)]="selectedYearMonth">
@@ -80,8 +82,8 @@ import { UserInfoService } from '../service/UserInfoService';
     </div>
   `,
   styles: [
+    '#header { width: 100%; height: 130px; background: center 70% no-repeat url("./assets/header-logo.png"); }',
     'nav { background-color: #69A5C4; }',
-    '#timesheet { margin-top: 3rem; }',
     '#modal-button { color: rgb(248,242,251); font-weight: bold; background-color: transparent; border-style: none; height: 1.9rem; cursor: pointer; }',
     '#save-button   { color: rgb(248,242,251); font-weight: bold; background-color: transparent; border-style: none; height: 1.9rem; cursor: pointer; }',
     '#year-month-select { color: rgb(58,29,75); }',
