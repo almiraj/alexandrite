@@ -5,13 +5,16 @@ const admin = require('firebase-admin');
 const LoginModel = require('../model/LoginModel');
 
 // 環境変数が足りなければ落とす
-if (!process.env.CONFIRM_MAIL_ADDRESS || process.env.GOOGLE_SERVICE_ACCOUNT_KEY) {
+if (!process.env.CONFIRM_MAIL_ADDRESS || !process.env.GOOGLE_SERVICE_ACCOUNT_KEY) {
   console.error('CONFIRM_MAIL_ADDRESS is not found from ENV');
   process.exit(1);
 }
 
 // Firebase SDKの初期設定をする
-admin.initializeApp({ credential: admin.credential.cert(JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY)) });
+admin.initializeApp({
+  credential: admin.credential.cert(JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY)),
+  databaseURL: "https://alexandrite-16a4f.firebaseio.com"
+});
 
 module.exports = function(req) {
   // お試しログインの場合、そのまま素通りさせる
@@ -20,7 +23,8 @@ module.exports = function(req) {
   }
   // OAuth認証の場合、トークンチェックを行う
   if (req.body.loginedToken) {
-    return admin.auth().verifyIdToken(loginedToken).catch(e => reject('認証されていないトークンです');
+    return admin.auth().verifyIdToken(req.body.loginedToken)
+      .then(() => LoginModel.create({ loginId: req.body.loginId, loginToken: generateToken(), lastAccessedTime: new Date() }));
   }
   // office365の場合、SMTP認証を行い、認証が通らなければrejectし、通ればトークンを発行する
   return sendMail(req.body.loginId, req.body.loginPassword)

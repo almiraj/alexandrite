@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
 import * as firebase from 'firebase/app';
@@ -78,6 +78,7 @@ export class LoginComponent {
 
   constructor(
     private angularFireAuth:AngularFireAuth,
+    private ngZone: NgZone,
     private router:Router,
     private loginService:LoginService,
     private modalService:ModalService
@@ -106,12 +107,19 @@ export class LoginComponent {
       );
     // WEB用
     } else {
-      const provider = new firebase.auth.GoogleAuthProvider();
-      this.angularFireAuth.auth.signInWithPopup(provider).then(credential => {
-        this.loginService.login(credential.user.email, null, credential.credential['idToken'])
-          .then(loginInfo => this.router.navigate(['/TimeSheetInput', loginInfo.loginId]))
-          .catch(e => this.modalService.alertError(e));
-      });
+      try {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        let credential:any;
+        let idToken:string;
+        let loginInfo:LoginInfo;
+        Promise.resolve()
+          .then(() => this.angularFireAuth.auth.signInWithPopup(provider)).then(o => credential = o)
+          .then(() => this.angularFireAuth.auth.currentUser.getIdToken()).then(o => idToken = o)
+          .then(() => this.loginService.login(credential.user.email, null, idToken)).then(o => loginInfo = o)
+          .then(() => this.ngZone.run(() => this.router.navigate(['/TimeSheetInput', loginInfo.loginId])));
+      } catch (e) {
+        this.modalService.alertError(e);
+      }
     }
   }
   tryLogin() {
