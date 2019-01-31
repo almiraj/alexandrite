@@ -4,13 +4,12 @@
   "scripts": {
     "ng": "ng",
     "cordova": "cordova",
-    "add-android": "cordova platform add android",
-    "add-ios": "cordova platform add ios",
-    "build": "ng build --prod=true && cordova build",
+    "build": "ng build --prod=true",
     "serve": "ng serve",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
+    "postinstall": "npm run build",
     "start": "node server/bin/www"
   },
   "private": true,
