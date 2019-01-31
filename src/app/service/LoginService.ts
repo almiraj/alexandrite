@@ -9,9 +9,9 @@ export class LoginService {
     private httpService:HttpService
   ) {}
 
-  login(loginId:string, loginPassword:string):Promise<LoginInfo> {
+  login(loginId:string, loginPassword:string, loginedToken?:string):Promise<LoginInfo> {
     return this.httpService
-      .post<LoginInfo>('/ws/login', { loginId, loginPassword })
+      .post<LoginInfo>('/ws/login', { loginId, loginPassword, loginedToken })
       .then(resBody => {
         const loginInfo:LoginInfo = $.extend(true, new LoginInfo(), resBody);
         loginInfo.saveToLocal();

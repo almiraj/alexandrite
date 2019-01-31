@@ -19,6 +19,7 @@
     "@angular/common": "~7.2.0",
     "@angular/compiler": "~7.2.0",
     "@angular/core": "~7.2.0",
+    "@angular/fire": "^5.1.1",
     "@angular/forms": "~7.2.0",
     "@angular/platform-browser": "~7.2.0",
     "@angular/platform-browser-dynamic": "~7.2.0",
@@ -28,10 +29,14 @@
     "cookie-parser": "^1.4.3",
     "cordova": "^8.1.2",
     "cordova-android": "^7.1.4",
+    "cordova-browser": "^5.0.4",
     "cordova-ios": "^4.5.5",
+    "cordova-plugin-googleplus": "7.0.0",
     "cordova-plugin-whitelist": "1",
     "core-js": "^2.5.4",
     "express": "^4.16.4",
+    "firebase": "^5.8.1",
+    "firebase-admin": "^6.5.1",
     "font-awesome": "^4.7.0",
     "glyphicons": "^0.2.0",
     "jade": "^1.11.0",
@@ -72,7 +77,11 @@
   },
   "cordova": {
     "plugins": {
-      "cordova-plugin-whitelist": {}
+      "cordova-plugin-whitelist": {},
+      "cordova-plugin-googleplus": {
+        "REVERSED_CLIENT_ID": "com.googleusercontent.apps.491085898423-u8g0t4lqi7eue891vbddlvh62s8kkueo",
+        "WEB_APPLICATION_CLIENT_ID": "952475037163-1t9aqiejuujpurgdvp6m9ompamudv2lq.apps.googleusercontent.com"
+      }
     },
     "platforms": [
       "android",

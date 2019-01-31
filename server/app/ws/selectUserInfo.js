@@ -4,5 +4,7 @@ const checkToken = require('../ws/checkToken');
 
 // 勤務表を検索する
 module.exports = function(req) {
-  return checkToken(req).then(() => UserInfoModel.findOne({ userId: req.body.userId }));
+  // ログインさえしていれば誰のものでもアクセスできてしまう
+  // return checkToken(req).then(() => UserInfoModel.findOne({ userId: req.body.userId }));
+  return checkToken(req).then(() => UserInfoModel.findOne({ userId: req.body.loginId }));
 };

@@ -1,8 +1,11 @@
 import { NgModule, Injectable } from '@angular/core';
 import { RouterModule, Routes, Router, Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule }   from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { environment } from '../environments/environment';
 
 import { AppComponent } from './component/AppComponent';
 import { LoginComponent } from './component/LoginComponent';
@@ -84,7 +87,9 @@ const appRoutes:Routes = [
       BrowserModule,
       FormsModule,
       HttpClientModule,
-      RouterModule.forRoot(appRoutes)
+      RouterModule.forRoot(appRoutes),
+      AngularFireModule.initializeApp(environment.firebase),
+      AngularFireAuthModule
     ],
     bootstrap: [AppComponent]
 })

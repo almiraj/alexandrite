@@ -46,3 +46,4 @@ Thumbs.db
 # Cordova
 /www
 /platforms
+/plugins/cordova-plugin-googleplus

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { glyphicons } from 'glyphicons';
+import { AngularFireAuth } from '@angular/fire/auth';
+import * as firebase from 'firebase/app';
 
 import { LoginService } from '../service/LoginService';
 import { ModalService } from '../service/ModalService';
@@ -19,11 +20,15 @@ import { LoginInfo } from '../entity/LoginInfo';
                 <a class="nav-link active" href="#office365" data-toggle="tab">Office 365</a>
               </li>
               <li class="nav-item">
+                <a class="nav-link" href="#google" data-toggle="tab">Google</a>
+              </li>
+              <li class="nav-item">
                 <a class="nav-link" href="#trynow" data-toggle="tab">お試し</a>
               </li>
             </ul>
             <div class="tab-content">
               <div class="tab-pane active" id="office365">
+                <p>Office 365のアカウントと連携して<br>ログインします。<br>パスワードは記憶されません。</p>
                 <div class="form-group">
                   <input class="form-control" placeholder="Email address" type="email" [(ngModel)]="loginId">
                 </div>
@@ -31,7 +36,13 @@ import { LoginInfo } from '../entity/LoginInfo';
                   <input class="form-control" placeholder="Password" type="password" [(ngModel)]="loginPassword">
                 </div>
                 <div class="text-center">
-                  <button id="login-button" class="btn" (click)="login()">Sign in</button>
+                  <button id="login-button" class="btn" (click)="loginOffice()">Sign in</button>
+                </div>
+              </div>
+              <div class="tab-pane" id="google">
+                <p>Googleアカウントと連携して<br>ログインします。</p>
+                <div class="text-center">
+                  <button id="login-button" class="btn" (click)="loginGoogle()">Sign in</button>
                 </div>
               </div>
               <div class="tab-pane" id="trynow">
@@ -59,7 +70,6 @@ import { LoginInfo } from '../entity/LoginInfo';
     '.tab-pane p { color: #fff; }',
     '.nav-pills .nav-link { border-radius: 0.25rem 0.25rem 0 0; }',
     '.btn:focus, .btn.focus { box-shadow: 0 0 0 0.4rem rgba(238, 182, 215, 0.25); }'
-    
   ]
 })
 export class LoginComponent {
@@ -67,32 +77,45 @@ export class LoginComponent {
   loginPassword:string
 
   constructor(
+    private angularFireAuth:AngularFireAuth,
     private router:Router,
     private loginService:LoginService,
     private modalService:ModalService
   ) {}
 
-  ngAfterViewInit() {
-    // タブの設定を行う
-    $('.tab-pane').css({ height: $('.nav-tabs').height() });
-    // $('.nav-tabs').css({ 'margin-left': (($('body').innerWidth() - $('.tab-content').innerWidth()) / 2 - $('.nav-tabs li').innerWidth()) + 'px' });
-    $('.nav-tabs li.active').addClass('active-li');
-    $('.nav-tabs [data-toggle="tab"]').on('shown.bs.tab', () => {
-      const lis = $('.nav-tabs li');
-      for (let i = 0; i < lis.length; i++) {
-        const li = $(lis.get(i));
-        console.log(li.has('.active'));
-        (li.children('.active').length ? li.addClass('active-li') : li.removeClass('active-li'));
-      }
-    });
-  }
-  login() {
+  loginOffice() {
     this.loginService.login(this.loginId, this.loginPassword)
       .then(loginInfo => this.router.navigate(['/TimeSheetInput', loginInfo.loginId]))
       .catch(e => this.modalService.alertError(e));
   }
+  loginGoogle() {
+    // モバイル用
+    if (window['plugins'] && window['plugins'].googleplus) {
+      window['plugins'].googleplus.login(
+        {
+          'scopes': 'profile email',
+          'webClientId': '491085898423-8nlek5svna7sqsatv94o7e0pkij2uc8l.apps.googleusercontent.com',
+          'offline': false,
+        },
+        (authData: any) => {
+          alert(JSON.stringify(authData)); // do something useful instead of alerting
+        },
+        (msg: any) => {
+          alert('error: ' + msg);
+        }
+      );
+    // WEB用
+    } else {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      this.angularFireAuth.auth.signInWithPopup(provider).then(credential => {
+        this.loginService.login(credential.user.email, null, credential.credential['idToken'])
+          .then(loginInfo => this.router.navigate(['/TimeSheetInput', loginInfo.loginId]))
+          .catch(e => this.modalService.alertError(e));
+      });
+    }
+  }
   tryLogin() {
-    this.loginService.login('user@user.user', 'user')
+    this.loginService.login('trynow', 'trynow')
       .then(loginInfo => this.router.navigate(['/TimeSheetInput', loginInfo.loginId]))
       .catch(e => this.modalService.alertError(e));
   }

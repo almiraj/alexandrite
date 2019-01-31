@@ -4,5 +4,7 @@ const checkToken = require('../ws/checkToken');
 
 // 勤務表が既にあれば更新、なければ作成する
 module.exports = function(req) {
-  return checkToken(req).then(() => UserInfoModel.update({ userId: req.body.userId }, req.body, { upsert: true }));
+  // ログインさえしていれば誰のものでもアクセスできてしまう
+  // return checkToken(req).then(() => UserInfoModel.update({ userId: req.body.userId }, req.body, { upsert: true }));
+  return checkToken(req).then(() => UserInfoModel.update({ userId: req.body.loginId }, req.body, { upsert: true }));
 };

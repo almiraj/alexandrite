@@ -1,31 +1,44 @@
 'use strict';
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
+const admin = require('firebase-admin');
 const LoginModel = require('../model/LoginModel');
 
 // 環境変数が足りなければ落とす
-if (!process.env.CONFIRM_MAIL_ADDRESS) {
+if (!process.env.CONFIRM_MAIL_ADDRESS || process.env.GOOGLE_SERVICE_ACCOUNT_KEY) {
   console.error('CONFIRM_MAIL_ADDRESS is not found from ENV');
   process.exit(1);
 }
 
-// SMTP認証を行い、認証が通らなければrejectし、通ればトークンを発行する
+// Firebase SDKの初期設定をする
+admin.initializeApp({ credential: admin.credential.cert(JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY)) });
+
 module.exports = function(req) {
-  return sendMail(req).then(() => LoginModel.create({ loginId: req.body.loginId, loginToken: generateToken(), lastAccessedTime: new Date() }));
+  // お試しログインの場合、そのまま素通りさせる
+  if (req.body.loginId == 'trynow') {
+    return LoginModel.create({ loginId: req.body.loginId, loginToken: generateToken(), lastAccessedTime: new Date() });
+  }
+  // OAuth認証の場合、トークンチェックを行う
+  if (req.body.loginedToken) {
+    return admin.auth().verifyIdToken(loginedToken).catch(e => reject('認証されていないトークンです');
+  }
+  // office365の場合、SMTP認証を行い、認証が通らなければrejectし、通ればトークンを発行する
+  return sendMail(req.body.loginId, req.body.loginPassword)
+    .then(() => LoginModel.create({ loginId: req.body.loginId, loginToken: generateToken(), lastAccessedTime: new Date() }));
 };
 
-function sendMail(req) {
+function sendMail(address, password) {
   return new Promise((resolve, reject) => {
     const smtp = nodemailer.createTransport({
       host: 'smtp.office365.com',
       auth: {
-        user : req.body.loginId,
-        pass : req.body.loginPassword,
+        user : address,
+        pass : password,
         port: '587'
       }
     });
     smtp.sendMail({
-      from: req.body.loginId,
+      from: address,
       to: process.env.CONFIRM_MAIL_ADDRESS,
       subject: 'ログイン通知',
       text: 'ログインできたよ',

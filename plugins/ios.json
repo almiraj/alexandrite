@@ -7,8 +7,12 @@
     "files": {}
   },
   "installed_plugins": {
+    "cordova-plugin-googleplus": {
+      "REVERSED_CLIENT_ID": "com.googleusercontent.apps.491085898423-u8g0t4lqi7eue891vbddlvh62s8kkueo",
+      "PACKAGE_NAME": "com.github.alexandrite"
+    },
     "cordova-plugin-whitelist": {
-      "PACKAGE_NAME": "com.example.alexandrite"
+      "PACKAGE_NAME": "com.github.alexandrite"
     }
   },
   "dependent_plugins": {}
