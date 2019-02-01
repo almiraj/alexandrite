@@ -9,10 +9,10 @@
   "installed_plugins": {
     "cordova-plugin-googleplus": {
       "PLAY_SERVICES_VERSION": "11.8.0",
-      "PACKAGE_NAME": "com.github.alexandrite"
+      "PACKAGE_NAME": "com.github.almiraj.alexandrite"
     },
     "cordova-plugin-whitelist": {
-      "PACKAGE_NAME": "com.github.alexandrite"
+      "PACKAGE_NAME": "com.github.almiraj.alexandrite"
     }
   },
   "dependent_plugins": {}

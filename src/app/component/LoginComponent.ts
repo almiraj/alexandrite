@@ -94,14 +94,16 @@ export class LoginComponent {
     if (window['plugins'] && window['plugins'].googleplus) {
       window['plugins'].googleplus.login(
         {
-          'scopes': 'profile email',
-          'webClientId': '491085898423-8nlek5svna7sqsatv94o7e0pkij2uc8l.apps.googleusercontent.com',
-          'offline': false,
+          scopes: 'profile email',
+          webClientId: '491085898423-8nlek5svna7sqsatv94o7e0pkij2uc8l.apps.googleusercontent.com',
+          offline: false,
         },
-        (authData: any) => {
-          alert(JSON.stringify(authData)); // do something useful instead of alerting
+        (authData:any) => {
+          this.loginService.login(authData.email, null, authData.accessToken)
+            .then(loginInfo => this.router.navigate(['/TimeSheetInput', loginInfo.loginId]))
+            .catch(e => this.modalService.alertError(e));
         },
-        (msg: any) => {
+        (msg:any) => {
           alert('error: ' + msg);
         }
       );
@@ -109,7 +111,7 @@ export class LoginComponent {
     } else {
       try {
         const provider = new firebase.auth.GoogleAuthProvider();
-        let credential:any;
+        let credential:firebase.auth.UserCredential;
         let idToken:string;
         let loginInfo:LoginInfo;
         Promise.resolve()
