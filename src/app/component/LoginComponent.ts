@@ -95,7 +95,7 @@ export class LoginComponent {
       window['plugins'].googleplus.login(
         {
           scopes: 'profile email',
-          webClientId: '491085898423-8nlek5svna7sqsatv94o7e0pkij2uc8l.apps.googleusercontent.com',
+          webClientId: '304128882553-0pab03kdp5rl2860kn9gbv89t9o6hjrl.apps.googleusercontent.com',
           offline: false,
         },
         (authData:any) => {

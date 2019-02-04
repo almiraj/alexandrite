@@ -24,8 +24,8 @@
         <allow-intent href="itms-apps:*" />
     </platform>
     <plugin name="cordova-plugin-googleplus" spec="7.0.0">
-        <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.491085898423-u8g0t4lqi7eue891vbddlvh62s8kkueo" />
-        <variable name="WEB_APPLICATION_CLIENT_ID" value="952475037163-1t9aqiejuujpurgdvp6m9ompamudv2lq.apps.googleusercontent.com" />
+        <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.304128882553-h2ddhfim7cbmhcmt3d845gj6iiuanef8" />
+        <variable name="WEB_APPLICATION_CLIENT_ID" value="304128882553-0pab03kdp5rl2860kn9gbv89t9o6hjrl.apps.googleusercontent.com" />
     </plugin>
     <engine name="android" spec="^7.1.4" />
     <engine name="ios" spec="^4.5.5" />

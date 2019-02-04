@@ -13,7 +13,7 @@ if (!process.env.CONFIRM_MAIL_ADDRESS || !process.env.GOOGLE_SERVICE_ACCOUNT_KEY
 // Firebase SDKの初期設定をする
 admin.initializeApp({
   credential: admin.credential.cert(JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY)),
-  databaseURL: "https://alexandrite-16a4f.firebaseio.com"
+  databaseURL: "https://alexandrite-18420.firebaseio.com"
 });
 
 module.exports = function(req) {
