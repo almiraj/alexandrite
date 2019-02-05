@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
+import { environment } from '../../environments/environment';
+
 @Injectable()
 export class HttpService {
   constructor(
@@ -16,7 +18,9 @@ export class HttpService {
       this.http.post('https://alexandrite.herokuapp.com' + url, params)
         .subscribe(
           (res:any) => {
-            console.log('res : ' + JSON.stringify(res));
+            if (!environment.production) {
+              console.log('res : ' + JSON.stringify(res));
+            }
             return res.errorMessage ? reject(res.errorMessage) : resolve(res);
           },
           (res:any) => {

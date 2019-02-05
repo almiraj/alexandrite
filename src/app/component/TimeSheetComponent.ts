@@ -9,25 +9,25 @@ import { UserInfoService } from '../service/UserInfoService';
   selector: 'TimeSheetComponent',
   template: `
     <div>
-      <table id="timeSheetTable" class="table">
+      <table class="table"                        id="timeSheetTable">
         <thead>
           <tr>
-            <th class="d-none d-sm-table-cell">日</th>
-            <th class="d-none d-sm-table-cell">開始</th>
-            <th class="d-none d-sm-table-cell">終了</th>
-            <th class="d-none d-sm-table-cell">有給</th>
-            <th class="d-none d-sm-table-cell">休憩</th>
-            <th class="d-none d-sm-table-cell"><!-- 自動入力ボタン --></th>
-            <th class="d-none d-sm-table-cell">備考</th>
-            <th class="d-none d-sm-table-cell">計</th>
+            <th class="sheet-th d-none d-sm-table-cell">日</th>
+            <th class="sheet-th d-none d-sm-table-cell">開始</th>
+            <th class="sheet-th d-none d-sm-table-cell">終了</th>
+            <th class="sheet-th d-none d-sm-table-cell">有給</th>
+            <th class="sheet-th d-none d-sm-table-cell">休憩</th>
+            <th class="sheet-th d-none d-sm-table-cell"><!-- 自動入力ボタン --></th>
+            <th class="sheet-th d-none d-sm-table-cell">備考</th>
+            <th class="sheet-th d-none d-sm-table-cell">計</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let dateRow of timeSheet.dateRows; let i = index" [ngClass]="{saturday: dateRow.isSaturday, sunday: dateRow.isSunday, holiday: dateRow.isHoliday}">
-            <td class="td-date">
+            <td class="sheet-td td-date">
               <span class="today-container"><i [ngClass]="{today: dateRow.isToday}"></i>{{dateRow.date.date()}}<span class="day"> ({{dateRow.dayOfJapan}})</span></span>
             </td>
-            <td>
+            <td class="sheet-td">
               <div *ngIf="dateRow.paidOffType != PaidOffType.ALL && dateRow.paidOffType != PaidOffType.AM">
                 <select [(ngModel)]="dateRow.beginHour" [ngClass]="{'not-default': !dateRow.isDefaultBegin()}" (change)="dateRow.fillBreakTime()"><option value=""></option><option *ngFor="let h of userInfoService.hourSelections" [value]="h">{{h | FillZeroPipe:2}}</option></select
                 ><select [(ngModel)]="dateRow.beginMinute" [ngClass]="{'not-default': !dateRow.isDefaultBegin()}" (change)="dateRow.fillBreakTime()"><option value=""></option><option *ngFor="let m of userInfoService.minuteSelections" [value]="m">{{m | FillZeroPipe:2}}</option></select>
@@ -36,7 +36,7 @@ import { UserInfoService } from '../service/UserInfoService';
                 {{dateRow.beginHour | FillZeroPipe:2}}:{{dateRow.beginMinute | FillZeroPipe:2}}
               </div>
             </td>
-            <td>
+            <td class="sheet-td">
               <div *ngIf="dateRow.paidOffType != PaidOffType.ALL && dateRow.paidOffType != PaidOffType.PM">
                 <select [(ngModel)]="dateRow.endHour" (change)="dateRow.fillBreakTime()"><option value=""></option><option *ngFor="let h of userInfoService.hourSelections" [value]="h">{{h | FillZeroPipe:2}}</option></select
                 ><select [(ngModel)]="dateRow.endMinute" (change)="dateRow.fillBreakTime()"><option value=""></option><option *ngFor="let m of userInfoService.minuteSelections" [value]="m">{{m | FillZeroPipe:2}}</option></select>
@@ -45,23 +45,23 @@ import { UserInfoService } from '../service/UserInfoService';
                 {{dateRow.endHour | FillZeroPipe:2}}:{{dateRow.endMinute | FillZeroPipe:2}}
               </div>
             </td>
-            <td class="d-none d-sm-table-cell">
+            <td class="sheet-td d-none d-sm-table-cell">
               <select [(ngModel)]="dateRow.paidOffType" [ngClass]="{'not-default': !!dateRow.paidOffType}" (change)="dateRow.fillBreakTime()"><option value=""><option *ngFor="let k of PaidOffType.keys()" [value]="k">{{PaidOffType.toLabel(k)}}</option></select>
             </td>
-            <td class="d-none d-sm-table-cell" [ngClass]="{'not-default': !dateRow.isDefaultBreakTime()}">
+            <td class="sheet-td d-none d-sm-table-cell" [ngClass]="{'not-default': !dateRow.isDefaultBreakTime()}">
               <select [(ngModel)]="dateRow.breakHour"><option value=""></option><option *ngFor="let h of userInfoService.hourSelections" [value]="h">{{h | FillZeroPipe:2}}</option></select
               ><select [(ngModel)]="dateRow.breakMinute"><option value=""></option><option *ngFor="let m of userInfoService.minuteSelections" [value]="m">{{m | FillZeroPipe:2}}</option></select>
             </td>
-            <td class="td-autofill">
+            <td class="sheet-td td-autofill">
               <button class="autofill-button fa fa-paint-brush" (click)="autofill(dateRow)"></button>
             </td>
-            <td class="d-none d-sm-table-cell">
+            <td class="sheet-td d-none d-sm-table-cell">
               <input [(ngModel)]="dateRow.remarks" [ngClass]="{'not-default': !!dateRow.remarks}" class="remarks-textbox" type="text">
             </td>
-            <td class="d-none d-sm-table-cell">
+            <td class="sheet-td d-none d-sm-table-cell">
               {{dateRow.summary}}
             </td>
-            <td class="d-sm-none td-modal">
+            <td class="d-sm-none td-modal-button">
               <!-- Button trigger modal -->
               <button id="modal-button{{i}}" class="modal-button fa fa-window-restore" (click)="openModal('#modal-window' + i)" [ngClass]="{'not-default': dateRow.isCareful()}"></button>
               <!-- Modal -->
@@ -117,12 +117,12 @@ import { UserInfoService } from '../service/UserInfoService';
     </div>
   `,
   styles: [
-    '#timeSheetTable > thead > th { font-weight: normal; }',
-    '#timeSheetTable > thead > tr > th, #timeSheetTable > tbody > tr > td { white-space: nowrap; padding: 0.75rem 0.12rem; text-align: center; vertical-align: middle; }',
-    '#timeSheetTable > tbody > tr > td.td-date { text-align: right; }',
-    '#timeSheetTable > tbody > tr > td.td-autofill, #timeSheetTable > tbody > tr > td.td-modal { width: 1.6rem; padding: 0.75rem 0; }', // 幅は限界まで小さくする
+    '.sheet-th { font-weight: normal; }',
+    '.sheet-th, .sheet-td { white-space: nowrap; padding: 0.75rem 0.12rem; text-align: center; vertical-align: middle; }',
+    'td.td-date { text-align: right; }',
+    'td.td-autofill, td.td-modal-button { width: 1.6rem; padding: 0.75rem 0; }', // 幅は限界まで小さくする
     '.day { font-size: 70%; color: #666; }',
-    '.remarks-textbox { width: 80%; }',
+    '.remarks-textbox { width: 100%; }',
     '.autofill-button, .modal-button { font-size: 0.9rem; background-color: transparent; border-style: none; cursor: pointer; }',
     '.not-default, .not-default select { color: rgb(214,148,150); }',
     '.saturday { background-color: rgb(152,192,214); }',
