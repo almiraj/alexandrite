@@ -8,7 +8,7 @@
   },
   "installed_plugins": {
     "cordova-plugin-googleplus": {
-      "REVERSED_CLIENT_ID": "com.googleusercontent.apps.491085898423-u8g0t4lqi7eue891vbddlvh62s8kkueo",
+      "REVERSED_CLIENT_ID": "com.googleusercontent.apps.304128882553-h2ddhfim7cbmhcmt3d845gj6iiuanef8",
       "PACKAGE_NAME": "com.github.almiraj.alexandrite"
     },
     "cordova-plugin-whitelist": {

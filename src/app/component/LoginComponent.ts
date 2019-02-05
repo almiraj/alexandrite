@@ -90,8 +90,8 @@ export class LoginComponent {
       .catch(e => this.modalService.alertError(e));
   }
   loginGoogle() {
-    // モバイル用
     if (window['plugins'] && window['plugins'].googleplus) {
+      // モバイル用
       window['plugins'].googleplus.login(
         {
           scopes: 'profile email',
@@ -99,29 +99,33 @@ export class LoginComponent {
           offline: false,
         },
         (authData:any) => {
-          this.loginService.login(authData.email, null, authData.accessToken)
-            .then(loginInfo => this.router.navigate(['/TimeSheetInput', loginInfo.loginId]))
+          const credential = (<any>firebase.auth.GoogleAuthProvider).credential(authData.idToken);
+          let user:firebase.User;
+          let idToken:string;
+          let loginInfo:LoginInfo;
+          Promise.resolve()
+            .then(() => firebase.auth().signInWithCredential(credential)).then(o => user = o)
+            .then(() => user.getIdToken()).then(o => idToken = o)
+            .then(() => this.loginService.login(authData.email, null, idToken)).then(o => loginInfo = o)
+            .then(() => this.ngZone.run(() => this.router.navigate(['/TimeSheetInput', loginInfo.loginId])))
             .catch(e => this.modalService.alertError(e));
         },
         (msg:any) => {
           alert('error: ' + msg);
         }
       );
-    // WEB用
     } else {
-      try {
-        const provider = new firebase.auth.GoogleAuthProvider();
-        let credential:firebase.auth.UserCredential;
-        let idToken:string;
-        let loginInfo:LoginInfo;
-        Promise.resolve()
-          .then(() => this.angularFireAuth.auth.signInWithPopup(provider)).then(o => credential = o)
-          .then(() => this.angularFireAuth.auth.currentUser.getIdToken()).then(o => idToken = o)
-          .then(() => this.loginService.login(credential.user.email, null, idToken)).then(o => loginInfo = o)
-          .then(() => this.ngZone.run(() => this.router.navigate(['/TimeSheetInput', loginInfo.loginId])));
-      } catch (e) {
-        this.modalService.alertError(e);
-      }
+      // WEB用
+      const provider = new firebase.auth.GoogleAuthProvider();
+      let credential:firebase.auth.UserCredential;
+      let idToken:string;
+      let loginInfo:LoginInfo;
+      Promise.resolve()
+        .then(() => this.angularFireAuth.auth.signInWithPopup(provider)).then(o => credential = o)
+        .then(() => credential.user.getIdToken()).then(o => idToken = o)
+        .then(() => this.loginService.login(credential.user.email, null, idToken)).then(o => loginInfo = o)
+        .then(() => this.ngZone.run(() => this.router.navigate(['/TimeSheetInput', loginInfo.loginId])))
+        .catch(e => this.modalService.alertError(e));
     }
   }
   tryLogin() {
